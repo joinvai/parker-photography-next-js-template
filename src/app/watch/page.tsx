@@ -1,3 +1,5 @@
+import { motion } from "framer-motion";
+
 export default function WatchPage() {
   return (
     <main className="min-h-screen bg-black text-white p-8 md:p-16">

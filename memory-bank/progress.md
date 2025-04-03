@@ -1,29 +1,41 @@
-# Progress
+# Progress Report
 
 ## What Works
-- ✓ Font files are properly placed in public/fonts directory
-- ✓ Local font loading configured in layout.tsx with correct relative paths (based on tsconfig.json)
-- ✓ Tailwind configuration updated with new font families
-- ✓ Global CSS updated to apply fonts consistently
+- Basic carousel implementation with shadcn
+- Three images displayed simultaneously
+- Full-width layout
+- Image loading and responsive sizing
+- Cursor-following hover text implementation
+- PP Editorial font integration
 
 ## What's Left to Build
-- Test font rendering across different components
-- Verify font loading performance
-- Check font fallback behavior
+1. Fix navigation hover text bug:
+   - Current implementation uses array indices which breaks during scrolling
+   - Need to implement position-based hover text that stays accurate while scrolling
 
 ## Current Status
-Font system implementation is complete and ready for testing. The system uses:
-- DM Sans for body text (Regular, Medium, Bold)
-- Editorial New for headings (Regular, Ultrabold)
+- MVP implemented but needs bug fixes
+- Core functionality working but navigation UX needs improvement
 
 ## Known Issues
-- ✓ Fixed: Font file paths were incorrect in layout.tsx
-- ✓ Fixed: Editorial New font files were referenced with wrong extension (.ttf instead of .otf)
-- ✓ Fixed: Updated paths to use correct relative path from src/app/layout.tsx
+1. Navigation Hover Text Bug:
+   - Description: Hover text position is tied to array indices instead of visible position
+   - Impact: PREV/NEXT indicators appear on wrong images after scrolling
+   - Root Cause: Using array index logic instead of tracking visible slide positions
+   - Priority: High
 
-## Recent Changes
-1. Updated layout.tsx to use correct relative paths (../../public/fonts/...)
-2. Fixed Editorial New font file references to use .otf extension
-3. Modified Tailwind config with new font families
-4. Added base layer styles in globals.css
-5. Documented font system in memory bank
+## Next Milestone
+- Implement proper hover text positioning using Embla Carousel's API
+- Ensure consistent behavior during and after scrolling
+
+## Technical Debt
+- Current hover logic is tightly coupled to array indices
+- Need to refactor to use carousel's API for slide position tracking
+
+## Evolution of Decisions
+1. Initial Implementation:
+   - Used basic index-based hover logic
+   - Discovered limitations during scrolling
+2. Current State:
+   - Need to refactor to position-based approach
+   - Will require deeper integration with carousel API

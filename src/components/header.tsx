@@ -18,18 +18,18 @@ function Header({ defaultLogo = 'black' }: HeaderProps) {
 
 	// Variants for the hamburger lines animation - 300ms duration as per brief
 	const topVariants = {
-		closed: { rotate: 0, translateY: 0 },
-		open: { rotate: 45, translateY: 6 },
+		closed: { rotate: 0, translateY: 0, backgroundColor: '#000' },
+		open: { rotate: 45, translateY: 6, backgroundColor: '#fff' },
 	};
 
 	const middleVariants = {
-		closed: { opacity: 1 },
-		open: { opacity: 0 },
+		closed: { opacity: 1, backgroundColor: '#000' },
+		open: { opacity: 0, backgroundColor: '#fff' },
 	};
 
 	const bottomVariants = {
-		closed: { rotate: 0, translateY: 0 },
-		open: { rotate: -45, translateY: -6 },
+		closed: { rotate: 0, translateY: 0, backgroundColor: '#000' },
+		open: { rotate: -45, translateY: -6, backgroundColor: '#fff' },
 	};
 
 	// Overlay variants - 400ms duration as per brief
@@ -91,19 +91,19 @@ function Header({ defaultLogo = 'black' }: HeaderProps) {
 					<div className="w-8 h-6 flex flex-col justify-between items-center">
 						{/* Top line */}
 						<motion.div
-							className="w-full h-0.5 bg-black dark:bg-white origin-center"
+							className="w-full h-0.5"
 							variants={topVariants}
 							transition={{ duration: 0.3 }}
 						/>
 						{/* Middle line */}
 						<motion.div
-							className="w-full h-0.5 bg-black dark:bg-white"
+							className="w-full h-0.5"
 							variants={middleVariants}
 							transition={{ duration: 0.3 }}
 						/>
 						{/* Bottom line */}
 						<motion.div
-							className="w-full h-0.5 bg-black dark:bg-white origin-center"
+							className="w-full h-0.5"
 							variants={bottomVariants}
 							transition={{ duration: 0.3 }}
 						/>
