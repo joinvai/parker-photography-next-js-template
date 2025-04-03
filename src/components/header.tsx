@@ -3,8 +3,13 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils'; // Assuming utils exists for cn function
+import Image from 'next/image';
 
-function Header() {
+interface HeaderProps {
+	defaultLogo?: 'black' | 'white';
+}
+
+function Header({ defaultLogo = 'black' }: HeaderProps) {
 	const [isOpen, setIsOpen] = useState(false);
 
 	const toggleMenu = () => {
@@ -107,7 +112,13 @@ function Header() {
 
 				{/* Centered Logo - 32px vertical padding as per brief */}
 				<div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 py-8">
-					<span className="text-2xl font-bold">ACME</span>
+					<Image
+						src={`/logos/${isOpen ? 'white' : defaultLogo}@2x.png`}
+						alt="Logo"
+						width={120}
+						height={40}
+						priority
+					/>
 				</div>
 			</header>
 

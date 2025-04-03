@@ -6,6 +6,7 @@ Implementation of the interactive header component with the following features:
 2. ✓ Full-screen overlay navigation
 3. ✓ Numbered navigation links
 4. ✓ Sequential fade-in animations
+5. ✓ Dynamic logo switching based on menu state
 
 ## Recent Changes
 - Initial project setup
@@ -15,8 +16,20 @@ Implementation of the interactive header component with the following features:
 - Implemented header component with Framer Motion
 - Added accessibility features
 - Configured animation timings per brief
+- Added dynamic logo switching functionality
+  - Black logo for default state
+  - White logo for open menu state
+  - Configurable default logo via props
 
 ## Active Decisions
+
+### Logo Implementation
+Decision made: Implemented using Next.js Image component
+- Pros: Optimized image loading, automatic sizing
+- Implementation Status: Complete
+  - Dynamic source based on menu state
+  - Priority loading for better performance
+  - Configurable default logo (black/white)
 
 ### Animation Implementation
 Decision made: Implemented using Framer Motion

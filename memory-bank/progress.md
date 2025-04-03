@@ -16,6 +16,10 @@
   - Numbered navigation
   - Sequential animations
   - Accessibility features
+  - Dynamic logo switching
+    - Black logo for default state
+    - White logo for open menu state
+    - Configurable via props
 
 ## What's Left to Build
 
@@ -24,6 +28,7 @@
    - [x] Basic structure
    - [x] Responsive layout
    - [x] State management
+   - [x] Dynamic logo implementation
 
 2. [x] Hamburger Menu
    - [x] Icon implementation

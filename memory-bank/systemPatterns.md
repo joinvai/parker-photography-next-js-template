@@ -19,6 +19,10 @@ graph TD
     Header --> Overlay
     Nav --> Numbers
     Nav --> Links
+
+    LogoState[Logo State Management]
+    Header --> LogoState
+    LogoState --> Logo
 ```
 
 ## Design Patterns
@@ -28,16 +32,19 @@ graph TD
    - Header serves as main container
    - Manages state for menu open/closed
    - Controls animation sequences
+   - Manages logo state and switching
 
 2. **Compound Components**
    - Hamburger menu with transform state
    - Navigation menu with numbered links
    - Overlay with fade transitions
+   - Dynamic logo with state-based switching
 
 3. **State Management**
    - Local state for menu visibility
    - Animation state management
    - Transition state coordination
+   - Logo state based on menu state
 
 ### Animation Patterns
 1. **Sequential Animation**
@@ -55,7 +62,7 @@ graph TD
 ### Component Structure
 ```typescript
 interface HeaderProps {
-  // Component props
+  defaultLogo?: 'black' | 'white';
 }
 
 interface NavigationItem {
