@@ -26,8 +26,14 @@ const config: Config = {
   		},
   		fontFamily: {
   			sans: [
-  				'var(--font-geist-sans)'
+  				'var(--font-dm-sans)',
+                'system-ui',
+                'sans-serif'
   			],
+            heading: [
+                'var(--font-editorial-new)',
+                'serif'
+            ],
   			mono: [
   				'var(--font-geist-mono)'
   			],

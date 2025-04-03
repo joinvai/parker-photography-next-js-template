@@ -25,6 +25,41 @@ graph TD
     LogoState --> Logo
 ```
 
+## Font System
+- Local fonts are loaded using Next.js font system
+- Font variables are defined in Tailwind config
+- CSS variables are used for font family references
+- Consistent typography scale through Tailwind classes
+
+### Font Loading Pattern
+```typescript
+// Font loading in layout.tsx
+import localFont from 'next/font/local'
+
+const dmSans = localFont({
+  src: '../public/fonts/DM SANS/...',
+  variable: '--font-dm-sans'
+})
+
+const editorialNew = localFont({
+  src: '../public/fonts/Editorial New/...',
+  variable: '--font-editorial-new'
+})
+```
+
+### Font Usage Pattern
+```typescript
+// Tailwind config
+fontFamily: {
+  sans: ['var(--font-dm-sans)'],
+  heading: ['var(--font-editorial-new)']
+}
+
+// Component usage
+className="font-sans" // For body text
+className="font-heading" // For headings
+```
+
 ## Design Patterns
 
 ### Component Patterns

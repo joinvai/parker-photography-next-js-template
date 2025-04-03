@@ -136,3 +136,17 @@
 - Error tracking
 - Usage analytics
 - Animation frame rate monitoring
+
+## Font Configuration
+- Body Font: DM Sans (stored in @public/fonts/DM SANS)
+- Heading Font: Editorial New (stored in @public/fonts/Editorial New)
+- Implementation: Using Next.js local fonts
+- Font variables are defined in Tailwind config and applied globally
+
+## Technologies
+- Next.js
+- Tailwind CSS
+- TypeScript
+
+## Development Setup
+The project uses Next.js with TypeScript and Tailwind CSS for styling. Fonts are managed using Next.js local fonts feature rather than Google Fonts or other external sources.
