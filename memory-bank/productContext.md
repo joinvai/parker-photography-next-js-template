@@ -144,3 +144,40 @@ This context guides the development team in creating a website that not only loo
    - WCAG 2.1 compliance
    - Screen reader navigation success rate
    - Keyboard navigation efficiency
+
+# Carousel Product Context
+
+## Purpose
+The carousel component is being developed to provide a unique and modern take on the traditional image slider by replacing conventional arrow icons with explicit text navigation ("PREV" and "NEXT"). This design choice aims to improve clarity and user understanding while maintaining a clean, contemporary aesthetic.
+
+## Problems Solved
+1. Traditional arrow icons can be ambiguous or unclear to some users
+2. Standard carousel implementations often lack accessibility considerations
+3. Many existing carousels prioritize aesthetics over usability
+4. Users sometimes miss navigation controls when they're too subtle
+
+## How It Should Work
+1. Users should see clear "PREV" and "NEXT" text controls on either side of the carousel
+2. Navigation should be intuitive and immediately obvious
+3. Transitions between slides should be smooth and predictable
+4. The component should work seamlessly across all devices and screen sizes
+5. Keyboard navigation should be natural and accessible
+
+## User Experience Goals
+1. **Clarity**: Text-based navigation removes any ambiguity about control functions
+2. **Accessibility**: Clear labeling and keyboard support makes the carousel usable for all
+3. **Responsiveness**: Smooth operation across all device types and sizes
+4. **Reliability**: Consistent behavior without technical glitches
+5. **Simplicity**: Straightforward interaction model that requires no learning curve
+
+## Target Users
+- General web users who appreciate clear, explicit controls
+- Users who may struggle with icon-only interfaces
+- Users relying on screen readers or keyboard navigation
+- Developers implementing the carousel in their projects
+
+## Success Metrics
+1. Zero user confusion about navigation controls
+2. Reduced support queries about carousel usage
+3. High accessibility scores in testing
+4. Positive feedback on the text-based navigation approach

@@ -377,4 +377,78 @@ flowchart TD
 - Debounced event handlers
 - Optimized motion values
 
+# Carousel System Patterns
+
+## Architecture Overview
+The carousel is designed as a self-contained, reusable component following modern web development practices.
+
+## Component Structure
+```
+Carousel/
+├── CarouselContainer (Main component)
+│   ├── Navigation Controls
+│   │   ├── PrevButton ("PREV" text)
+│   │   └── NextButton ("NEXT" text)
+│   ├── SlideContainer
+│   │   └── Slides
+│   └── Indicators (optional)
+```
+
+## Design Patterns
+
+### 1. Container Pattern
+- Main carousel container manages state and logic
+- Child components are presentational
+- Clear separation of concerns
+
+### 2. State Management
+- Controlled component pattern
+- Single source of truth for slide state
+- Predictable state updates
+
+### 3. Event Handling
+- Centralized event management
+- Debounced event handlers where appropriate
+- Touch event abstraction
+
+### 4. Accessibility Pattern
+- ARIA roles and labels
+- Keyboard navigation support
+- Focus management
+
+## Component Relationships
+1. CarouselContainer
+   - Manages overall state
+   - Coordinates between sub-components
+   - Handles keyboard events
+
+2. Navigation Controls
+   - Pure components
+   - Emit click events
+   - Maintain own hover/active states
+
+3. SlideContainer
+   - Manages slide transitions
+   - Handles touch events
+   - Controls slide visibility
+
+## Technical Decisions
+1. Text-based navigation instead of icons
+2. CSS transitions for smooth animations
+3. Responsive design using flexible units
+4. Touch events for mobile support
+
+## Implementation Guidelines
+1. Keep state management simple and predictable
+2. Use semantic HTML elements
+3. Implement proper accessibility patterns
+4. Maintain clean separation of concerns
+5. Document all public APIs and props
+
+## Performance Considerations
+1. Optimize transition animations
+2. Lazy load non-visible slides
+3. Minimize DOM updates
+4. Use CSS transforms for animations
+
 This document serves as a technical reference for maintaining consistency in implementation patterns and architectural decisions.

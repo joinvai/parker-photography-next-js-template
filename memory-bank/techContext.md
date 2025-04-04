@@ -150,3 +150,80 @@
 
 ## Development Setup
 The project uses Next.js with TypeScript and Tailwind CSS for styling. Fonts are managed using Next.js local fonts feature rather than Google Fonts or other external sources.
+
+# Carousel Technical Context
+
+## Technologies Used
+
+### Core Technologies
+- React/Next.js for component development
+- TypeScript for type safety
+- CSS Modules for styling
+- Jest for testing
+
+### Development Tools
+- ESLint for code quality
+- Prettier for code formatting
+- React Testing Library for component testing
+- Storybook for component development and documentation
+
+## Development Setup
+
+### Required Dependencies
+```json
+{
+  "react": "^18.x",
+  "react-dom": "^18.x",
+  "typescript": "^5.x",
+  "@testing-library/react": "^14.x",
+  "@types/react": "^18.x"
+}
+```
+
+### Development Dependencies
+```json
+{
+  "@types/jest": "^29.x",
+  "jest": "^29.x",
+  "eslint": "^8.x",
+  "prettier": "^3.x"
+}
+```
+
+## Technical Constraints
+1. Must work with React 18+
+2. TypeScript strict mode enabled
+3. Mobile-first responsive design
+4. WCAG 2.1 AA compliance required
+
+## Build & Development Process
+1. Local development using Next.js dev server
+2. Component development in isolation using Storybook
+3. Unit testing with Jest and React Testing Library
+4. Integration testing in the main application
+
+## Code Quality Standards
+1. 100% TypeScript coverage
+2. ESLint rules enforcement
+3. Prettier formatting
+4. Unit test coverage minimum 80%
+
+## Performance Requirements
+1. Smooth animations (60fps)
+2. No layout shifts during transitions
+3. Optimized bundle size
+4. Efficient DOM updates
+
+## Browser Support
+- Chrome (latest 2 versions)
+- Firefox (latest 2 versions)
+- Safari (latest 2 versions)
+- Edge (latest 2 versions)
+- Mobile browsers (iOS Safari, Chrome Android)
+
+## Development Workflow
+1. Feature branch development
+2. PR review process
+3. Automated testing
+4. Manual accessibility testing
+5. Performance testing
