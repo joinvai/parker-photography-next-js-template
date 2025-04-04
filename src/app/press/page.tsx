@@ -30,12 +30,12 @@ export default function PressPage() {
                 <td className="py-4 pr-8 relative w-full">
                   <a 
                     href={item.url}
-                    className="font-heading text-[28px] leading-tight group-hover:italic transition-all cursor-none"
+                    className="font-heading text-[36px] leading-tight group-hover:italic transition-all cursor-none"
                   >
                     {item.name}
                   </a>
                 </td>
-                <td className="py-4 pl-8 text-right whitespace-nowrap text-neutral-900 cursor-none">
+                <td className="py-4 pl-8 text-right whitespace-nowrap text-neutral-900 cursor-none text-[16px]">
                   {item.publicationDate}
                 </td>
               </tr>
@@ -56,7 +56,7 @@ export default function PressPage() {
           <img 
             src={hoveredItem.logo} 
             alt={`${hoveredItem.name} logo`}
-            className="w-24 h-auto opacity-50"
+            className="w-48 h-auto opacity-80"
           />
         </div>
       )}

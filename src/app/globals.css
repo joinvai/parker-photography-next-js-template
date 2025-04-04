@@ -9,6 +9,7 @@
 
   body {
     @apply font-sans;
+    background-color: #FAF9F5;
   }
 }
 
