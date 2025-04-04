@@ -111,8 +111,8 @@ function Header({ defaultLogo = 'black' }: HeaderProps) {
 						<Image
 							src={`/logos/${isOpen ? 'white' : defaultLogo}-logo.svg`}
 							alt="Logo"
-							width={120}
-							height={40}
+							width={100}
+							height={100}
 							priority
 						/>
 					</Link>
