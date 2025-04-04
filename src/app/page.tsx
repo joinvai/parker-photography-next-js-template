@@ -1,4 +1,5 @@
 // src/app/page.tsx (or relevant Server Component)
+
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import FullPageCarousel from '@/components/full-page-carousel'; // Adjust path if needed
