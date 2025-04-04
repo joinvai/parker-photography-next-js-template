@@ -1,15 +1,15 @@
-We need to make a full screen width and screen height image carousel that rotates through all the images in the `/public/projects/` directory. 
+We need to make this exact design on the press page. 
 
-The imges should be 1 at a time, and the carousel should be horizontal. 
+we can use a data.ts or something to pass in the publication. 
 
-The carousel should be animated and smooth. 
+we likely want a type interface somthing like... 
 
-The carousel should have no padding on the left or right. It needs to be flush with the edges of the screen. 
+interface Press { 
+name: string
+publicationDate: string
+logo: string
+}
 
-The carousel should not have navigation dots. 
 
-The carousel will automatically advance to the next image every 5 seconds with a smooth, high fidelity fade in and fade out. 
+then we'll have some logos that we show when u hoveron the articles. so if ur hovered on a row, it displays the logo where your cursor would be. which we'll add later. when we hover over the name of the publicaiton it should turn italics.
 
-The carousel should be responsive and work on all screen sizes.
-
-The new carousel will be called `full-screen-carousel.tsx` and will be in the `src/components` directory. We use it at the top of the `src/app/page.tsx` file. 

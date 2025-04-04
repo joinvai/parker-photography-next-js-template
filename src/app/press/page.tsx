@@ -1,53 +1,45 @@
+'use client';
+
+import { useState } from 'react';
+import { pressItems } from '@/data/press';
+import type { Press } from '@/types/press';
+
 export default function PressPage() {
-  const pressItems = [
-    {
-      date: '2024',
-      publication: 'The Design Gazette',
-      title: 'Breaking New Ground in Digital Spaces',
-      url: '#'
-    },
-    {
-      date: '2023',
-      publication: 'Creative Review',
-      title: 'The Future of Interactive Experiences',
-      url: '#'  
-    },
-    {
-      date: '2023',
-      publication: 'Web Artistry',
-      title: 'Pushing Boundaries of Digital Design',
-      url: '#'
-    }
-  ];
+  const [hoveredItem, setHoveredItem] = useState<Press | null>(null);
 
   return (
-    <main className="min-h-screen p-8 md:p-24 font-geist-mono">
+    <main className="min-h-screen p-8 md:p-24">
       <h1 className="text-4xl mb-12 font-light tracking-tighter">Press</h1>
       
-      <div className="w-full overflow-x-auto">
+      <div className="w-full">
         <table className="w-full border-collapse">
-          <thead>
-            <tr className="border-b border-neutral-200">
-              <th className="py-4 text-left font-normal text-sm text-neutral-500">Year</th>
-              <th className="py-4 text-left font-normal text-sm text-neutral-500">Publication</th>
-              <th className="py-4 text-left font-normal text-sm text-neutral-500">Title</th>
-            </tr>
-          </thead>
           <tbody>
-            {pressItems.map((item, i) => (
+            {pressItems.map((item) => (
               <tr 
-                key={i}
-                className="group border-b border-neutral-200 hover:bg-neutral-50 transition-colors"
+                key={`${item.name}-${item.publicationDate}`}
+                className="group border-t border-neutral-300"
+                onMouseEnter={() => setHoveredItem(item)}
+                onMouseLeave={() => setHoveredItem(null)}
               >
-                <td className="py-6 pr-8">{item.date}</td>
-                <td className="py-6 pr-8 text-neutral-600">{item.publication}</td>
-                <td className="py-6">
+                <td className="py-4 pr-8 relative w-full">
                   <a 
                     href={item.url}
-                    className="group-hover:underline decoration-dotted"
+                    className="font-heading text-[28px] leading-tight group-hover:italic transition-all"
                   >
-                    {item.title}
+                    {item.name}
                   </a>
+                  {hoveredItem === item && (
+                    <div className="absolute left-0 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                      <img 
+                        src={item.logo} 
+                        alt={`${item.name} logo`}
+                        className="w-24 h-auto opacity-50"
+                      />
+                    </div>
+                  )}
+                </td>
+                <td className="py-4 pl-8 text-right whitespace-nowrap text-neutral-900">
+                  {item.publicationDate}
                 </td>
               </tr>
             ))}
