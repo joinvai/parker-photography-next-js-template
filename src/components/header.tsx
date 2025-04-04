@@ -30,7 +30,13 @@ function Header({ defaultLogo = 'black' }: HeaderProps) {
 
 	// Overlay variants - 400ms duration as per brief
 	const overlayVariants = {
-		hidden: { opacity: 0 },
+		hidden: { 
+			opacity: 0,
+			transition: {
+				duration: 0.4,
+				ease: 'easeInOut'
+			}
+		},
 		visible: {
 			opacity: 1,
 			transition: {
@@ -75,9 +81,7 @@ function Header({ defaultLogo = 'black' }: HeaderProps) {
 
 	return (
 		<>
-			<header className={`fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 py-8 ${
-				isOpen ? 'bg-black' : 'bg-transparent'
-			}`}>
+			<header className="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 py-8">
 				{/* Hamburger Button - 44x44px touch target as per brief */}
 				<motion.button
 					onClick={toggleMenu}
@@ -88,13 +92,11 @@ function Header({ defaultLogo = 'black' }: HeaderProps) {
 					initial={false}
 				>
 					<div className="w-8 h-4 flex flex-col justify-between items-center">
-						{/* Top line */}
 						<motion.div
 							className="w-full h-0.5"
 							variants={topVariants}
 							transition={{ duration: 0.3 }}
 						/>
-						{/* Bottom line */}
 						<motion.div
 							className="w-full h-0.5"
 							variants={bottomVariants}
@@ -104,7 +106,7 @@ function Header({ defaultLogo = 'black' }: HeaderProps) {
 				</motion.button>
 
 				{/* Centered Logo */}
-				<div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 py-8">
+				<div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 py-8 z-50">
 					<Link href="/">
 						<Image
 							src={`/logos/${isOpen ? 'white' : defaultLogo}-logo.svg`}
