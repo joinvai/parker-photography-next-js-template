@@ -1,22 +1,15 @@
-We need to map all the projects in the @public/projects/ directory to have a interface that maps their name, their year of completion, and all the photos in the associated directory. 
+We need to make a full screen width and screen height image carousel that rotates through all the images in the `/public/projects/` directory. 
 
-We can do this in a `lib/data.ts` file. 
+The imges should be 1 at a time, and the carousel should be horizontal. 
 
-Here's the structure of the data we to map.
+The carousel should be animated and smooth. 
 
+The carousel should have no padding on the left or right. It needs to be flush with the edges of the screen. 
 
-``` typescript
-interface Project {
-    name: string;
-    year: number;
-    photos: string[];
-}
-```
+The carousel should not have navigation dots. 
 
-All the projects will be in a grid on the `/app/projects/page.tsx`. 
+The carousel will automatically advance to the next image every 5 seconds with a smooth, high fidelity fade in and fade out. 
 
-Each individual will get their own URL slug. 
+The carousel should be responsive and work on all screen sizes.
 
-So we'll need to use the Next.js `generateStaticParams` function to generate the static paths for each project. 
-
-Eg. siredesign.com/projects/No-808-2025
+The new carousel will be called `full-screen-carousel.tsx` and will be in the `src/components` directory. We use it at the top of the `src/app/page.tsx` file. 
