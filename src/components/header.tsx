@@ -20,12 +20,12 @@ function Header({ defaultLogo = 'black' }: HeaderProps) {
 	// Variants for the hamburger lines animation - 300ms duration as per brief
 	const topVariants = {
 		closed: { rotate: 0, translateY: 0, backgroundColor: '#000' },
-		open: { rotate: 45, translateY: 4, backgroundColor: '#fff' },
+		open: { rotate: 45, translateY: 7, backgroundColor: '#fff' },
 	};
 
 	const bottomVariants = {
 		closed: { rotate: 0, translateY: 0, backgroundColor: '#000' },
-		open: { rotate: -45, translateY: -4, backgroundColor: '#fff' },
+		open: { rotate: -45, translateY: -7, backgroundColor: '#fff' },
 	};
 
 	// Overlay variants - 400ms duration as per brief
@@ -82,28 +82,41 @@ function Header({ defaultLogo = 'black' }: HeaderProps) {
 	return (
 		<>
 			<header className="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 py-8">
-				{/* Hamburger Button - 44x44px touch target as per brief */}
-				<motion.button
-					onClick={toggleMenu}
-					className="relative z-50 w-11 h-11 flex flex-col justify-center items-center"
-					aria-label={isOpen ? 'Close menu' : 'Open menu'}
-					aria-expanded={isOpen}
-					animate={isOpen ? 'open' : 'closed'}
-					initial={false}
-				>
-					<div className="w-8 h-4 flex flex-col justify-between items-center">
-						<motion.div
-							className="w-full h-0.5"
-							variants={topVariants}
-							transition={{ duration: 0.3 }}
-						/>
-						<motion.div
-							className="w-full h-0.5"
-							variants={bottomVariants}
-							transition={{ duration: 0.3 }}
-						/>
-					</div>
-				</motion.button>
+				{/* Hamburger Button with Menu Text */}
+				<div className="flex items-center gap-4 z-50">
+					<button
+						onClick={toggleMenu}
+						type="button"
+						className="relative w-11 h-11 flex flex-col justify-center items-center"
+						aria-label={isOpen ? 'Close menu' : 'Open menu'}
+						aria-expanded={isOpen}
+					>
+						<span className={`bg-black block transition-all duration-300 ease-out 
+							h-0.5 w-6 rounded-sm ${isOpen ? 
+							'rotate-45 translate-y-1 bg-white' : '-translate-y-0.5'
+							}`}>
+						</span>
+						<span className={`bg-black block transition-all duration-300 ease-out 
+							h-0.5 w-6 rounded-sm my-0.5 ${isOpen ? 
+							'opacity-0 bg-white' : 'opacity-100'
+							}`}>
+						</span>
+						<span className={`bg-black block transition-all duration-300 ease-out 
+							h-0.5 w-6 rounded-sm ${isOpen ? 
+							'-rotate-45 -translate-y-1 bg-white' : 'translate-y-0.5'
+							}`}>
+						</span>
+					</button>
+					<button
+						onClick={toggleMenu}
+						type="button"
+						className={`font-heading font-light text-sm tracking-wider [transition:color_0.3s_ease] hover:[font-style:italic] ${
+							isOpen ? 'text-white' : 'text-black'
+						}`}
+					>
+						{isOpen ? 'CLOSE' : 'MENU'}
+					</button>
+				</div>
 
 				{/* Centered Logo */}
 				<div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 py-8 z-50">
@@ -152,7 +165,7 @@ function Header({ defaultLogo = 'black' }: HeaderProps) {
 										{/* Link text */}
 										<Link
 											href={link.href}
-											className="font-heading text-4xl md:text-5xl lg:text-6xl tracking-wider hover:opacity-80 hover:italic transition-all"
+											className="font-heading text-4xl md:text-5xl lg:text-6xl tracking-wider hover:[font-style:italic] [transition:opacity_0.3s_ease] hover:opacity-80"
 											onClick={() => setIsOpen(false)}
 										>
 											{link.name}
