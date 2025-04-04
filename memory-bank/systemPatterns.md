@@ -2,151 +2,379 @@
 
 ## Architecture Overview
 
-### Component Architecture
+### Application Structure
 ```mermaid
 graph TD
-    Header[Header Container]
-    Hamburger[Hamburger Menu]
-    Logo[Logo Component]
-    Nav[Navigation Menu]
-    Overlay[Overlay Component]
-    Numbers[Number Indicators]
-    Links[Navigation Links]
-
-    Header --> Hamburger
-    Header --> Logo
-    Header --> Nav
-    Header --> Overlay
-    Nav --> Numbers
-    Nav --> Links
-
-    LogoState[Logo State Management]
-    Header --> LogoState
-    LogoState --> Logo
+    A[App Root] --> B[Pages]
+    A --> C[Components]
+    A --> D[Lib]
+    A --> E[Public]
+    
+    B --> B1[Home]
+    B --> B2[Studio]
+    B --> B3[Watch]
+    B --> B4[Contact]
+    
+    C --> C1[UI Components]
+    C --> C2[Layout Components]
+    C --> C3[Feature Components]
+    
+    D --> D1[Utils]
+    D --> D2[Hooks]
+    D --> D3[Types]
+    
+    E --> E1[Fonts]
+    E --> E2[Images]
+    E --> E3[Media]
 ```
 
-## Font System
-- Local fonts are loaded using Next.js font system
-- Font variables are defined in Tailwind config
-- CSS variables are used for font family references
-- Consistent typography scale through Tailwind classes
-
-### Font Loading Pattern
-```typescript
-// Font loading in layout.tsx
-import localFont from 'next/font/local'
-
-const dmSans = localFont({
-  src: '../public/fonts/DM SANS/...',
-  variable: '--font-dm-sans'
-})
-
-const editorialNew = localFont({
-  src: '../public/fonts/Editorial New/...',
-  variable: '--font-editorial-new'
-})
+### Component Architecture
+```mermaid
+flowchart TD
+    IC[ImageCarousel]
+    CT[CursorText]
+    EM[Embla Carousel]
+    ST[State Management]
+    EV[Event Handlers]
+    
+    IC --> CT
+    IC --> EM
+    IC --> ST
+    IC --> EV
+    
+    ST --> |Mouse Position| CT
+    ST --> |Hover State| CT
+    ST --> |Visible Slides| EM
+    
+    EV --> |Pointer Events| ST
+    EV --> |Scroll Events| ST
+    EM --> |Slide Updates| ST
 ```
 
-### Font Usage Pattern
-```typescript
-// Tailwind config
-fontFamily: {
-  sans: ['var(--font-dm-sans)'],
-  heading: ['var(--font-editorial-new)']
-}
+### Data Flow
+```mermaid
+flowchart LR
+    US[User Scroll] --> EM[Embla API]
+    EM --> VS[Visible Slides]
+    VS --> HT[Hover Text]
+    
+    UH[User Hover] --> MP[Mouse Position]
+    MP --> HT
+    
+    UD[User Drag] --> DS[Drag State]
+    DS --> HT
+```
 
-// Component usage
-className="font-sans" // For body text
-className="font-heading" // For headings
+## Key Technical Decisions
+
+### 1. Framework & Routing
+- Next.js App Router for server-side rendering and routing
+- TypeScript for type safety and better developer experience
+- File-based routing structure in `src/app` directory
+
+### 2. Component Architecture
+- Atomic design pattern for UI components
+- Server components by default, client components when needed
+- Shadcn UI for base component library
+- Custom components extend Shadcn UI base
+
+### 3. Styling Strategy
+- Tailwind CSS for utility-first styling
+- CSS variables for theme customization
+- CSS Modules for component-specific styles
+- Custom Tailwind plugins for extended functionality
+
+### 4. State Management
+- React hooks for local state
+- Server components for data fetching
+- URL state for shareable UI state
+- Context API for theme/global state
+
+### 5. Animation System
+- Framer Motion for complex animations
+- CSS transitions for simple animations
+- Intersection Observer for scroll-based animations
+- Tailwind for basic hover/transition effects
+
+### 1. Carousel Implementation
+```typescript
+// Direct Embla Carousel integration
+const [emblaRef, emblaApi] = useEmblaCarousel({
+    align: 'start',
+    loop: true,
+    slidesToScroll: 1,
+    containScroll: 'keepSnaps',
+    dragFree: false,
+});
+```
+
+### 2. State Management
+```typescript
+// Core state management
+const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+const [hoveredImage, setHoveredImage] = useState<'prev' | 'next' | null>(null);
+const [visibleSlides, setVisibleSlides] = useState<number[]>([]);
+const [isDragging, setIsDragging] = useState(false);
+```
+
+### 3. Event Handling
+```typescript
+// Event management pattern
+useEffect(() => {
+    if (!emblaApi) return;
+    
+    const handlers = {
+        select: () => setVisibleSlides(emblaApi.slidesInView()),
+        pointerDown: () => {
+            setIsDragging(true);
+            setHoveredImage(null);
+        },
+        pointerUp: () => setIsDragging(false),
+    };
+    
+    // Setup and cleanup
+    Object.entries(handlers).forEach(([event, handler]) => {
+        emblaApi.on(event, handler);
+    });
+    
+    return () => {
+        Object.entries(handlers).forEach(([event, handler]) => {
+            emblaApi.off(event, handler);
+        });
+    };
+}, [emblaApi]);
 ```
 
 ## Design Patterns
 
-### Component Patterns
-1. **Container Pattern**
-   - Header serves as main container
-   - Manages state for menu open/closed
-   - Controls animation sequences
-   - Manages logo state and switching
-
-2. **Compound Components**
-   - Hamburger menu with transform state
-   - Navigation menu with numbered links
-   - Overlay with fade transitions
-   - Dynamic logo with state-based switching
-
-3. **State Management**
-   - Local state for menu visibility
-   - Animation state management
-   - Transition state coordination
-   - Logo state based on menu state
-
-### Animation Patterns
-1. **Sequential Animation**
-   - Top-to-bottom fade-in sequence
-   - Coordinated opacity transitions
-   - Staggered element animations
-
-2. **Transform Patterns**
-   - Hamburger to X rotation
-   - Overlay fade-in/out
-   - Link fade-in sequence
-
-## Technical Implementation
-
-### Component Structure
+### 1. Component Patterns
 ```typescript
-interface HeaderProps {
-  defaultLogo?: 'black' | 'white';
+// Base Component Pattern
+interface ComponentProps {
+  children?: React.ReactNode;
+  className?: string;
+  // Additional props
 }
 
-interface NavigationItem {
-  number: number;
-  label: string;
-  path: string;
-}
-
-interface AnimationState {
-  isOpen: boolean;
-  isAnimating: boolean;
+function Component({ children, className, ...props }: ComponentProps) {
+  return (
+    <div className={cn("base-styles", className)} {...props}>
+      {children}
+    </div>
+  );
 }
 ```
 
-### Animation Implementation
-1. **Framer Motion Option**
-   - Uses variants for animation states
-   - Manages animation sequences
-   - Handles transition timing
+### 2. Layout Patterns
+```typescript
+// Page Layout Pattern
+interface PageLayoutProps {
+  children: React.ReactNode;
+}
 
-2. **Tailwind Option**
-   - Uses transition classes
-   - Manages animation states
-   - Controls timing with delays
+function PageLayout({ children }: PageLayoutProps) {
+  return (
+    <>
+      <Header />
+      <main>{children}</main>
+      <Footer />
+    </>
+  );
+}
+```
 
-## Reusability Patterns
+### 3. Animation Patterns
+```typescript
+// Framer Motion Pattern
+const motionVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 }
+};
 
-### Props API
-- Configurable navigation items
-- Customizable timing
-- Theme integration
-- Event handlers
+function AnimatedComponent() {
+  return (
+    <motion.div
+      variants={motionVariants}
+      initial="hidden"
+      animate="visible"
+    >
+      {/* Content */}
+    </motion.div>
+  );
+}
+```
 
-### Style Patterns
-- CSS-in-JS or Tailwind utilities
-- Theme-aware styling
-- Responsive design patterns
-- Animation class management
+### 1. Component Composition
+```typescript
+// Main component with subcomponents
+export default function ImageCarousel() {
+    // State and refs
+    
+    return (
+        <div className="relative w-full">
+            <div ref={emblaRef}>
+                {/* Carousel content */}
+            </div>
+            <CursorText {...cursorProps} />
+        </div>
+    );
+}
+```
 
-## Integration Patterns
+### 2. Responsive Design
+```typescript
+// CSS-based responsive layout
+const slideStyles = {
+    mobile: 'flex-[0_0_100%]',
+    desktop: 'md:flex-[0_0_33.333%]',
+    common: 'pl-4 min-w-0',
+};
 
-### Layout Integration
-- Fixed positioning
-- Z-index management
-- Viewport considerations
-- Responsive behavior
+// Usage
+<div className={`${slideStyles.common} ${slideStyles.mobile} ${slideStyles.desktop}`}>
+    {/* Slide content */}
+</div>
+```
 
-### Navigation Integration
-- Route management
-- Link handling
-- State persistence
-- History management
+### 3. Image Management
+```typescript
+// Image duplication for smooth looping
+const originalImages = [/* image paths */];
+const images = [...originalImages, ...originalImages];
+
+// Image rendering with optimization
+<Image
+    src={src}
+    alt={`Carousel image ${(index % originalImages.length) + 1}`}
+    fill
+    className="object-cover"
+    priority={index < 3}
+/>
+```
+
+## Component Relationships
+
+### 1. Layout Hierarchy
+```mermaid
+graph TD
+    RootLayout[RootLayout]
+    Header[Header]
+    Main[Main Content]
+    Footer[Footer]
+    
+    RootLayout --> Header
+    RootLayout --> Main
+    RootLayout --> Footer
+    
+    Main --> Page[Page Content]
+    Page --> Components[Page Components]
+```
+
+### 2. Component Dependencies
+```mermaid
+graph LR
+    UI[UI Components]
+    Feature[Feature Components]
+    Layout[Layout Components]
+    
+    UI --> Feature
+    Feature --> Layout
+    UI --> Layout
+```
+
+### 1. Parent-Child Structure
+```mermaid
+flowchart TD
+    P[Page Component]
+    IC[ImageCarousel]
+    CT[CursorText]
+    SL[Slide]
+    IM[Image]
+    
+    P --> IC
+    IC --> CT
+    IC --> SL
+    SL --> IM
+```
+
+### 2. State Dependencies
+```mermaid
+flowchart LR
+    ES[Embla State] --> VS[Visible Slides]
+    VS --> HT[Hover Text]
+    MP[Mouse Position] --> HT
+    DS[Drag State] --> HT
+```
+
+## Critical Implementation Paths
+
+### 1. Page Loading Sequence
+1. Initial HTML from server
+2. Font loading and application
+3. Critical CSS injection
+4. Hydration of client components
+5. Animation initialization
+
+### 2. Navigation Flow
+1. Link interaction
+2. Route change initiation
+3. Page transition animation
+4. New page content load
+5. Component mount sequence
+
+### 3. Animation Pipeline
+1. Component mount
+2. Initial animation state
+3. Animation trigger
+4. Transition execution
+5. Completion/cleanup
+
+### 1. Initialization Flow
+```mermaid
+flowchart TD
+    M[Mount] --> EI[Embla Init]
+    EI --> EL[Event Listeners]
+    EL --> VS[Visible Slides]
+    VS --> R[Ready]
+```
+
+### 2. Interaction Flow
+```mermaid
+flowchart TD
+    UH[User Hover] --> CP[Check Position]
+    CP --> VS[Visible Slides]
+    VS --> HT[Show/Hide Text]
+    
+    UD[User Drag] --> DS[Drag State]
+    DS --> HT
+```
+
+### 3. Update Flow
+```mermaid
+flowchart TD
+    SC[Scroll] --> UP[Update Position]
+    UP --> VS[Update Visible]
+    VS --> HT[Update Text]
+```
+
+## Performance Patterns
+
+### 1. Image Optimization
+- Next.js Image component usage
+- Responsive image sizing
+- Lazy loading implementation
+- Format optimization (WebP)
+
+### 2. Component Loading
+- Dynamic imports for large components
+- Suspense boundaries for loading states
+- Progressive enhancement
+- Code splitting strategies
+
+### 3. Animation Performance
+- GPU-accelerated properties
+- RAF-based animations
+- Debounced event handlers
+- Optimized motion values
+
+This document serves as a technical reference for maintaining consistency in implementation patterns and architectural decisions.

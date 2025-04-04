@@ -1,22 +1,22 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { editorialNew } from '@/app/fonts';
-import {
-    Carousel,
-    CarouselContent,
-    CarouselItem,
-} from '@/components/ui/carousel';
+import useEmblaCarousel from 'embla-carousel-react';
+import { EmblaCarouselType } from 'embla-carousel';
 
-const images = [
+const originalImages = [
     '/projects/A0 - No. 808 - 2025/240413 _ sire _ 1500 ocean-1.jpg',
     '/projects/A0 - No. 808 - 2025/240413 _ sire _ 1500 ocean-2.jpg',
     '/projects/A0 - No. 808 - 2025/240413 _ sire _ 1500 ocean-3.jpg',
     '/projects/A0 - No. 808 - 2025/240413 _ sire _ 1500 ocean-4.jpg',
     '/projects/A0 - No. 808 - 2025/240413 _ sire _ 1500 ocean-5.jpg',
 ];
+
+// Duplicate images for smooth looping
+const images = [...originalImages, ...originalImages];
 
 interface CursorTextProps {
     text: string;
@@ -46,8 +46,17 @@ const CursorText = ({ text, mousePosition, visible }: CursorTextProps) => {
 };
 
 export default function ImageCarousel() {
+    const [emblaRef, emblaApi] = useEmblaCarousel({ 
+        align: 'start',
+        loop: true,
+        slidesToScroll: 1,
+        containScroll: 'keepSnaps',
+        dragFree: false,
+    });
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
     const [hoveredImage, setHoveredImage] = useState<'prev' | 'next' | null>(null);
+    const [visibleSlides, setVisibleSlides] = useState<number[]>([]);
+    const [isDragging, setIsDragging] = useState(false);
 
     useEffect(() => {
         const handleMouseMove = (e: MouseEvent) => {
@@ -58,55 +67,88 @@ export default function ImageCarousel() {
         return () => window.removeEventListener('mousemove', handleMouseMove);
     }, []);
 
-    const getHoverType = (index: number) => {
-        // Skip even indices (middle images)
-        if (index % 2 === 0) return null;
-        
-        // For odd indices, alternate between next and prev
-        // First odd (1) shows next, second odd (3) shows prev, etc.
-        return ((index - 1) / 2) % 2 === 0 ? 'next' : 'prev';
-    };
+    useEffect(() => {
+        if (!emblaApi) return;
+
+        const onSelect = () => {
+            setVisibleSlides(emblaApi.slidesInView());
+        };
+
+        const onPointerDown = () => {
+            setIsDragging(true);
+            setHoveredImage(null);
+        };
+
+        const onPointerUp = () => {
+            setIsDragging(false);
+        };
+
+        emblaApi.on('select', onSelect);
+        emblaApi.on('reInit', onSelect);
+        emblaApi.on('pointerDown', onPointerDown);
+        emblaApi.on('pointerUp', onPointerUp);
+        onSelect();
+
+        return () => {
+            emblaApi.off('select', onSelect);
+            emblaApi.off('reInit', onSelect);
+            emblaApi.off('pointerDown', onPointerDown);
+            emblaApi.off('pointerUp', onPointerUp);
+        };
+    }, [emblaApi]);
+
+    const getHoverType = useCallback((index: number) => {
+        if (!emblaApi || !visibleSlides.includes(index) || isDragging) return null;
+
+        const firstVisible = visibleSlides[0];
+        const lastVisible = visibleSlides[visibleSlides.length - 1];
+
+        // If it's the first visible slide and we can scroll prev
+        if (index === firstVisible && emblaApi.canScrollPrev()) {
+            return 'prev';
+        }
+        // If it's the last visible slide and we can scroll next
+        if (index === lastVisible && emblaApi.canScrollNext()) {
+            return 'next';
+        }
+
+        return null;
+    }, [emblaApi, visibleSlides, isDragging]);
 
     return (
         <div className="relative w-full">
-            <Carousel
-                opts={{
-                    align: 'start',
-                    loop: true,
-                }}
-                className="w-full"
-            >
-                <CarouselContent className="-ml-4">
+            <div ref={emblaRef} className="overflow-hidden">
+                <div className="flex -ml-4">
                     {images.map((src, index) => (
-                        <CarouselItem
-                            key={index}
-                            className="pl-4 md:basis-1/3"
-                            onMouseEnter={() => setHoveredImage(getHoverType(index))}
+                        <div
+                            key={`${src}-${index}`}
+                            className="pl-4 min-w-0 flex-[0_0_100%] md:flex-[0_0_33.333%]"
+                            onMouseEnter={() => !isDragging && setHoveredImage(getHoverType(index))}
                             onMouseLeave={() => setHoveredImage(null)}
                         >
                             <div className="relative aspect-[3/4] w-full overflow-hidden rounded-lg">
                                 <Image
                                     src={src}
-                                    alt={`Carousel image ${index + 1}`}
+                                    alt={`Carousel image ${(index % originalImages.length) + 1}`}
                                     fill
                                     className="object-cover"
                                     priority={index < 3}
                                 />
                             </div>
-                        </CarouselItem>
+                        </div>
                     ))}
-                </CarouselContent>
-            </Carousel>
+                </div>
+            </div>
 
             <CursorText
                 text="P R E V"
                 mousePosition={mousePosition}
-                visible={hoveredImage === 'prev'}
+                visible={hoveredImage === 'prev' && !isDragging}
             />
             <CursorText
                 text="N E X T"
                 mousePosition={mousePosition}
-                visible={hoveredImage === 'next'}
+                visible={hoveredImage === 'next' && !isDragging}
             />
         </div>
     );
