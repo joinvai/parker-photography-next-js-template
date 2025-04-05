@@ -13,7 +13,7 @@ export default function PressPage() {
   };
 
   return (
-    <main className="min-h-screen p-8 md:p-24">
+    <main className="min-h-screen p-8 md:p-24"> {/* Restore original padding */}
       <h1 className="text-4xl mb-12 font-light tracking-tighter">Press</h1>
       
       <div className="w-full cursor-none">
