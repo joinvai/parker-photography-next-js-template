@@ -132,16 +132,20 @@ export default function IndividualProjectImage({
               imageClassName,
               !imageLoaded && 'bg-gray-200'
             )}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: imageLoaded ? 1 : 0.8 }}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ 
+              opacity: imageLoaded ? 1 : 0.8,
+              y: imageLoaded ? 0 : 10
+            }}
             transition={{ duration: 0.6, ease: 'easeOut' }}
+            whileHover={{ scale: 1.03 }}
           >
             <Image
               src={src}
               alt={alt}
               fill
               className={cn(
-                "object-cover transition-all duration-500 group-hover:scale-105",
+                "object-cover transition-opacity duration-500",
                 !imageLoaded && "blur-sm"
               )}
               priority={shouldPrioritize}
