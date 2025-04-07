@@ -1,23 +1,83 @@
-import { getAllProjects } from '@/lib/data';
-import type { Project } from '@/lib/data';
-import { ImageGrid } from '@/components/image-grid/ImageGrid';
+import type { Metadata } from 'next';
+import { getAllProjects } from '@/lib/projects';
+import type { Project } from '@/lib/projects';
+import { ProjectsGallery } from '@/components/projects-gallery';
+import FounderQuote from '@/components/founder-quote';
+import Script from 'next/script';
+
+// Define metadata for SEO
+export const metadata: Metadata = {
+  title: 'Our Projects | Sire Design',
+  description: 'Explore Sire Design\'s portfolio of luxury interior design projects showcasing our premium aesthetic and attention to detail.',
+  openGraph: {
+    title: 'Our Projects | Sire Design',
+    description: 'Explore Sire Design\'s portfolio of luxury interior design projects showcasing our premium aesthetic and attention to detail.',
+    type: 'website',
+    url: '/projects',
+  },
+  // Add additional meta tags for better SEO
+  keywords: 'interior design, luxury, projects, portfolio, Sire Design, high-end interiors',
+  robots: 'index, follow',
+  viewport: 'width=device-width, initial-scale=1',
+  // Add canonical URL to prevent duplicate content issues
+  alternates: {
+    canonical: '/projects',
+  }
+};
 
 export default async function ProjectsPage() {
-  // Fetch project data on the server
-  const projects: Project[] = await getAllProjects();
+  // Fetch project data on the server - this allows for static generation at build time
+  const projects: Project[] = getAllProjects();
 
-  // Basic loading/error state
-  if (!projects) {
+  // Basic loading/error state with proper accessibility
+  if (!projects || projects.length === 0) {
     return (
-      <main className="min-h-screen bg-black text-white">
-        <p>Error loading projects.</p>
+      <main 
+        className="min-h-screen flex items-center justify-center bg-white text-black p-4 sm:p-6"
+        id="main-content"
+        aria-labelledby="error-heading"
+      >
+        <div className="text-center" role="alert">
+          <h1 id="error-heading" className="text-xl sm:text-2xl font-medium mb-2">No Projects Available</h1>
+          <p className="text-gray-600">Please check back later for our project showcase.</p>
+        </div>
       </main>
     );
   }
 
+  // Create the structured data for Schema.org
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    'name': 'Interior Design Projects | Sire Design',
+    'description': 'Explore Sire Design\'s portfolio of luxury interior design projects showcasing our premium aesthetic and attention to detail.',
+    'url': 'https://siredesign.com/projects',
+    'numberOfItems': projects.length,
+  };
+
   return (
-    <main className="min-h-screen bg-black text-white">
-      <ImageGrid projects={projects} />
+    <main 
+      className="min-h-screen bg-white text-black"
+      id="main-content"
+    >
+      {/* Schema.org structured data for better SEO - using next/script to avoid dangerouslySetInnerHTML */}
+      <Script id="schema-structured-data" type="application/ld+json">
+        {JSON.stringify(structuredData)}
+      </Script>
+      
+      {/* Founder Quote Section */}
+      <FounderQuote />
+      
+      {/* Projects Gallery - using the new component */}
+      <section 
+        className="pb-12 sm:pb-16 md:pb-20 px-4 sm:px-6 md:px-8 lg:px-12 max-w-screen-xl mx-auto transition-all duration-300"
+        aria-labelledby="projects-section-heading"
+      >
+        <h1 id="projects-section-heading" className="sr-only">
+          Our Interior Design Projects
+        </h1>
+        <ProjectsGallery />
+      </section>
     </main>
   );
 }
