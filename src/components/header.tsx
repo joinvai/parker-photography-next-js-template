@@ -337,13 +337,13 @@ function Header({ defaultLogo = false }: HeaderProps) {
 
 	// Variants for the hamburger lines animation - 300ms duration as per brief
 	const topVariants = {
-		closed: { rotate: 0, translateY: 0 },
-		open: { rotate: 45, translateY: 7 },
+		closed: { rotate: 0, translateY: 0, backgroundColor: '#000' },
+		open: { rotate: 45, translateY: 7, backgroundColor: '#fff' },
 	};
 
 	const bottomVariants = {
-		closed: { rotate: 0, translateY: 0 },
-		open: { rotate: -45, translateY: -7 },
+		closed: { rotate: 0, translateY: 0, backgroundColor: '#000' },
+		open: { rotate: -45, translateY: -7, backgroundColor: '#fff' },
 	};
 
 	// Overlay variants - 400ms duration as per brief
@@ -351,14 +351,14 @@ function Header({ defaultLogo = false }: HeaderProps) {
 		hidden: { 
 			opacity: 0,
 			transition: {
-				duration: 0.4,
+				duration: 0.3, // Match header transition
 				ease: 'easeInOut'
 			}
 		},
 		visible: {
 			opacity: 1,
 			transition: {
-				duration: 0.4,
+				duration: 0.3, // Match header transition
 				ease: 'easeInOut',
 			},
 		},
@@ -442,11 +442,11 @@ function Header({ defaultLogo = false }: HeaderProps) {
 	const getHeaderBackgroundClass = () => {
 		if (isOpen) {
 			// Always solid black when menu is open
-			return 'bg-black text-white';
+			return 'text-white'; // Changed to only handle text color
 		}
 		
 		// Always transparent when collapsed (regardless of scroll)
-		return 'bg-transparent text-black';
+		return 'text-black'; // Changed to only handle text color
 	};
 
 	// Helper function to get header height class based on screen size
@@ -753,14 +753,16 @@ function Header({ defaultLogo = false }: HeaderProps) {
 	return (
 		<header 
 			ref={headerRef}
-			className={cn('fixed top-0 left-0 right-0 z-50 transition-all duration-300 mt-2', 
-				getHeaderBackgroundClass(), getHeaderHeightClass()
+			className={cn('fixed top-0 left-0 right-0 z-50 transition-colors duration-300 mt-2', 
+				isOpen ? 'text-white' : 'text-black',  // Text color changes immediately
+				getHeaderHeightClass()
 			)}
 			style={{
 				// Add vendor prefixes for older browsers
 				WebkitTransition: 'all 0.3s',
 				MozTransition: 'all 0.3s',
 				msTransition: 'all 0.3s',
+				backgroundColor: 'transparent', // Always transparent - background comes from dialog
 				...getBrowserStyleFixes()
 			}}
 		>
@@ -777,19 +779,15 @@ function Header({ defaultLogo = false }: HeaderProps) {
 						aria-controls="main-menu"
 						style={getBrowserStyleFixes()}
 					>
-						{/* Top line - transforms to one half of X */}
 						<span className={`block transition-all duration-300 ease-out 
 							h-0.5 w-5 sm:w-6 rounded-sm ${isOpen ? 
 							'rotate-45 translate-y-[0.175rem] bg-white' : 'bg-black -translate-y-[0.175rem]'
-							}`}
-						>
+							}`}>
 						</span>
-						{/* Bottom line - transforms to other half of X */}
 						<span className={`block transition-all duration-300 ease-out 
 							h-0.5 w-5 sm:w-6 rounded-sm ${isOpen ? 
-							'-rotate-45 -translate-y-[0.175rem] bg-white' : 'bg-black translate-y-[0.175rem]'
-							}`}
-						>
+							'-rotate-45 -translate-y-[0rem] bg-white' : 'bg-black translate-y-[0.175rem]'
+							}`}>
 						</span>
 					</button>
 					<button
@@ -812,7 +810,7 @@ function Header({ defaultLogo = false }: HeaderProps) {
 				</div>
 
 				{/* Centered Logo */}
-				<div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 py-4 sm:py-5 md:py-6"
+				<div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 py-4 sm:py-5 md:py-6 z-[60]"
 					style={{
 						WebkitTransform: 'translate(-50%, -50%)',
 						MozTransform: 'translate(-50%, -50%)',
@@ -829,6 +827,7 @@ function Header({ defaultLogo = false }: HeaderProps) {
 							alt="Logo"
 							width={logoSize.width}
 							height={logoSize.height}
+							className="transition-opacity duration-300"
 							priority
 						/>
 					</Link>
@@ -975,7 +974,7 @@ function Header({ defaultLogo = false }: HeaderProps) {
 			</div>
 
 			{/* Full-screen Navigation Overlay */}
-			<AnimatePresence>
+			<AnimatePresence mode="wait">
 				{isOpen && (
 					<motion.dialog
 						className="fixed inset-0 z-40 bg-black flex items-center justify-center m-0 p-0 w-full h-full max-w-none max-h-none border-none outline-none"
