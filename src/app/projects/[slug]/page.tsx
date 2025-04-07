@@ -9,6 +9,7 @@ import type { Metadata } from 'next'; // Use type keyword for Metadata
 import React from 'react'; // Import React
 import dynamic from 'next/dynamic'; // Import dynamic for lazy loading client components
 import IndividualProjectImage from '@/components/individual-project/individual-project-image';
+import ProjectLightbox from '@/components/project/project-lightbox'; // Import the main lightbox component
 
 // Dynamically import the client component for lightbox functionality
 const ProjectImageWithLightbox = dynamic(() => import('@/components/project/project-image-with-lightbox'), {
@@ -85,6 +86,13 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
     notFound();
   }
 
+  // Prepare slides for the lightbox
+  const lightboxSlides = project.photos.map((photoSrc, index) => ({
+    src: photoSrc,
+    alt: `${project.name} - Image ${index + 1}`,
+    // You can add width/height here if known, but YARL handles it automatically
+  }));
+
   return (
     <main 
       className="min-h-screen bg-white text-black pt-16 sm:pt-20 md:pt-24 pb-12 sm:pb-16 px-4 sm:px-6 md:px-8 transition-all duration-300"
@@ -108,16 +116,29 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
             <div className="w-screen max-w-[100vw] relative overflow-hidden">
               <div className="max-w-8xl mx-auto px-4 sm:px-6 md:px-8">
                 <div className="aspect-[21/9] sm:aspect-[2/1] md:aspect-[21/9] w-full overflow-hidden rounded-lg shadow-lg">
-                  <ProjectImageWithLightbox
-                    project={project}
-                    imageIndex={0}
-                    priority={true}
-                    aspectRatio="aspect-[21/9]"
-                    isAboveFold={true}
-                    className="w-full h-full transition-transform duration-700 hover:scale-105"
-                    imageClassName="object-cover object-center"
-                    data-testid="hero-image-lightbox"
-                  />
+                  {/* Updated to use onClick handler */}
+                  <button 
+                    type="button"
+                    onClick={() => openLightbox(0)} 
+                    className="w-full h-full block cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-black rounded-lg"
+                    aria-label={`View hero image for ${project.name} in lightbox`}
+                  >
+                    <IndividualProjectImage
+                      src={project.photos[0]}
+                      alt={`${project.name} hero image`}
+                      projectName={project.name}
+                      projectYear={project.year}
+                      projectId={project.id}
+                      allImages={project.photos} // Pass all images, though not directly used by this instance
+                      imageIndex={0}
+                      priority={true}
+                      aspectRatio="aspect-[21/9]"
+                      isAboveFold={true}
+                      className="w-full h-full transition-transform duration-700 hover:scale-105"
+                      imageClassName="object-cover object-center"
+                      data-testid="hero-image-individual"
+                    />
+                  </button>
                 </div>
               </div>
             </div>
@@ -141,27 +162,20 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
               {/* Map through photos (skipping the first one used in hero) and apply alternating layout */}
               {project.photos.slice(1).map((photoSrc: string, index: number) => {
                 const gridIndex = index + 1; // 1-based index for grid layout logic
-                const rowPosition = Math.floor(index / 3); // 0-based row index within the pattern
+                const actualImageIndex = index + 1; // 0-based index in the original photos array, offset by 1
                 const positionInRow = index % 3; // 0, 1, 2 position within the 3-photo pattern
 
                 let className = "";
-                let aspectRatio: 'aspect-[4/3]' | 'aspect-[3/4]' | 'aspect-[21/9]' = 'aspect-[4/3]'; // Default
+                let aspectRatio: 'aspect-[4/3]' | 'aspect-[3/4]' | 'aspect-[21/9]' = 'aspect-[4/3]';
                 
-                // Mobile: Single column
-                // className remains empty for single column layout by default
-
-                // Tablet & Desktop: Apply alternating pattern
                 if (positionInRow === 0 || positionInRow === 1) {
-                  // First two items in the 3-item pattern are side-by-side
-                  className = "sm:col-span-1"; // Takes half width on sm+ screens
-                  aspectRatio = 'aspect-[4/3]'; // Standard aspect ratio
+                  className = "sm:col-span-1";
+                  aspectRatio = 'aspect-[4/3]';
                 } else if (positionInRow === 2) {
-                  // Third item is full-width
-                  className = "sm:col-span-2"; // Takes full width on sm+ screens
-                  aspectRatio = 'aspect-[21/9]'; // Wide aspect ratio
+                  className = "sm:col-span-2";
+                  aspectRatio = 'aspect-[21/9]';
                 }
                 
-                // Add vertical spacing for mobile, which becomes horizontal gap on larger screens
                 className += " mb-4 sm:mb-0";
 
                 return (
@@ -169,19 +183,27 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
                     key={`${project.id}-photo-${gridIndex}`}
                     className={className}
                   >
-                    <IndividualProjectImage
-                      src={photoSrc}
-                      alt={`${project.name} - Image ${gridIndex}`}
-                      projectName={project.name}
-                      projectYear={project.year}
-                      projectId={project.id}
-                      allImages={project.photos}
-                      imageIndex={gridIndex} // Pass the correct index for lightbox
-                      priority={index < 2} // Prioritize first two images in the grid
-                      aspectRatio={aspectRatio}
-                      isAboveFold={index < 4} // Consider first 4 grid images above fold
-                      data-testid={`project-photo-${gridIndex}`}
-                    />
+                    {/* Updated to pass openLightbox handler */}
+                    <button 
+                      type="button"
+                      onClick={() => openLightbox(actualImageIndex)} 
+                      className="w-full h-full block cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-black rounded-lg"
+                      aria-label={`View image ${gridIndex + 1} for ${project.name} in lightbox`}
+                    >
+                      <IndividualProjectImage
+                        src={photoSrc}
+                        alt={`${project.name} - Image ${gridIndex + 1}`}
+                        projectName={project.name}
+                        projectYear={project.year}
+                        projectId={project.id}
+                        allImages={project.photos}
+                        imageIndex={actualImageIndex} 
+                        priority={index < 2} 
+                        aspectRatio={aspectRatio}
+                        isAboveFold={index < 4}
+                        data-testid={`project-photo-${gridIndex}`}
+                      />
+                    </button>
                   </div>
                 );
               })}
@@ -222,6 +244,16 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
           </a>
         </div>
       </div>
+      
+      {/* Render the Lightbox component conditionally */}
+      {project && (
+        <ProjectLightbox
+          project={project} // Pass the full project data
+          initialSlide={currentLightboxIndex}
+          open={isLightboxOpen}
+          onClose={closeLightbox}
+        />
+      )}
     </main>
   );
 }
