@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import type { Metadata } from 'next'; // Use type keyword for Metadata
 import React from 'react'; // Import React
 import dynamic from 'next/dynamic'; // Import dynamic for lazy loading client components
+import IndividualProjectImage from '@/components/individual-project/individual-project-image';
 
 // Dynamically import the client component for lightbox functionality
 const ProjectImageWithLightbox = dynamic(() => import('@/components/project/project-image-with-lightbox'), {
@@ -112,35 +113,60 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
             aria-label="Project photo gallery"
           >
             <div 
-              className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 md:gap-6 lg:gap-8 transition-all duration-300"
+              className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 md:gap-8"
             >
               {/* Screen reader announcement for gallery */}
               <div className="sr-only" aria-live="polite">
                 {project.photos.length - 1} additional photos available for this project.
               </div>
               
-              {/* Map through photos (skipping the first one used in hero) and render ProjectImageWithLightbox component */}
-              {project.photos.slice(1).map((photoSrc: string, index: number) => (
-                <div 
-                  key={`${project.id}-photo-${index + 1}`}
-                  className={`${(index + 1) % 3 === 0 ? 'sm:col-span-2' : ''} mb-3 sm:mb-0 transition-all duration-300`}
-                >
-                  <ProjectImageWithLightbox
-                    project={project}
-                    imageIndex={index + 1} // +1 because we skipped the first image
-                    priority={index < 1} // Prioritize loading for the first additional image
-                    aspectRatio={
-                      (index + 1) % 3 === 0 
-                        ? 'aspect-[21/9]' // Wide aspect for full-width images on larger screens
-                        : (index + 1) % 4 === 1 
-                          ? 'aspect-[3/4]' // Taller images occasionally 
-                          : 'aspect-[4/3]' // Standard aspect
-                    }
-                    isAboveFold={index < 3} // First 3 additional images considered above the fold
-                    data-testid={`project-photo-lightbox-${index + 1}`}
-                  />
-                </div>
-              ))}
+              {/* Map through photos (skipping the first one used in hero) and apply alternating layout */}
+              {project.photos.slice(1).map((photoSrc: string, index: number) => {
+                const gridIndex = index + 1; // 1-based index for grid layout logic
+                const rowPosition = Math.floor(index / 3); // 0-based row index within the pattern
+                const positionInRow = index % 3; // 0, 1, 2 position within the 3-photo pattern
+
+                let className = "";
+                let aspectRatio: 'aspect-[4/3]' | 'aspect-[3/4]' | 'aspect-[21/9]' = 'aspect-[4/3]'; // Default
+                
+                // Mobile: Single column
+                // className remains empty for single column layout by default
+
+                // Tablet & Desktop: Apply alternating pattern
+                if (positionInRow === 0 || positionInRow === 1) {
+                  // First two items in the 3-item pattern are side-by-side
+                  className = "sm:col-span-1"; // Takes half width on sm+ screens
+                  aspectRatio = 'aspect-[4/3]'; // Standard aspect ratio
+                } else if (positionInRow === 2) {
+                  // Third item is full-width
+                  className = "sm:col-span-2"; // Takes full width on sm+ screens
+                  aspectRatio = 'aspect-[21/9]'; // Wide aspect ratio
+                }
+                
+                // Add vertical spacing for mobile, which becomes horizontal gap on larger screens
+                className += " mb-4 sm:mb-0";
+
+                return (
+                  <div 
+                    key={`${project.id}-photo-${gridIndex}`}
+                    className={className}
+                  >
+                    <IndividualProjectImage
+                      src={photoSrc}
+                      alt={`${project.name} - Image ${gridIndex}`}
+                      projectName={project.name}
+                      projectYear={project.year}
+                      projectId={project.id}
+                      allImages={project.photos}
+                      imageIndex={gridIndex} // Pass the correct index for lightbox
+                      priority={index < 2} // Prioritize first two images in the grid
+                      aspectRatio={aspectRatio}
+                      isAboveFold={index < 4} // Consider first 4 grid images above fold
+                      data-testid={`project-photo-${gridIndex}`}
+                    />
+                  </div>
+                );
+              })}
             </div>
           </section>
         ) : (
