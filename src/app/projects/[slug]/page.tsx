@@ -80,22 +80,27 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
           {project.name} <span className="text-gray-500">({project.year})</span>
         </h1>
 
-        {/* Hero Image Section */}
+        {/* Enhanced Hero Image Section */}
         {project.photos && project.photos.length > 0 && (
           <section 
             aria-label="Project hero image"
-            className="mb-8 sm:mb-12 md:mb-16"
+            className="mb-8 sm:mb-12 md:mb-16 -mx-4 sm:-mx-6 md:-mx-8"
           >
-            <div className="aspect-[21/9] w-full overflow-hidden rounded-lg">
-              <ProjectImageWithLightbox
-                project={project}
-                imageIndex={0}
-                priority={true}
-                aspectRatio="aspect-[21/9]"
-                isAboveFold={true}
-                className="w-full h-full"
-                data-testid="hero-image-lightbox"
-              />
+            <div className="w-screen max-w-[100vw] relative overflow-hidden">
+              <div className="max-w-8xl mx-auto px-4 sm:px-6 md:px-8">
+                <div className="aspect-[21/9] sm:aspect-[2/1] md:aspect-[21/9] w-full overflow-hidden rounded-lg shadow-lg">
+                  <ProjectImageWithLightbox
+                    project={project}
+                    imageIndex={0}
+                    priority={true}
+                    aspectRatio="aspect-[21/9]"
+                    isAboveFold={true}
+                    className="w-full h-full transition-transform duration-700 hover:scale-105"
+                    imageClassName="object-cover object-center"
+                    data-testid="hero-image-lightbox"
+                  />
+                </div>
+              </div>
             </div>
           </section>
         )}
