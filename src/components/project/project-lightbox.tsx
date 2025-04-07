@@ -54,7 +54,7 @@ export default function ProjectLightbox({
   const slides = project.photos.map((photoSrc, index) => ({
     src: photoSrc,
     alt: `${project.name} - Image ${index + 1}`,
-    title: `${project.name} (${project.year})`,
+    title: `${project.name} - Image ${index + 1}`,
     description: index === 0 
       ? `${project.description || 'Interior design project by Sire Design'}` 
       : undefined,

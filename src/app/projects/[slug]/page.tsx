@@ -1,23 +1,12 @@
 'use client'; // Make this a client component to use state hooks
 
-import { useState } from 'react'; // Import useState
+import { useState, useRef, useEffect } from 'react'; // Import useState, useRef, useEffect
 import { getProjectById, getAllProjects } from '@/lib/projects'; // Import data functions and type (using type keyword for Project)
 import type { Project } from '@/lib/projects';
-import { ProjectImage } from '@/components/project-image'; // Import the image component
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next'; // Use type keyword for Metadata
 import React from 'react'; // Import React
-import dynamic from 'next/dynamic'; // Import dynamic for lazy loading client components
 import IndividualProjectImage from '@/components/individual-project/individual-project-image';
-import ProjectLightbox from '@/components/project/project-lightbox'; // Import the main lightbox component
-
-// Dynamically import the client component for lightbox functionality
-const ProjectImageWithLightbox = dynamic(() => import('@/components/project/project-image-with-lightbox'), {
-  ssr: false, // Disable SSR for lightbox component
-  loading: () => (
-    <div className="animate-pulse bg-gray-200 rounded-lg w-full h-full" aria-hidden="true" />
-  ),
-});
 
 // Define the params type for generateMetadata
 type Props = {
@@ -62,36 +51,11 @@ export async function generateStaticParams() {
 
 // The main page component (NOW A CLIENT COMPONENT)
 export default function ProjectPage({ params }: { params: { slug: string } }) {
-  // Fetch the specific project data based on the slug
   const project: Project | undefined = getProjectById(params.slug);
   
-  // State for lightbox visibility and current image index
-  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
-  const [currentLightboxIndex, setCurrentLightboxIndex] = useState(0);
-
-  // Handler function to open the lightbox
-  const openLightbox = (index: number) => {
-    setCurrentLightboxIndex(index);
-    setIsLightboxOpen(true);
-  };
-
-  // Handler function to close the lightbox
-  const closeLightbox = () => {
-    setIsLightboxOpen(false);
-  };
-  
-  // Handle project not found case using Next.js's notFound helper
-  // If the project is not found after build, this will trigger a 404
   if (!project) {
     notFound();
   }
-
-  // Prepare slides for the lightbox
-  const lightboxSlides = project.photos.map((photoSrc, index) => ({
-    src: photoSrc,
-    alt: `${project.name} - Image ${index + 1}`,
-    // You can add width/height here if known, but YARL handles it automatically
-  }));
 
   return (
     <main 
@@ -116,29 +80,21 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
             <div className="w-screen max-w-[100vw] relative overflow-hidden">
               <div className="max-w-8xl mx-auto px-4 sm:px-6 md:px-8">
                 <div className="aspect-[21/9] sm:aspect-[2/1] md:aspect-[21/9] w-full overflow-hidden rounded-lg shadow-lg">
-                  {/* Updated to use onClick handler */}
-                  <button 
-                    type="button"
-                    onClick={() => openLightbox(0)} 
-                    className="w-full h-full block cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-black rounded-lg"
-                    aria-label={`View hero image for ${project.name} in lightbox`}
-                  >
-                    <IndividualProjectImage
-                      src={project.photos[0]}
-                      alt={`${project.name} hero image`}
-                      projectName={project.name}
-                      projectYear={project.year}
-                      projectId={project.id}
-                      allImages={project.photos} // Pass all images, though not directly used by this instance
-                      imageIndex={0}
-                      priority={true}
-                      aspectRatio="aspect-[21/9]"
-                      isAboveFold={true}
-                      className="w-full h-full transition-transform duration-700 hover:scale-105"
-                      imageClassName="object-cover object-center"
-                      data-testid="hero-image-individual"
-                    />
-                  </button>
+                  <IndividualProjectImage
+                    src={project.photos[0]}
+                    alt={`${project.name} hero image`}
+                    projectName={project.name}
+                    projectYear={project.year}
+                    projectId={project.id}
+                    allImages={project.photos}
+                    imageIndex={0}
+                    priority={true}
+                    aspectRatio="aspect-[21/9]"
+                    isAboveFold={true}
+                    className="w-full h-full transition-transform duration-700 hover:scale-105"
+                    imageClassName="object-cover object-center"
+                    data-testid="hero-image-individual"
+                  />
                 </div>
               </div>
             </div>
@@ -154,26 +110,23 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
             <div 
               className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 md:gap-8"
             >
-              {/* Screen reader announcement for gallery */}
-              <div className="sr-only" aria-live="polite">
-                {project.photos.length - 1} additional photos available for this project.
-              </div>
-              
-              {/* Map through photos (skipping the first one used in hero) and apply alternating layout */}
               {project.photos.slice(1).map((photoSrc: string, index: number) => {
-                const gridIndex = index + 1; // 1-based index for grid layout logic
-                const actualImageIndex = index + 1; // 0-based index in the original photos array, offset by 1
-                const positionInRow = index % 3; // 0, 1, 2 position within the 3-photo pattern
+                const gridIndex = index + 1;
+                const actualImageIndex = index + 1;
+                const positionInRow = index % 3;
 
                 let className = "";
                 let aspectRatio: 'aspect-[4/3]' | 'aspect-[3/4]' | 'aspect-[21/9]' = 'aspect-[4/3]';
+                let isFullWidth = false;
                 
                 if (positionInRow === 0 || positionInRow === 1) {
                   className = "sm:col-span-1";
                   aspectRatio = 'aspect-[4/3]';
+                  isFullWidth = false;
                 } else if (positionInRow === 2) {
                   className = "sm:col-span-2";
                   aspectRatio = 'aspect-[21/9]';
+                  isFullWidth = true;
                 }
                 
                 className += " mb-4 sm:mb-0";
@@ -183,39 +136,31 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
                     key={`${project.id}-photo-${gridIndex}`}
                     className={className}
                   >
-                    {/* Updated to pass openLightbox handler */}
-                    <button 
-                      type="button"
-                      onClick={() => openLightbox(actualImageIndex)} 
-                      className="w-full h-full block cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-black rounded-lg"
-                      aria-label={`View image ${gridIndex + 1} for ${project.name} in lightbox`}
-                    >
-                      <IndividualProjectImage
-                        src={photoSrc}
-                        alt={`${project.name} - Image ${gridIndex + 1}`}
-                        projectName={project.name}
-                        projectYear={project.year}
-                        projectId={project.id}
-                        allImages={project.photos}
-                        imageIndex={actualImageIndex} 
-                        priority={index < 2} 
-                        aspectRatio={aspectRatio}
-                        isAboveFold={index < 4}
-                        data-testid={`project-photo-${gridIndex}`}
-                      />
-                    </button>
+                    <IndividualProjectImage
+                      src={photoSrc}
+                      alt={`${project.name} - Image ${gridIndex + 1}`}
+                      projectName={project.name}
+                      projectYear={project.year}
+                      projectId={project.id}
+                      allImages={project.photos}
+                      imageIndex={actualImageIndex} 
+                      priority={index < 2} 
+                      aspectRatio={aspectRatio}
+                      isAboveFold={index < 4}
+                      isFullWidthGridItem={isFullWidth}
+                      data-testid={`project-photo-${gridIndex}`}
+                    />
                   </div>
                 );
               })}
             </div>
           </section>
         ) : (
-          // Message if no additional photos are available
           <div 
             className="text-center py-8 sm:py-12"
             aria-live="polite"
           >
-            <p className="text-neutral-600 text-lg">No additional photos available for this project.</p>
+            <p className="text-gray-600">This project does not have additional photos.</p>
           </div>
         )}
 
@@ -234,7 +179,7 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
         <div className="mt-12 sm:mt-16">
           <a 
             href="/projects" 
-            className="inline-flex items-center text-black hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black transition-colors duration-200 underline underline-offset-2"
+            className="inline-flex items-center text-black p-2 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black transition-colors duration-200 underline underline-offset-2 rounded-md" 
             aria-label="Back to all projects"
           >
             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -244,16 +189,6 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
           </a>
         </div>
       </div>
-      
-      {/* Render the Lightbox component conditionally */}
-      {project && (
-        <ProjectLightbox
-          project={project} // Pass the full project data
-          initialSlide={currentLightboxIndex}
-          open={isLightboxOpen}
-          onClose={closeLightbox}
-        />
-      )}
     </main>
   );
 }
