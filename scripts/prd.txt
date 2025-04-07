@@ -1,0 +1,236 @@
+# Overview
+The project detail page enhancement aims to create a more visually compelling and interactive presentation of Sire Design's interior design projects. By implementing a hero image section, specialized photo grid, animations, and lightbox functionality, we'll transform the current basic photo display into an immersive portfolio experience that better showcases the firm's design work while maintaining visual consistency with the home page aesthetic.
+
+# Core Features
+
+## Hero Image Section
+- **What**: A full-width, high-impact image at the top of each project detail page
+- **Why**: Creates immediate visual impact and establishes project identity
+- **How**: Uses the project's mainImage from projects.ts data, optimized for priority loading
+
+## Alternating Photo Grid Layout
+- **What**: A specialized grid layout that alternates between two-column and full-width rows
+- **Why**: Creates visual rhythm and hierarchy while maximizing photo display quality
+- **How**: Implements a pattern of two side-by-side photos followed by one full-width photo, repeating until all project photos are displayed
+
+## Photo Animation Effects
+- **What**: Subtle animations for loading and interaction with project photos
+- **Why**: Provides a dynamic, polished user experience and draws attention to imagery
+- **How**: Implements fade-in animations on load and scale effects on hover/tap, consistent with existing ProjectImage component
+
+## Lightbox Integration
+- **What**: Interactive lightbox display when users click on any project photo
+- **Why**: Allows for detailed examination of photography with intuitive navigation
+- **How**: Integrates Yet Another React Lightbox library to provide a full-screen viewing experience with navigation controls
+
+# User Experience
+
+## User Personas
+- **Design Enthusiasts**: Individuals seeking inspiration for their own spaces
+- **Potential Clients**: Homeowners evaluating Sire Design's aesthetic and quality
+- **Industry Professionals**: Designers and architects benchmarking against peer work
+
+## Key User Flows
+1. **Browsing Project Photography**:
+   - User lands on project detail page
+   - Views hero image to get initial project impression
+   - Scrolls through alternating grid to explore project details
+   - Photos animate in as user scrolls down the page
+
+2. **Detailed Photo Examination**:
+   - User clicks/taps on a photo of interest
+   - Lightbox opens displaying the selected photo
+   - User navigates between photos using arrows or swipe gestures
+   - User closes lightbox to return to the grid view
+
+## UI/UX Considerations
+- Maintain consistent visual language with home page
+- Ensure smooth, subtle animations that enhance rather than distract
+- Implement accessible controls for keyboard and screen reader users
+- Optimize for mobile viewing with appropriate touch targets and responsive layout
+- Ensure performant loading with proper image optimization
+
+# Technical Architecture
+
+## System Components
+1. **Page Component**: `src/app/projects/[slug]/page.tsx`
+   - Server component that fetches project data
+   - Renders layout structure and child components
+
+2. **Image Components**:
+   - New `components/individual-project-image.tsx`
+     - Client component for grid photos with animation and lightbox integration
+   - Existing `components/project-image.tsx` (reference for animation behavior)
+
+3. **Lightbox Component**:
+   - Yet Another React Lightbox integration
+   - Configuration for Sire Design's specific needs
+
+## Data Models
+- Leverages existing Project interface from `src/lib/projects.ts`:
+  ```typescript
+  interface Project {
+    id: string;
+    name: string;
+    year: string;
+    mainImage: string;
+    hoverImage: string;
+    photos: string[];
+    description?: string;
+  }
+  ```
+- Extends data structure for lightbox slides:
+  ```typescript
+  interface LightboxSlide {
+    src: string;
+    alt: string;
+    width?: number;
+    height?: number;
+  }
+  ```
+
+## APIs and Integrations
+- Yet Another React Lightbox API
+  - Core lightbox functionality
+  - Optional plugins (Captions, Zoom, Thumbnails)
+
+## Infrastructure Requirements
+- No additional backend infrastructure required
+- Image optimization through Next.js Image component
+- Client-side state management for lightbox functionality
+
+# Development Roadmap
+
+## Phase 1: Foundation
+- Install Yet Another React Lightbox dependency
+- Create basic page structure with hero image section
+- Implement initial grid layout without animations
+- Set up responsive breakpoints for all screen sizes
+
+## Phase 2: Core Functionality
+- Create individual-project-image.tsx component
+- Implement alternating grid layout pattern
+- Configure proper image sizing and aspect ratios
+- Integrate basic lightbox functionality
+- Add state management for lightbox open/close
+
+## Phase 3: Enhanced Experience
+- Implement loading animations for photos
+- Add hover/tap interactions
+- Optimize image loading priorities
+- Implement lightbox navigation between photos
+
+## Phase 4: Refinement
+- Add accessibility enhancements
+- Optimize performance for Core Web Vitals
+- Fine-tune animations and transitions
+- Implement advanced lightbox options (captions, zoom)
+
+## Phase 5: Quality Assurance
+- Cross-browser testing
+- Mobile device testing
+- Accessibility validation
+- Performance benchmarking
+
+# Logical Dependency Chain
+
+1. **Foundation Layer**
+   - Install Yet Another React Lightbox
+   - Update project page structure
+   - These must be completed first as they provide the framework for all other features
+
+2. **Core Visual Structure**
+   - Hero image implementation
+   - Basic grid layout
+   - This provides an immediately visible front-end that can be iteratively improved
+
+3. **Interaction Layer**
+   - Individual-project-image component
+   - Basic lightbox integration
+   - This adds the first interactive elements while building on the visual structure
+
+4. **Enhancement Layer**
+   - Animations and transitions
+   - Advanced lightbox configuration
+   - These polish the user experience but aren't required for core functionality
+
+5. **Optimization Layer**
+   - Performance optimizations
+   - Accessibility improvements
+   - These ensure quality but can be implemented after the main features are working
+
+# Risks and Mitigations
+
+## Technical Challenges
+- **Risk**: Animations may cause performance issues on mobile devices
+  - **Mitigation**: Use hardware-accelerated animations and test on lower-end devices
+  
+- **Risk**: Lightbox library may not fully support accessibility requirements
+  - **Mitigation**: Evaluate accessibility support before implementation; be prepared to add custom accessibility enhancements
+
+- **Risk**: Complex grid layout may break on certain screen sizes
+  - **Mitigation**: Implement robust responsive breakpoints and fallback layouts
+
+## MVP Definition Challenges
+- **Risk**: Initial implementation may be too complex for timely delivery
+  - **Mitigation**: Define clear phases with a minimal first version that includes hero image and basic grid
+
+- **Risk**: Feature creep could delay completion
+  - **Mitigation**: Clearly separate core functionality from enhancements in the development phases
+
+## Resource Constraints
+- **Risk**: Limited imagery may affect grid layout
+  - **Mitigation**: Design layout to gracefully handle projects with fewer photos
+
+- **Risk**: Large, high-quality images may affect page load performance
+  - **Mitigation**: Implement proper image optimization and lazy loading strategies
+
+# Appendix
+
+## Grid Layout Specification
+```
+Layout Pattern:
+Row 1: [Photo 1] [Photo 2]  (Two photos side by side)
+Row 2: [    Photo 3    ]    (One full-width photo)
+Row 3: [Photo 4] [Photo 5]  (Two photos side by side)
+Row 4: [    Photo 6    ]    (One full-width photo)
+...pattern repeats
+```
+
+## Responsive Breakpoints
+- Mobile (<640px): Single column layout
+- Tablet (640px-1024px): Maintain pattern with adjusted sizing
+- Desktop (>1024px): Full alternating pattern
+
+## Animation Timing
+- Photo fade-in: 600ms
+- Hover scale: 105%
+- Hover transition: 500ms
+
+## Image Optimization Guidelines
+- Hero image: Priority loading, 90-95% quality
+- Grid images: Lazy loading below fold, 80-85% quality
+- Responsive image sizes:
+  - Mobile: 100vw
+  - Tablet: 50vw
+  - Desktop: 33vw
+
+## Lightbox Configuration Options
+```javascript
+<Lightbox
+  open={open}
+  close={() => setOpen(false)}
+  slides={slides}
+  carousel={{
+    padding: 0,
+    spacing: 0,
+  }}
+  animation={{
+    fade: 300,
+  }}
+  controller={{
+    closeOnBackdropClick: true,
+    closeOnPullDown: true,
+  }}
+/>
+```
