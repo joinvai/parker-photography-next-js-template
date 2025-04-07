@@ -3,6 +3,7 @@
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import FullPageCarousel from '@/components/full-page-carousel'; // Adjust path if needed
+import About from '@/components/about';
 
 // Function to recursively get all image file paths from a directory
 async function getImagePaths(dir: string): Promise<string[]> {
@@ -53,8 +54,8 @@ export default async function HomePage() {
 
             {/* Rest of the page content */}
             <div className="z-10 relative p-8 bg-white bg-opacity-70">
-                <h1 className="text-4xl font-bold">Welcome</h1>
-                {/* Add other page content here */}
+                <About />
+                
             </div>
         </main>
     );
