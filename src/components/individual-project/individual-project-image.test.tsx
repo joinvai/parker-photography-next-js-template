@@ -3,12 +3,13 @@
 
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
+import '@testing-library/jest-dom'; // Import jest-dom for extended matchers
 import IndividualProjectImage from './individual-project-image';
 
 // Mock the dynamic import of the lightbox
 jest.mock('next/dynamic', () => () => {
   const DynamicComponent = ({ open, onClose }) => 
-    open ? <div data-testid="mock-lightbox">Mock Lightbox <button onClick={onClose}>Close</button></div> : null;
+    open ? <div data-testid="mock-lightbox">Mock Lightbox <button type="button" onClick={onClose}>Close</button></div> : null;
   return DynamicComponent;
 });
 
@@ -16,7 +17,8 @@ jest.mock('next/dynamic', () => () => {
 jest.mock('next/image', () => ({
   __esModule: true,
   default: (props) => {
-    return <img {...props} src={props.src || ''} style={{ objectFit: props.objectFit }} />;
+    // eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text
+    return <img {...props} src={props.src || ''} style={{ objectFit: props.objectFit }} alt={props.alt || ''} />;
   },
 }));
 

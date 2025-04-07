@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { ProjectImage } from './project-image';
+import IndividualProjectImage from '@/components/individual-project/individual-project-image';
 import { getAllProjects } from '@/lib/projects';
 import type { Project } from '@/lib/projects';
 
@@ -79,11 +79,19 @@ export function ProjectsGallery() {
           onMouseEnter={() => setHoveredProject(project.id)}
           onMouseLeave={() => setHoveredProject(null)}
         >
-          <ProjectImage 
-            project={project}
+          <IndividualProjectImage
+            src={project.mainImage}
+            alt={`${project.name} - Main Image`}
+            projectName={project.name}
+            projectYear={project.year || 'N/A'}
+            projectId={project.id}
+            allImages={project.photos || []}
+            imageIndex={0}
+            hoverImage={project.hoverImage}
             isHovered={hoveredProject === project.id}
-            priority={index < 2} // Priority loading for first two projects (above the fold)
-            isAboveFold={index < 4} // Consider first 4 projects as above the fold
+            priority={index < 2}
+            isAboveFold={index < 4}
+            behavior="navigate"
           />
         </div>
       ))}

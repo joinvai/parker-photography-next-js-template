@@ -4,6 +4,35 @@ import { useState, useEffect } from 'react'; // Keep runtime imports here
 import type { FC } from 'react'; // Import FC type separately
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
+import path from 'node:path'; // Import path for parsing
+
+// Helper function to generate descriptive alt text from image path
+const getAltTextFromPath = (imagePath: string): string => {
+    if (!imagePath) return 'Image'; // Default text if path is empty
+
+    try {
+        // Remove leading slash if present
+        const cleanedPath = imagePath.startsWith('/') ? imagePath.substring(1) : imagePath;
+        // Split the path
+        const parts = cleanedPath.split('/');
+        // Example: 'projects/No. 491-2023/bedroom.jpg'
+        // We want "No. 491-2023 - bedroom"
+        if (parts.length >= 3 && parts[0] === 'projects') {
+            const projectName = parts[1];
+            const imageNameWithExt = parts[parts.length - 1];
+            const imageName = path.parse(imageNameWithExt).name; // Remove file extension
+            // Replace hyphens/underscores in image name with spaces for better readability
+            const formattedImageName = imageName.replace(/[-_]/g, ' ');
+            return `${projectName} - ${formattedImageName}`;
+        }
+        // Fallback if structure is different
+        const fallbackName = path.parse(parts[parts.length - 1]).name.replace(/[-_]/g, ' ');
+        return fallbackName || 'Project image';
+    } catch (error) {
+        console.error('Error parsing image path for alt text:', error);
+        return 'Project image'; // Fallback on error
+    }
+};
 
 interface FullPageCarouselProps {
     /**
@@ -88,37 +117,40 @@ const FullPageCarousel: FC<FullPageCarouselProps> = ({
 
     // Get the source URL for the current image
     const currentImage = imagePaths[currentIndex];
+    const altText = getAltTextFromPath(currentImage); // Generate alt text
 
     return (
-        <div className="relative w-screen h-screen overflow-hidden bg-black">
+        <section
+            className="relative w-screen h-screen overflow-hidden bg-black"
+            aria-roledescription="carousel"
+            aria-label="Project image slideshow"
+        >
             {/* AnimatePresence handles the animation of components when they mount and unmount */}
             {/* 'mode="wait"' ensures the exiting slide finishes animating out before the new one animates in */}
             <AnimatePresence initial={false} mode="wait">
-                <motion.div
-                    key={currentIndex} // IMPORTANT: Key change triggers the enter/exit animation
-                    className="absolute inset-0" // Position the div to fill its parent
+                <motion.fieldset
+                    style={{ border: 'none', margin: 0, padding: 0 }}
+                    key={currentIndex}
+                    className="absolute inset-0"
                     variants={variants}
-                    initial="enter" // Initial state before animating in
-                    animate="center" // State when the component is visible
-                    exit="exit" // State when the component is animating out
+                    initial="enter"
+                    animate="center"
+                    exit="exit"
+                    aria-roledescription="slide"
+                    aria-label={`Slide ${currentIndex + 1} of ${imagePaths.length}: ${altText}`}
                 >
-                    {/* Next.js Image component for optimized image loading */}
                     <Image
                         src={currentImage}
-                        alt={`Slide ${currentIndex + 1}`} // Descriptive alt text for accessibility
-                        layout="fill" // Fill the parent container
-                        objectFit="cover" // Cover the area, potentially cropping the image
-                        objectPosition="center" // Center the image within the container
-                        priority={currentIndex === 0} // Prioritize loading the first image for LCP
-                        quality={85} // Image quality (0-100), adjust as needed for performance vs quality
-                        // Consider adding 'sizes' attribute for responsive image loading optimization
-                        // sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        alt={altText}
+                        layout="fill"
+                        objectFit="cover"
+                        objectPosition="center"
+                        priority={currentIndex === 0}
+                        quality={85}
                     />
-                </motion.div>
+                </motion.fieldset>
             </AnimatePresence>
-
-            {/* Optional: Add UI elements like navigation arrows, indicators, or text overlays here */}
-        </div>
+        </section>
     );
 };
 

@@ -1,18 +1,12 @@
+'use client'; // Make this a client component to use state hooks
+
+import { useState, useRef, useEffect } from 'react'; // Import useState, useRef, useEffect
 import { getProjectById, getAllProjects } from '@/lib/projects'; // Import data functions and type (using type keyword for Project)
 import type { Project } from '@/lib/projects';
-import { ProjectImage } from '@/components/project-image'; // Import the image component
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next'; // Use type keyword for Metadata
 import React from 'react'; // Import React
-import dynamic from 'next/dynamic'; // Import dynamic for lazy loading client components
-
-// Dynamically import the client component for lightbox functionality
-const ProjectImageWithLightbox = dynamic(() => import('@/components/project/project-image-with-lightbox'), {
-  ssr: false, // Disable SSR for lightbox component
-  loading: () => (
-    <div className="animate-pulse bg-gray-200 rounded-lg w-full h-full" aria-hidden="true" />
-  ),
-});
+import IndividualProjectImage from '@/components/individual-project/individual-project-image';
 
 // Define the params type for generateMetadata
 type Props = {
@@ -55,13 +49,10 @@ export async function generateStaticParams() {
   }));
 }
 
-// The main page component (Server Component)
+// The main page component (NOW A CLIENT COMPONENT)
 export default function ProjectPage({ params }: { params: { slug: string } }) {
-  // Fetch the specific project data based on the slug
   const project: Project | undefined = getProjectById(params.slug);
-
-  // Handle project not found case using Next.js's notFound helper
-  // If the project is not found after build, this will trigger a 404
+  
   if (!project) {
     notFound();
   }
@@ -89,15 +80,20 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
             <div className="w-screen max-w-[100vw] relative overflow-hidden">
               <div className="max-w-8xl mx-auto px-4 sm:px-6 md:px-8">
                 <div className="aspect-[21/9] sm:aspect-[2/1] md:aspect-[21/9] w-full overflow-hidden rounded-lg shadow-lg">
-                  <ProjectImageWithLightbox
-                    project={project}
+                  <IndividualProjectImage
+                    src={project.photos[0]}
+                    alt={`${project.name} hero image`}
+                    projectName={project.name}
+                    projectYear={project.year}
+                    projectId={project.id}
+                    allImages={project.photos}
                     imageIndex={0}
                     priority={true}
                     aspectRatio="aspect-[21/9]"
                     isAboveFold={true}
                     className="w-full h-full transition-transform duration-700 hover:scale-105"
                     imageClassName="object-cover object-center"
-                    data-testid="hero-image-lightbox"
+                    data-testid="hero-image-individual"
                   />
                 </div>
               </div>
@@ -112,44 +108,59 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
             aria-label="Project photo gallery"
           >
             <div 
-              className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 md:gap-6 lg:gap-8 transition-all duration-300"
+              className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 md:gap-8"
             >
-              {/* Screen reader announcement for gallery */}
-              <div className="sr-only" aria-live="polite">
-                {project.photos.length - 1} additional photos available for this project.
-              </div>
-              
-              {/* Map through photos (skipping the first one used in hero) and render ProjectImageWithLightbox component */}
-              {project.photos.slice(1).map((photoSrc: string, index: number) => (
-                <div 
-                  key={`${project.id}-photo-${index + 1}`}
-                  className={`${(index + 1) % 3 === 0 ? 'sm:col-span-2' : ''} mb-3 sm:mb-0 transition-all duration-300`}
-                >
-                  <ProjectImageWithLightbox
-                    project={project}
-                    imageIndex={index + 1} // +1 because we skipped the first image
-                    priority={index < 1} // Prioritize loading for the first additional image
-                    aspectRatio={
-                      (index + 1) % 3 === 0 
-                        ? 'aspect-[21/9]' // Wide aspect for full-width images on larger screens
-                        : (index + 1) % 4 === 1 
-                          ? 'aspect-[3/4]' // Taller images occasionally 
-                          : 'aspect-[4/3]' // Standard aspect
-                    }
-                    isAboveFold={index < 3} // First 3 additional images considered above the fold
-                    data-testid={`project-photo-lightbox-${index + 1}`}
-                  />
-                </div>
-              ))}
+              {project.photos.slice(1).map((photoSrc: string, index: number) => {
+                const gridIndex = index + 1;
+                const actualImageIndex = index + 1;
+                const positionInRow = index % 3;
+
+                let className = "";
+                let aspectRatio: 'aspect-[4/3]' | 'aspect-[3/4]' | 'aspect-[21/9]' = 'aspect-[4/3]';
+                let isFullWidth = false;
+                
+                if (positionInRow === 0 || positionInRow === 1) {
+                  className = "sm:col-span-1";
+                  aspectRatio = 'aspect-[4/3]';
+                  isFullWidth = false;
+                } else if (positionInRow === 2) {
+                  className = "sm:col-span-2";
+                  aspectRatio = 'aspect-[21/9]';
+                  isFullWidth = true;
+                }
+                
+                className += " mb-4 sm:mb-0";
+
+                return (
+                  <div 
+                    key={`${project.id}-photo-${gridIndex}`}
+                    className={className}
+                  >
+                    <IndividualProjectImage
+                      src={photoSrc}
+                      alt={`${project.name} - Image ${gridIndex + 1}`}
+                      projectName={project.name}
+                      projectYear={project.year}
+                      projectId={project.id}
+                      allImages={project.photos}
+                      imageIndex={actualImageIndex} 
+                      priority={index < 2} 
+                      aspectRatio={aspectRatio}
+                      isAboveFold={index < 4}
+                      isFullWidthGridItem={isFullWidth}
+                      data-testid={`project-photo-${gridIndex}`}
+                    />
+                  </div>
+                );
+              })}
             </div>
           </section>
         ) : (
-          // Message if no additional photos are available
           <div 
             className="text-center py-8 sm:py-12"
             aria-live="polite"
           >
-            <p className="text-neutral-600 text-lg">No additional photos available for this project.</p>
+            <p className="text-gray-600">This project does not have additional photos.</p>
           </div>
         )}
 
@@ -168,7 +179,7 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
         <div className="mt-12 sm:mt-16">
           <a 
             href="/projects" 
-            className="inline-flex items-center text-black hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black transition-colors duration-200 underline underline-offset-2"
+            className="inline-flex items-center text-black p-2 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black transition-colors duration-200 underline underline-offset-2 rounded-md" 
             aria-label="Back to all projects"
           >
             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
