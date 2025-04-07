@@ -1,3 +1,6 @@
+'use client'; // Make this a client component to use state hooks
+
+import { useState } from 'react'; // Import useState
 import { getProjectById, getAllProjects } from '@/lib/projects'; // Import data functions and type (using type keyword for Project)
 import type { Project } from '@/lib/projects';
 import { ProjectImage } from '@/components/project-image'; // Import the image component
@@ -56,11 +59,26 @@ export async function generateStaticParams() {
   }));
 }
 
-// The main page component (Server Component)
+// The main page component (NOW A CLIENT COMPONENT)
 export default function ProjectPage({ params }: { params: { slug: string } }) {
   // Fetch the specific project data based on the slug
   const project: Project | undefined = getProjectById(params.slug);
+  
+  // State for lightbox visibility and current image index
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [currentLightboxIndex, setCurrentLightboxIndex] = useState(0);
 
+  // Handler function to open the lightbox
+  const openLightbox = (index: number) => {
+    setCurrentLightboxIndex(index);
+    setIsLightboxOpen(true);
+  };
+
+  // Handler function to close the lightbox
+  const closeLightbox = () => {
+    setIsLightboxOpen(false);
+  };
+  
   // Handle project not found case using Next.js's notFound helper
   // If the project is not found after build, this will trigger a 404
   if (!project) {
