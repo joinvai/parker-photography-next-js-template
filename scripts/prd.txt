@@ -1,236 +1,89 @@
+# PRD: Full-Width Project Image Grid
+
 # Overview
-The project detail page enhancement aims to create a more visually compelling and interactive presentation of Sire Design's interior design projects. By implementing a hero image section, specialized photo grid, animations, and lightbox functionality, we'll transform the current basic photo display into an immersive portfolio experience that better showcases the firm's design work while maintaining visual consistency with the home page aesthetic.
+This document outlines requirements for enhancing the individual project page photo gallery on the Sire Design website. Currently, the gallery uses a standard grid constrained within the main content area. This project aims to solve the limitation of smaller image presentation by transforming the gallery (excluding the hero image) into a full-width, immersive experience. It's for site visitors interested in viewing project details, providing value through larger, more engaging visuals that better showcase the design work.
 
 # Core Features
-
-## Hero Image Section
-- **What**: A full-width, high-impact image at the top of each project detail page
-- **Why**: Creates immediate visual impact and establishes project identity
-- **How**: Uses the project's mainImage from projects.ts data, optimized for priority loading
-
-## Alternating Photo Grid Layout
-- **What**: A specialized grid layout that alternates between two-column and full-width rows
-- **Why**: Creates visual rhythm and hierarchy while maximizing photo display quality
-- **How**: Implements a pattern of two side-by-side photos followed by one full-width photo, repeating until all project photos are displayed
-
-## Photo Animation Effects
-- **What**: Subtle animations for loading and interaction with project photos
-- **Why**: Provides a dynamic, polished user experience and draws attention to imagery
-- **How**: Implements fade-in animations on load and scale effects on hover/tap, consistent with existing ProjectImage component
-
-## Lightbox Integration
-- **What**: Interactive lightbox display when users click on any project photo
-- **Why**: Allows for detailed examination of photography with intuitive navigation
-- **How**: Integrates Yet Another React Lightbox library to provide a full-screen viewing experience with navigation controls
+**Full-Width Alternating Image Grid**
+*   **What it does:** Displays project photos (after the initial hero image) in a grid that spans the full viewport width with consistent padding. The grid follows an alternating pattern: a row with two images side-by-side, followed by a row with a single image spanning the width, repeating for all available photos.
+*   **Why it's important:** Maximizes visual impact, makes project photography the central focus, creates a more modern and engaging user experience, and utilizes screen real estate more effectively, especially on larger displays.
+*   **How it works:** Leverages Tailwind CSS grid utilities. The main container will have horizontal padding (32px). Logic within the page component (`src/app/projects/[slug]/page.tsx`) will iterate through the project's photos (index 1 onwards) and apply appropriate Tailwind classes to position images in either a two-column or single-column full-width row based on their index, maintaining defined aspect ratios (`aspect-[4/3]` for two-column items, `aspect-[21/9]` for single-column items) and gutters (32px).
 
 # User Experience
-
-## User Personas
-- **Design Enthusiasts**: Individuals seeking inspiration for their own spaces
-- **Potential Clients**: Homeowners evaluating Sire Design's aesthetic and quality
-- **Industry Professionals**: Designers and architects benchmarking against peer work
-
-## Key User Flows
-1. **Browsing Project Photography**:
-   - User lands on project detail page
-   - Views hero image to get initial project impression
-   - Scrolls through alternating grid to explore project details
-   - Photos animate in as user scrolls down the page
-
-2. **Detailed Photo Examination**:
-   - User clicks/taps on a photo of interest
-   - Lightbox opens displaying the selected photo
-   - User navigates between photos using arrows or swipe gestures
-   - User closes lightbox to return to the grid view
-
-## UI/UX Considerations
-- Maintain consistent visual language with home page
-- Ensure smooth, subtle animations that enhance rather than distract
-- Implement accessible controls for keyboard and screen reader users
-- Optimize for mobile viewing with appropriate touch targets and responsive layout
-- Ensure performant loading with proper image optimization
+*   **User Personas:** Primarily targets potential clients, design enthusiasts, and returning visitors interested in Sire Design's portfolio. These users value high-quality visuals and an aesthetically pleasing browsing experience.
+*   **Key User Flow:**
+    1.  User navigates to an individual project page (e.g., `/projects/[slug]`).
+    2.  User views the initial project details and hero image.
+    3.  User scrolls down to the photo gallery section.
+    4.  User observes images presented in the full-width, alternating grid layout.
+    5.  User scrolls through the gallery, viewing all images.
+    6.  User clicks on an image to potentially open the existing lightbox view (interaction behavior remains unchanged).
+*   **UI/UX Considerations:**
+    *   **Visual Hierarchy:** The large, full-width images will dominate the visual hierarchy in this section, emphasizing the photography.
+    *   **Padding & Spacing:** Consistent 32px padding on the left/right of the grid container and 32px gutters between images (rows and columns) are crucial for a clean, balanced look.
+    *   **Responsiveness:** The grid must adapt seamlessly to various screen sizes. On smaller screens (e.g., below `md` breakpoint), images should stack vertically while maintaining full-width presentation (with padding). Aspect ratios must be preserved.
+    *   **Load Performance:** Image loading should remain optimized using `next/image` properties (`priority`, `lazy`, `sizes`) to ensure a smooth experience without layout shifts or long waits. The existing `IndividualProjectImage` component handles this.
 
 # Technical Architecture
-
-## System Components
-1. **Page Component**: `src/app/projects/[slug]/page.tsx`
-   - Server component that fetches project data
-   - Renders layout structure and child components
-
-2. **Image Components**:
-   - New `components/individual-project-image.tsx`
-     - Client component for grid photos with animation and lightbox integration
-   - Existing `components/project-image.tsx` (reference for animation behavior)
-
-3. **Lightbox Component**:
-   - Yet Another React Lightbox integration
-   - Configuration for Sire Design's specific needs
-
-## Data Models
-- Leverages existing Project interface from `src/lib/projects.ts`:
-  ```typescript
-  interface Project {
-    id: string;
-    name: string;
-    year: string;
-    mainImage: string;
-    hoverImage: string;
-    photos: string[];
-    description?: string;
-  }
-  ```
-- Extends data structure for lightbox slides:
-  ```typescript
-  interface LightboxSlide {
-    src: string;
-    alt: string;
-    width?: number;
-    height?: number;
-  }
-  ```
-
-## APIs and Integrations
-- Yet Another React Lightbox API
-  - Core lightbox functionality
-  - Optional plugins (Captions, Zoom, Thumbnails)
-
-## Infrastructure Requirements
-- No additional backend infrastructure required
-- Image optimization through Next.js Image component
-- Client-side state management for lightbox functionality
+*   **System Components:**
+    *   `src/app/projects/[slug]/page.tsx`: Next.js page component. Requires modification to implement the new grid container and mapping logic.
+    *   `src/components/individual-project/individual-project-image.tsx`: Reusable Next.js component for displaying individual images. Expected to be used as-is, receiving appropriate props (`src`, `alt`, `aspectRatio`, `priority`, `sizes`, potentially `isFullWidthGridItem` or similar).
+    *   `src/lib/projects.ts`: Contains data fetching logic (`getProjectById`, `getAllProjects`) - Used as-is.
+*   **Data Models:** Relies on the existing `Project` type, specifically the `photos: string[]` array.
+*   **APIs and Integrations:** None. All data is sourced internally.
+*   **Infrastructure Requirements:** Runs on the existing Next.js/Vercel infrastructure.
+*   **Styling:** Implemented entirely using Tailwind CSS utility classes. No custom CSS files should be needed. Responsive design handled via Tailwind breakpoints (`sm:`, `md:`, etc.).
 
 # Development Roadmap
-
-## Phase 1: Foundation
-- Install Yet Another React Lightbox dependency
-- Create basic page structure with hero image section
-- Implement initial grid layout without animations
-- Set up responsive breakpoints for all screen sizes
-
-## Phase 2: Core Functionality
-- Create individual-project-image.tsx component
-- Implement alternating grid layout pattern
-- Configure proper image sizing and aspect ratios
-- Integrate basic lightbox functionality
-- Add state management for lightbox open/close
-
-## Phase 3: Enhanced Experience
-- Implement loading animations for photos
-- Add hover/tap interactions
-- Optimize image loading priorities
-- Implement lightbox navigation between photos
-
-## Phase 4: Refinement
-- Add accessibility enhancements
-- Optimize performance for Core Web Vitals
-- Fine-tune animations and transitions
-- Implement advanced lightbox options (captions, zoom)
-
-## Phase 5: Quality Assurance
-- Cross-browser testing
-- Mobile device testing
-- Accessibility validation
-- Performance benchmarking
+*   **MVP Requirements:**
+    1.  Modify the gallery section container in `page.tsx` to span full viewport width.
+    2.  Apply 32px horizontal padding (`px-8`) to the container.
+    3.  Implement the mapping logic over `project.photos.slice(1)` to generate the alternating grid structure (2-col row, 1-col row).
+    4.  Apply 32px vertical and horizontal gutters (`gap-8`) between grid items.
+    5.  Pass correct props (`aspectRatio`, Tailwind classes for grid placement) to the `IndividualProjectImage` component based on the image's position in the alternating layout.
+    6.  Implement responsive behavior: ensure layout works on desktop and stacks vertically (maintaining full-width + padding) on smaller screens (e.g., below `md` breakpoint).
+    7.  Ensure the layout correctly handles varying numbers of photos (edge cases: 1, 2, 3 additional photos, and lists ending mid-pattern).
+*   **Future Enhancements:**
+    *   (Out of scope for now) Explore different grid layout options or animations.
 
 # Logical Dependency Chain
+1.  **Foundation:** Existing project structure, `page.tsx`, `IndividualProjectImage` component, and data fetching (`getProjectById`) must be functional.
+2.  **Container Setup:** Implement the full-width container with correct padding in `page.tsx`. This provides the canvas for the grid.
+3.  **Grid Logic Implementation:** Develop the core logic within the `.map()` function in `page.tsx` to calculate the row type (2-col or 1-col) and apply appropriate Tailwind grid classes (`col-span-1`, `col-span-2` relative to a 2-column grid definition for the container) based on the image index.
+4.  **Component Integration:** Pass the determined `aspectRatio` and any necessary classes/flags to `IndividualProjectImage`.
+5.  **Responsiveness:** Apply Tailwind breakpoint modifiers to ensure the grid collapses correctly to a single column layout on smaller viewports.
+6.  **Testing:** Test thoroughly across breakpoints and with projects having different numbers of photos (1, 2, 3, many).
 
-1. **Foundation Layer**
-   - Install Yet Another React Lightbox
-   - Update project page structure
-   - These must be completed first as they provide the framework for all other features
-
-2. **Core Visual Structure**
-   - Hero image implementation
-   - Basic grid layout
-   - This provides an immediately visible front-end that can be iteratively improved
-
-3. **Interaction Layer**
-   - Individual-project-image component
-   - Basic lightbox integration
-   - This adds the first interactive elements while building on the visual structure
-
-4. **Enhancement Layer**
-   - Animations and transitions
-   - Advanced lightbox configuration
-   - These polish the user experience but aren't required for core functionality
-
-5. **Optimization Layer**
-   - Performance optimizations
-   - Accessibility improvements
-   - These ensure quality but can be implemented after the main features are working
+*Goal Order:* Establish the basic full-width container -> Implement the alternating grid structure for desktop -> Ensure responsiveness -> Test edge cases.
 
 # Risks and Mitigations
-
-## Technical Challenges
-- **Risk**: Animations may cause performance issues on mobile devices
-  - **Mitigation**: Use hardware-accelerated animations and test on lower-end devices
-  
-- **Risk**: Lightbox library may not fully support accessibility requirements
-  - **Mitigation**: Evaluate accessibility support before implementation; be prepared to add custom accessibility enhancements
-
-- **Risk**: Complex grid layout may break on certain screen sizes
-  - **Mitigation**: Implement robust responsive breakpoints and fallback layouts
-
-## MVP Definition Challenges
-- **Risk**: Initial implementation may be too complex for timely delivery
-  - **Mitigation**: Define clear phases with a minimal first version that includes hero image and basic grid
-
-- **Risk**: Feature creep could delay completion
-  - **Mitigation**: Clearly separate core functionality from enhancements in the development phases
-
-## Resource Constraints
-- **Risk**: Limited imagery may affect grid layout
-  - **Mitigation**: Design layout to gracefully handle projects with fewer photos
-
-- **Risk**: Large, high-quality images may affect page load performance
-  - **Mitigation**: Implement proper image optimization and lazy loading strategies
+*   **Technical Challenge:** Implementing the alternating row logic cleanly within the map function.
+    *   **Mitigation:** Plan the modulo arithmetic or index tracking carefully. Test iterations thoroughly. Consider a small helper function if logic becomes complex.
+*   **Technical Challenge:** Ensuring seamless responsive transitions and correct stacking.
+    *   **Mitigation:** Define a clear breakpoint (`md` recommended) for the transition. Test extensively using browser developer tools and real devices if possible. Ensure `next/image` `sizes` prop is correctly updated if needed.
+*   **Visual Inconsistency:** Potential for slight misalignments or unexpected spacing issues across browsers/devices.
+    *   **Mitigation:** Rely strictly on Tailwind utilities, which are generally cross-browser consistent. Test on major browsers (Chrome, Firefox, Safari).
+*   **Scope Creep:** Desire to add more complex animations or grid variations.
+    *   **Mitigation:** Adhere strictly to the MVP requirements defined in this document. Defer any additional features.
 
 # Appendix
-
-## Grid Layout Specification
-```
-Layout Pattern:
-Row 1: [Photo 1] [Photo 2]  (Two photos side by side)
-Row 2: [    Photo 3    ]    (One full-width photo)
-Row 3: [Photo 4] [Photo 5]  (Two photos side by side)
-Row 4: [    Photo 6    ]    (One full-width photo)
-...pattern repeats
-```
-
-## Responsive Breakpoints
-- Mobile (<640px): Single column layout
-- Tablet (640px-1024px): Maintain pattern with adjusted sizing
-- Desktop (>1024px): Full alternating pattern
-
-## Animation Timing
-- Photo fade-in: 600ms
-- Hover scale: 105%
-- Hover transition: 500ms
-
-## Image Optimization Guidelines
-- Hero image: Priority loading, 90-95% quality
-- Grid images: Lazy loading below fold, 80-85% quality
-- Responsive image sizes:
-  - Mobile: 100vw
-  - Tablet: 50vw
-  - Desktop: 33vw
-
-## Lightbox Configuration Options
-```javascript
-<Lightbox
-  open={open}
-  close={() => setOpen(false)}
-  slides={slides}
-  carousel={{
-    padding: 0,
-    spacing: 0,
-  }}
-  animation={{
-    fade: 300,
-  }}
-  controller={{
-    closeOnBackdropClick: true,
-    closeOnPullDown: true,
-  }}
-/>
-```
+*   **Files Involved:**
+    *   `src/app/projects/[slug]/page.tsx` (Primary modification)
+    *   `src/components/individual-project/individual-project-image.tsx` (Usage, likely no modification)
+*   **Explicitly Out of Scope:**
+    *   Changes to hero image section.
+    *   Changes to project text content or navigation links.
+    *   Lightbox functionality changes.
+    *   Image captions or credits.
+    *   Alternative grid layouts.
+*   **User Stories & Acceptance Criteria (Reference)**
+    *   **US-001:** As a site visitor browsing a project page, I want the photo gallery images to extend across the full width of my screen so that I can see larger, more detailed photos.
+        *   **AC-001:** Container spans full viewport width; 32px left/right padding applied; images utilize available space per layout rules minus gutters.
+    *   **US-002:** As a site visitor, I want the images in the gallery (after the hero image) to be arranged in an alternating pattern of a two-column row followed by a single full-width row, so the layout is dynamic and visually interesting.
+        *   **AC-002:** Row 1 = 2 images; Row 2 = 1 image; Row 3 = 2 images; Row 4 = 1 image, etc., pattern continues.
+    *   **US-003:** As a site visitor, I want consistent spacing (gutters) between images and around the entire grid, so the layout looks clean, organized, and professional.
+        *   **AC-003:** 32px horizontal gap between images in 2-col rows; 32px vertical gap between all rows; 32px left/right padding on main container.
+    *   **US-004:** As a site visitor, I expect the full-width grid layout to adapt correctly to different screen sizes (mobile, tablet, desktop), so I have a good viewing experience regardless of my device.
+        *   **AC-004:** Layout functions across Tailwind breakpoints; stacks gracefully below `md` (TBD) breakpoint; aspect ratios maintained.
+    *   **US-005:** As a developer implementing this feature, I need the grid logic to correctly handle projects with varying numbers of photos (from one additional photo up to approximately 40), applying the alternating pattern as far as possible.
+        *   **AC-005:** Renders correctly for 1, 2, 3 additional photos; handles lists ending mid-pattern gracefully (e.g., single image in a 2-col row slot).

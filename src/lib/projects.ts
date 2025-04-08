@@ -1,11 +1,11 @@
 export interface Project {
-  id: string;            // Unique identifier/slug
-  name: string;          // Project name (e.g., "NO. 503")
-  year: string;          // Completion year
-  mainImage: string;     // Path to main display image
-  hoverImage: string;    // Path to hover state image
-  photos: string[];      // All project images for detail page
-  description?: string;  // Optional project description
+  id: string; // Unique identifier/slug
+  name: string; // Project name (e.g., "NO. 503")
+  year: string; // Completion year
+  mainImage: string; // Path to main display image
+  hoverImage: string; // Path to hover state image
+  photos: string[]; // All project images for detail page
+  description?: string; // Optional project description
 }
 
 /**
@@ -22,7 +22,7 @@ export function getAllProjects(): Project[] {
  * @returns Project if found, undefined if not
  */
 export function getProjectById(id: string): Project | undefined {
-  return projects.find(project => project.id === id);
+  return projects.find((project) => project.id === id);
 }
 
 // Project data based on the folders in public/projects
@@ -32,226 +32,365 @@ const projects: Project[] = [
     name: "NO. 503",
     year: "2024",
     mainImage: "/projects/No.503-2024/main.jpg",
-    hoverImage: "/projects/No.503-2024/row-2.jpg",
+    hoverImage: "/projects/No.503-2024/hover.jpg",
     photos: [
       "/projects/No.503-2024/main.jpg",
-      "/projects/No.503-2024/row-1-L.jpg",
-      "/projects/No.503-2024/row-1-R.jpg",
-      "/projects/No.503-2024/row-2.jpg",
-      "/projects/No.503-2024/row-3-L.jpg",
-      "/projects/No.503-2024/row-3-R.jpg",
-      "/projects/No.503-2024/row-4.jpg",
-      "/projects/No.503-2024/row-5-L.jpg",
-      "/projects/No.503-2024/row-5-R.jpg",
-      "/projects/No.503-2024/row-6.jpg"
-    ]
+      "/projects/No.503-2024/1.jpg",
+      "/projects/No.503-2024/2.jpg",
+      "/projects/No.503-2024/3.jpg",
+      "/projects/No.503-2024/4.jpg",
+      "/projects/No.503-2024/5.jpg",
+      "/projects/No.503-2024/6.jpg",
+      "/projects/No.503-2024/7.jpg",
+      "/projects/No.503-2024/8.jpg",
+    ],
   },
   {
     id: "no-491",
     name: "NO. 491",
     year: "2023",
-    mainImage: "/projects/No. 491-2023/main.jpg",
-    hoverImage: "/projects/No. 491-2023/row-2.jpg",
+    mainImage: "/projects/No.491-2023/main.jpg",
+    hoverImage: "/projects/No.491-2023/hover.jpg",
     photos: [
-      "/projects/No. 491-2023/main.jpg",
-      "/projects/No. 491-2023/row-1-L.jpg",
-      "/projects/No. 491-2023/row-1-R.jpg",
-      "/projects/No. 491-2023/row-2.jpg"
-    ]
+      "/projects/No.491-2023/main.jpg",
+      "/projects/No.491-2023/1.jpg",
+      "/projects/No.491-2023/2.jpg",
+      "/projects/No.491-2023/3.jpg",
+      "/projects/No.491-2023/4.jpg",
+      "/projects/No.491-2023/5.jpg",
+      "/projects/No.491-2023/6.jpg",
+      "/projects/No.491-2023/7.jpg",
+      "/projects/No.491-2023/8.jpg",
+      "/projects/No.491-2023/9.jpg",
+      "/projects/No.491-2023/10.jpg",
+    ],
   },
   {
     id: "no-550",
     name: "NO. 550",
     year: "2025",
     mainImage: "/projects/No.550-2025/main.jpg",
-    hoverImage: "/projects/No.550-2025/row-2.jpg",
+    hoverImage: "/projects/No.550-2025/hover.jpg",
     photos: [
       "/projects/No.550-2025/main.jpg",
-      "/projects/No.550-2025/row-1-L.jpg",
-      "/projects/No.550-2025/row-1-R.jpg",
-      "/projects/No.550-2025/row-2.jpg"
-    ]
+      "/projects/No.550-2025/1.jpg",
+      "/projects/No.550-2025/2.jpg",
+      "/projects/No.550-2025/3.jpg",
+      "/projects/No.550-2025/4.jpg",
+      "/projects/No.550-2025/5.jpg",
+      "/projects/No.550-2025/6.jpg",
+      "/projects/No.550-2025/7.jpg",
+      "/projects/No.550-2025/8.jpg",
+      "/projects/No.550-2025/9.jpg",
+      "/projects/No.550-2025/10.jpg",
+      "/projects/No.550-2025/11.jpg",
+      "/projects/No.550-2025/12.jpg",
+      "/projects/No.550-2025/13.jpg",
+      "/projects/No.550-2025/14.jpg",
+      "/projects/No.550-2025/15.jpg",
+      "/projects/No.550-2025/16.jpg",
+      "/projects/No.550-2025/17.jpg",
+      "/projects/No.550-2025/18.jpg",
+      "/projects/No.550-2025/19.jpg",
+      "/projects/No.550-2025/20.jpg",
+      "/projects/No.550-2025/21.jpg",
+      "/projects/No.550-2025/22.jpg",
+      "/projects/No.550-2025/23.jpg",
+      "/projects/No.550-2025/24.jpg",
+      "/projects/No.550-2025/25.jpg",
+      "/projects/No.550-2025/26.jpg",
+      "/projects/No.550-2025/27.jpg",
+      "/projects/No.550-2025/28.jpg",
+      "/projects/No.550-2025/29.jpg",
+      "/projects/No.550-2025/30.jpg",
+      "/projects/No.550-2025/31.jpg",
+      "/projects/No.550-2025/32.jpg",
+      "/projects/No.550-2025/33.jpg",
+      "/projects/No.550-2025/34.jpg",
+      "/projects/No.550-2025/35.jpg",
+      "/projects/No.550-2025/36.jpg",
+      "/projects/No.550-2025/37.jpg",
+    ],
   },
   {
     id: "no-808",
     name: "NO. 808",
     year: "2025",
     mainImage: "/projects/No.808-2025/main.jpg",
-    hoverImage: "/projects/No.808-2025/row-2.jpg",
+    hoverImage: "/projects/No.808-2025/hover.jpg",
     photos: [
       "/projects/No.808-2025/main.jpg",
-      "/projects/No.808-2025/row-1-L.jpg",
-      "/projects/No.808-2025/row-1-R.jpg",
-      "/projects/No.808-2025/row-2.jpg"
-    ]
+      "/projects/No.808-2025/1.jpg",
+      "/projects/No.808-2025/2.jpg",
+      "/projects/No.808-2025/3.jpg",
+      "/projects/No.808-2025/4.jpg",
+      "/projects/No.808-2025/5.jpg",
+      "/projects/No.808-2025/6.jpg",
+      "/projects/No.808-2025/7.jpg",
+      "/projects/No.808-2025/8.jpg",
+      "/projects/No.808-2025/9.jpg",
+      "/projects/No.808-2025/10.jpg",
+      "/projects/No.808-2025/11.jpg",
+      "/projects/No.808-2025/12.jpg",
+      "/projects/No.808-2025/13.jpg",
+      "/projects/No.808-2025/14.jpg",
+      "/projects/No.808-2025/15.jpg",
+      "/projects/No.808-2025/16.jpg",
+      "/projects/No.808-2025/17.jpg",
+      "/projects/No.808-2025/18.jpg",
+      "/projects/No.808-2025/19.jpg",
+      "/projects/No.808-2025/20.jpg",
+      "/projects/No.808-2025/21.jpg",
+      "/projects/No.808-2025/22.jpg",
+      "/projects/No.808-2025/23.jpg",
+      "/projects/No.808-2025/24.jpg",
+      "/projects/No.808-2025/25.jpg",
+    ],
   },
   {
     id: "no-217",
     name: "NO. 217",
     year: "2023",
     mainImage: "/projects/No.217-2023/main.jpg",
-    hoverImage: "/projects/No.217-2023/row-2.jpg",
+    hoverImage: "/projects/No.217-2023/hover.jpg",
     photos: [
       "/projects/No.217-2023/main.jpg",
-      "/projects/No.217-2023/row-1-L.jpg",
-      "/projects/No.217-2023/row-1-R.jpg",
-      "/projects/No.217-2023/row-2.jpg"
-    ]
+      "/projects/No.217-2023/1.jpg",
+      "/projects/No.217-2023/2.jpg",
+      "/projects/No.217-2023/3.jpg",
+      "/projects/No.217-2023/4.jpg",
+      "/projects/No.217-2023/5.jpg",
+      "/projects/No.217-2023/6.jpg",
+      "/projects/No.217-2023/7.jpg",
+      "/projects/No.217-2023/8.jpg",
+      "/projects/No.217-2023/9.jpg",
+      "/projects/No.217-2023/10.jpg",
+      "/projects/No.217-2023/11.jpg",
+      "/projects/No.217-2023/12.jpg",
+      "/projects/No.217-2023/13.jpg",
+      "/projects/No.217-2023/14.jpg",
+      "/projects/No.217-2023/15.jpg",
+      "/projects/No.217-2023/16.jpg",
+      "/projects/No.217-2023/17.jpg",
+      "/projects/No.217-2023/18.jpg",
+      "/projects/No.217-2023/19.jpg",
+    ],
   },
   {
     id: "no-5401",
     name: "NO. 5401",
     year: "2024",
     mainImage: "/projects/No.5401-2024/main.jpg",
-    hoverImage: "/projects/No.5401-2024/row-2.jpg",
+    hoverImage: "/projects/No.5401-2024/hover.jpg",
     photos: [
       "/projects/No.5401-2024/main.jpg",
-      "/projects/No.5401-2024/row-1-L.jpg",
-      "/projects/No.5401-2024/row-1-R.jpg",
-      "/projects/No.5401-2024/row-2.jpg"
-    ]
+      "/projects/No.5401-2024/1.jpg",
+      "/projects/No.5401-2024/2.jpg",
+      "/projects/No.5401-2024/3.jpg",
+      "/projects/No.5401-2024/4.jpg",
+      "/projects/No.5401-2024/5.jpg",
+      "/projects/No.5401-2024/6.jpg",
+      "/projects/No.5401-2024/7.jpg",
+      "/projects/No.5401-2024/8.jpg",
+      "/projects/No.5401-2024/9.jpg",
+      "/projects/No.5401-2024/10.jpg",
+    ],
   },
   {
     id: "no-1602",
     name: "NO. 1602",
     year: "2024",
     mainImage: "/projects/No.1602-2024/main.jpg",
-    hoverImage: "/projects/No.1602-2024/row-2.jpg",
+    hoverImage: "/projects/No.1602-2024/hover.jpg",
     photos: [
       "/projects/No.1602-2024/main.jpg",
-      "/projects/No.1602-2024/row-1-L.jpg",
-      "/projects/No.1602-2024/row-1-R.jpg",
-      "/projects/No.1602-2024/row-2.jpg"
-    ]
+      "/projects/No.1602-2024/1.jpg",
+      "/projects/No.1602-2024/2.jpg",
+      "/projects/No.1602-2024/3.jpg",
+    ],
   },
   {
     id: "no-707",
     name: "NO. 707",
     year: "2024",
     mainImage: "/projects/No.707-2024/main.jpg",
-    hoverImage: "/projects/No.707-2024/row-2.jpg",
+    hoverImage: "/projects/No.707-2024/hover.jpg",
     photos: [
       "/projects/No.707-2024/main.jpg",
-      "/projects/No.707-2024/row-1-L.jpg",
-      "/projects/No.707-2024/row-1-R.jpg",
-      "/projects/No.707-2024/row-2.jpg"
-    ]
+      "/projects/No.707-2024/1.jpg",
+      "/projects/No.707-2024/2.jpg",
+      "/projects/No.707-2024/3.jpg",
+      "/projects/No.707-2024/4.jpg",
+      "/projects/No.707-2024/5.jpg",
+      "/projects/No.707-2024/6.jpg",
+      "/projects/No.707-2024/7.jpg",
+    ],
   },
   {
     id: "no-2201",
     name: "NO. 2201",
     year: "2024",
     mainImage: "/projects/No.2201-2024/main.jpg",
-    hoverImage: "/projects/No.2201-2024/row-2.jpg",
+    hoverImage: "/projects/No.2201-2024/hover.jpg",
     photos: [
       "/projects/No.2201-2024/main.jpg",
-      "/projects/No.2201-2024/row-1-L.jpg",
-      "/projects/No.2201-2024/row-1-R.jpg",
-      "/projects/No.2201-2024/row-2.jpg"
-    ]
+      "/projects/No.2201-2024/1.jpg",
+      "/projects/No.2201-2024/2.jpg",
+      "/projects/No.2201-2024/3.jpg",
+      "/projects/No.2201-2024/4.jpg",
+      "/projects/No.2201-2024/5.jpg",
+      "/projects/No.2201-2024/6.jpg",
+      "/projects/No.2201-2024/7.jpg",
+      "/projects/No.2201-2024/8.jpg",
+    ],
   },
   {
     id: "no-206-210",
     name: "NO. 206-210",
     year: "2023",
     mainImage: "/projects/No.206-210-2023/main.jpg",
-    hoverImage: "/projects/No.206-210-2023/row-2.jpg",
+    hoverImage: "/projects/No.206-210-2023/hover.jpg",
     photos: [
       "/projects/No.206-210-2023/main.jpg",
-      "/projects/No.206-210-2023/row-1-L.jpg",
-      "/projects/No.206-210-2023/row-1-R.jpg",
-      "/projects/No.206-210-2023/row-2.jpg"
-    ]
+      "/projects/No.206-210-2023/1.jpg",
+      "/projects/No.206-210-2023/2.jpg",
+      "/projects/No.206-210-2023/3.jpg",
+      "/projects/No.206-210-2023/4.jpg",
+    ],
   },
   {
     id: "no-2831",
     name: "NO. 2831",
     year: "2022",
     mainImage: "/projects/No.2831-2022/main.jpg",
-    hoverImage: "/projects/No.2831-2022/row-2.jpg",
+    hoverImage: "/projects/No.2831-2022/hover.jpg",
     photos: [
       "/projects/No.2831-2022/main.jpg",
-      "/projects/No.2831-2022/row-1-L.jpg",
-      "/projects/No.2831-2022/row-1-R.jpg",
-      "/projects/No.2831-2022/row-2.jpg"
-    ]
+      "/projects/No.2831-2022/1.jpg",
+      "/projects/No.2831-2022/2.jpg",
+      "/projects/No.2831-2022/3.jpg",
+      "/projects/No.2831-2022/4.jpg",
+      "/projects/No.2831-2022/5.jpg",
+      "/projects/No.2831-2022/6.jpg",
+      "/projects/No.2831-2022/7.jpg",
+      "/projects/No.2831-2022/8.jpg",
+      "/projects/No.2831-2022/9.jpg",
+      "/projects/No.2831-2022/10.jpg",
+      "/projects/No.2831-2022/11.jpg",
+      "/projects/No.2831-2022/12.jpg",
+    ],
   },
   {
     id: "no-4605",
     name: "NO. 4605",
     year: "2021",
     mainImage: "/projects/No.4605-2021/main.jpg",
-    hoverImage: "/projects/No.4605-2021/row-2.jpg",
+    hoverImage: "/projects/No.4605-2021/hover.jpg",
     photos: [
       "/projects/No.4605-2021/main.jpg",
-      "/projects/No.4605-2021/row-1-L.jpg",
-      "/projects/No.4605-2021/row-1-R.jpg",
-      "/projects/No.4605-2021/row-2.jpg"
-    ]
+      "/projects/No.4605-2021/1.jpg",
+      "/projects/No.4605-2021/2.jpg",
+      "/projects/No.4605-2021/3.jpg",
+      "/projects/No.4605-2021/4.jpg",
+      "/projects/No.4605-2021/5.jpg",
+      "/projects/No.4605-2021/6.jpg",
+    ],
   },
   {
     id: "no-10151",
     name: "NO. 10151",
     year: "2021",
     mainImage: "/projects/No.10151-2021/main.jpg",
-    hoverImage: "/projects/No.10151-2021/row-2.jpg",
+    hoverImage: "/projects/No.10151-2021/hover.jpg",
     photos: [
       "/projects/No.10151-2021/main.jpg",
-      "/projects/No.10151-2021/row-1-L.jpg",
-      "/projects/No.10151-2021/row-1-R.jpg",
-      "/projects/No.10151-2021/row-2.jpg"
-    ]
+      "/projects/No.10151-2021/1.jpg",
+      "/projects/No.10151-2021/2.jpg",
+      "/projects/No.10151-2021/3.jpg",
+      "/projects/No.10151-2021/4.jpg",
+      "/projects/No.10151-2021/5.jpg",
+      "/projects/No.10151-2021/6.jpg",
+      "/projects/No.10151-2021/7.jpg",
+      "/projects/No.10151-2021/8.jpg",
+      "/projects/No.10151-2021/9.jpg",
+      "/projects/No.10151-2021/10.jpg",
+    ],
   },
   {
     id: "no-1307",
     name: "NO. 1307",
     year: "2021",
     mainImage: "/projects/No.1307-2021/main.jpg",
-    hoverImage: "/projects/No.1307-2021/row-2.jpg",
+    hoverImage: "/projects/No.1307-2021/hover.jpg",
     photos: [
       "/projects/No.1307-2021/main.jpg",
-      "/projects/No.1307-2021/row-1-L.jpg",
-      "/projects/No.1307-2021/row-1-R.jpg",
-      "/projects/No.1307-2021/row-2.jpg"
-    ]
+      "/projects/No.1307-2021/1.jpg",
+      "/projects/No.1307-2021/2.jpg",
+      "/projects/No.1307-2021/3.jpg",
+      "/projects/No.1307-2021/4.jpg",
+      "/projects/No.1307-2021/5.jpg",
+      "/projects/No.1307-2021/6.jpg",
+      "/projects/No.1307-2021/7.jpg",
+    ],
   },
   {
     id: "no-4706",
     name: "NO. 4706",
     year: "2022",
-    mainImage: "/projects/No.4706-2022 /main.jpg",
-    hoverImage: "/projects/No.4706-2022 /row-2.jpg",
+    mainImage: "/projects/No.4706-2022/main.jpg",
+    hoverImage: "/projects/No.4706-2022/hover.jpg",
     photos: [
-      "/projects/No.4706-2022 /main.jpg",
-      "/projects/No.4706-2022 /row-1-L.jpg",
-      "/projects/No.4706-2022 /row-1-R.jpg",
-      "/projects/No.4706-2022 /row-2.jpg"
-    ]
+      "/projects/No.4706-2022/1.jpg",
+      "/projects/No.4706-2022/2.jpg",
+      "/projects/No.4706-2022/3.jpg",
+      "/projects/No.4706-2022/4.jpg",
+      "/projects/No.4706-2022/5.jpg",
+      "/projects/No.4706-2022/6.jpg",
+      "/projects/No.4706-2022/7.jpg",
+      "/projects/No.4706-2022/8.jpg",
+      "/projects/No.4706-2022/9.jpg",
+      "/projects/No.4706-2022/10.jpg",
+      "/projects/No.4706-2022/11.jpg",
+      "/projects/No.4706-2022/12.jpg",
+    ],
   },
   {
     id: "no-719",
     name: "NO. 719",
     year: "2023",
     mainImage: "/projects/No.719-2023/main.jpg",
-    hoverImage: "/projects/No.719-2023/row-2.jpg",
+    hoverImage: "/projects/No.719-2023/hover.jpg",
     photos: [
       "/projects/No.719-2023/main.jpg",
-      "/projects/No.719-2023/row-1-L.jpg",
-      "/projects/No.719-2023/row-1-R.jpg",
-      "/projects/No.719-2023/row-2.jpg"
-    ]
+      "/projects/No.719-2023/1.jpg",
+      "/projects/No.719-2023/2.jpg",
+      "/projects/No.719-2023/3.jpg",
+      "/projects/No.719-2023/4.jpg",
+      "/projects/No.719-2023/5.jpg",
+      "/projects/No.719-2023/6.jpg",
+      "/projects/No.719-2023/7.jpg",
+      "/projects/No.719-2023/8.jpg",
+      "/projects/No.719-2023/9.jpg",
+      "/projects/No.719-2023/10.jpg",
+      "/projects/No.719-2023/11.jpg",
+      "/projects/No.719-2023/12.jpg",
+    ],
   },
   {
     id: "o-caudalie",
     name: "O CAUDALIE",
     year: "2020",
     mainImage: "/projects/OCaudalie-2020/main.jpg",
-    hoverImage: "/projects/OCaudalie-2020/row-2.jpg",
+    hoverImage: "/projects/OCaudalie-2020/hover.jpg",
     photos: [
       "/projects/OCaudalie-2020/main.jpg",
-      "/projects/OCaudalie-2020/row-1-L.jpg",
-      "/projects/OCaudalie-2020/row-1-R.jpg",
-      "/projects/OCaudalie-2020/row-2.jpg"
-    ]
-  }
-]; 
+      "/projects/OCaudalie-2020/1.jpg",
+      "/projects/OCaudalie-2020/2.jpg",
+      "/projects/OCaudalie-2020/3.jpg",
+      "/projects/OCaudalie-2020/4.jpg",
+      "/projects/OCaudalie-2020/5.jpg",
+      "/projects/OCaudalie-2020/6.jpg",
+      "/projects/OCaudalie-2020/7.jpg",
+    ],
+  },
+];

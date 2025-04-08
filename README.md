@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SIRE Website - Remaining Tasks
 
-## Getting Started
+## UI Improvements
+- [ ] Press page enhancements
+  - [ ] Tighten overall UI layout and spacing
+  - [ ] Improve visual hierarchy
+  - [ ] Ensure consistent padding/margins
 
-First, run the development server:
+## Watch Page
+- [ ] Add Netflix-style image gallery
+  - [ ] Import and optimize Netflix screenshots/images
+  - [ ] Create responsive image grid layout
+- [ ] Style page layout
+  - [ ] Match Netflix-inspired design aesthetic
+  - [ ] Add smooth transitions/animations
+  - [ ] Ensure mobile responsiveness
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Studio Page
+- [ ] Create company section
+  - [ ] Implement 3-column grid layout
+    - Photo | Paragraph | Photo structure
+  - [ ] Optimize images for performance
+  - [ ] Add responsive behavior for mobile
+- [ ] Build team component
+  - [ ] Create `team.ts` data file with:
+    ```typescript
+    interface TeamMember {
+      name: string;
+      title: string;
+      bio: string;
+      image: string;
+    }
+    ```
+  - [ ] Map team data similar to projects.ts structure
+  - [ ] Style team member cards/grid
+  - [ ] Add hover effects and animations
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Contact Page
+- [ ] Redesign forms based on inspiration site
+  - [ ] Match visual style and layout
+  - [ ] Add form validation
+  - [ ] Improve input field styling
+  - [ ] Add success/error states
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Global Components
+- [ ] Implement cursor selector component
+  - [ ] Add custom cursor styles
+  - [ ] Create hover states
+  - [ ] Ensure smooth transitions
+  - [ ] Test across all interactive elements
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## General
+- [ ] Cross-browser testing
+- [ ] Mobile responsiveness verification
+- [ ] Performance optimization
+- [ ] Accessibility checks
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+Bonus ideas:
+- [ ] Add a "back to top" button that scrolls to the top of the page
+- [ ] Add a "share" button that shares the current page on social media
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
