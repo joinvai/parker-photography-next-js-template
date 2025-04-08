@@ -1,0 +1,15 @@
+**Root Cause Analysis (RCA) Report**
+
+*   **Incident:** Project detail pages (`/projects/[slug]`) fail to render content, displaying a blank white page and logging critical errors related to parameter access (`params should be awaited`).
+*   **Timeline:** Issue identified during development/testing when accessing any individual project page.
+*   **Root Cause:** The direct access of the dynamic route parameter (`params.slug`) within the `ProjectPage` Server Component (`src/app/projects/[slug]/page.tsx`) violates a Next.js constraint (likely enforced in development or specific versions) that requires dynamic parameters to be treated as potentially asynchronous, even within an `async` component function. This synchronous access attempt triggers an error (`params should be awaited`) **before** the `getProjectById` function can be successfully called.
+*   **Contributing Factors:**
+    *   Next.js's stricter handling of dynamic route parameters in Server Components to prevent potential race conditions or inconsistencies.
+    *   The page structure relies heavily on the `project.mainImage` being available for the initial viewport rendering; failure to fetch this data leads directly to the appearance of a blank page.
+*   **Impact:** Core functionality broken - users cannot view individual project details. Development is blocked.
+*   **Resolution:** The access pattern for `params.slug` within `src/app/projects/[slug]/page.tsx` needs modification to comply with Next.js's expectations for dynamic parameters in Server Components. While the code *looks* syntactically correct for an async component (`async function ProjectPage({ params })`), the framework's internal checks are failing it. Consulting the specific Next.js documentation linked in the error (`https://nextjs.org/docs/messages/sync-dynamic-apis`) for the currently used version is recommended for the precise fix, which might involve ensuring no potentially async operations happen *before* accessing `params` or structuring the access differently. *However, given the simplicity here (direct access followed by a sync function call), this might indicate a subtle configuration issue or a need to explicitly handle the params object differently based on the Next.js version.* A common pattern that often works is ensuring the destructuring itself is the primary way params are brought into scope and used directly. Since the code already does this, double-checking against official examples for the specific Next.js version is key.
+*   **Preventative Measures:**
+    *   Strictly follow Next.js documentation examples for accessing route parameters within Server Components, paying close attention to `async` contexts.
+    *   Implement comprehensive integration tests for dynamic routes to catch rendering failures early.
+    *   Consider adding more robust loading states or fallback UI in client components (`ProjectDetailClient`) to provide better user feedback if server data fetching fails, preventing a completely blank page.
+    *   Keep Next.js and related dependencies updated, paying attention to breaking changes or new best practices outlined in release notes. 

@@ -18,25 +18,24 @@ export default function ProjectDetailClient({
 
   return (
     <main
-      className="min-h-screen bg-white text-black pb-12 sm:pb-16 px-4 sm:px-6 md:px-8 transition-all duration-300"
+      className="relative min-h-screen text-black bg-transparent"
       aria-labelledby="project-title"
     >
       {project.mainImage && (
         <section
           aria-label="Project hero image"
-          className="relative h-screen overflow-hidden -mx-4 sm:-mx-6 md:-mx-8"
+          className="fixed top-0 left-0 w-screen h-screen z-[9] overflow-hidden"
         >
           <motion.div
             className={cn(
               "relative w-full h-full",
               !heroImageLoaded && "bg-gray-200",
             )}
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 0 }}
             animate={{
               opacity: heroImageLoaded ? 1 : 0.8,
-              y: heroImageLoaded ? 0 : 10,
             }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
           >
             <Image
               src={project.mainImage}
@@ -51,19 +50,19 @@ export default function ProjectDetailClient({
               sizes="100vw"
               placeholder="blur"
               blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQwIiBoZWlnaHQ9IjQ4MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2ZXJzaW9uPSIxLjEiLz4="
-              onLoad={() => setHeroImageLoaded(true)} // Set state on load
+              onLoad={() => setHeroImageLoaded(true)}
               data-testid="hero-image-individual"
             />
           </motion.div>
         </section>
       )}
 
-      <div className="pt-16 sm:pt-20 md:pt-24">
+      <div className="relative z-10 mt-[100vh] bg-white px-4 sm:px-6 md:px-8 pt-16 sm:pt-20 md:pt-24 pb-12 sm:pb-16">
         <h1
           id="project-title"
-          className="max-w-7xl mx-auto text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold mb-6 sm:mb-8 md:mb-12 tracking-tight transition-all duration-300"
+          className="max-w-7xl text-center mx-auto text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold mb-6 sm:mb-8 md:mb-12 tracking-tight transition-all duration-300"
         >
-          {project.name} <span className="text-gray-500">({project.year})</span>
+          {project.name}
         </h1>
 
         {project.photos && project.photos.length > 1 ? (
@@ -71,37 +70,30 @@ export default function ProjectDetailClient({
             className="mt-8 sm:mt-12 md:mt-16 -mx-4 sm:-mx-6 md:-mx-8"
             aria-label="Project photo gallery"
           >
-            <div className="px-8">
+            <div className="px-4 sm:px-6 md:px-8">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {project.photos
                   .slice(1)
                   .map((photoSrc: string, index: number) => {
                     const actualImageIndex = index + 1;
-                    const positionInPattern = index % 3; // 0, 1 are 2-col items, 2 is 1-col item
+                    const positionInPattern = index % 3;
 
                     let colSpanClass = "";
-                    let isFullWidth = false;
                     let aspectRatio: "aspect-[4/3]" | "aspect-[21/9]" =
                       "aspect-[4/3]";
 
                     if (positionInPattern === 0 || positionInPattern === 1) {
-                      // First two images in the pattern are standard width on md+
-                      // Always full width (col-span-1 in a 1-col grid) below md
-                      colSpanClass = "col-span-1"; // Stays col-span-1 on all screens
-                      isFullWidth = false; // Only not full-width on md+
+                      colSpanClass = "col-span-1";
                       aspectRatio = "aspect-[4/3]";
                     } else {
-                      // Third image in the pattern is full width on md+
-                      // Always full width (col-span-1 in a 1-col grid) below md
-                      colSpanClass = "col-span-1 md:col-span-2"; // Becomes col-span-2 only on md+
-                      isFullWidth = true; // Considered full-width for aspect ratio purposes
+                      colSpanClass = "col-span-1 md:col-span-2";
                       aspectRatio = "aspect-[21/9]";
                     }
 
                     return (
                       <div
                         key={`${project.id}-photo-${actualImageIndex}`}
-                        className={colSpanClass} // Apply responsive col-span
+                        className={colSpanClass}
                       >
                         <IndividualProjectImage
                           src={photoSrc}
@@ -111,9 +103,9 @@ export default function ProjectDetailClient({
                           projectId={project.id}
                           allImages={project.photos}
                           imageIndex={actualImageIndex}
-                          priority={index < 2} // Prioritize first few images after hero
+                          priority={index < 2}
                           aspectRatio={aspectRatio}
-                          isAboveFold={index < 4} // Assume first few grid images might be above fold
+                          isAboveFold={index < 4}
                           isFullWidthGridItem={positionInPattern === 2}
                           data-testid={`project-photo-${actualImageIndex}`}
                         />
@@ -136,7 +128,7 @@ export default function ProjectDetailClient({
 
         {project.description && (
           <section
-            className="max-w-7xl mx-auto mt-8 sm:mt-10 md:mt-12 prose sm:prose-lg md:prose-xl text-gray-700 px-0 sm:px-4 transition-all duration-300"
+            className="max-w-7xl mx-auto mt-8 sm:mt-10 md:mt-12 prose sm:prose-lg md:prose-xl text-gray-700 transition-all duration-300"
             aria-label="Project description"
           >
             <h2 className="text-xl sm:text-2xl font-medium mb-4">

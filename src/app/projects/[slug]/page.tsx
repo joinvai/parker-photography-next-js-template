@@ -2,22 +2,29 @@ import ProjectDetailClient from "@/components/project/project-detail-client"; //
 // Import React removed, no longer needed directly in server component
 import { getAllProjects, getProjectById } from "@/lib/projects"; // Keep data functions
 import type { Project } from "@/lib/projects";
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next"; // Ensure ResolvingMetadata is imported if needed by generateMetadata
 // Image import removed, now handled in client component
 import { notFound } from "next/navigation";
 // motion and cn imports removed
 
-// Define the params type for generateMetadata
-type Props = {
-  params: { slug: string };
-  searchParams: { [key: string]: string | string[] | undefined };
-};
+// --- Proposed Change: Define ProjectPageProps ---
+// Define the expected shape of params for clarity and type safety
+interface ProjectPageProps {
+  params: {
+    slug: string;
+  };
+  // searchParams?: { [key: string]: string | string[] | undefined }; // Keep if needed, as per spec comment
+}
 
 // Function to generate metadata for the page (Server-side)
-export async function generateMetadata({
-  params,
-}: { params: { slug: string } }): Promise<Metadata> {
-  const project: Project | undefined = getProjectById(params.slug);
+// Note: Updated to use ProjectPageProps for consistency, though the core issue is in the page component itself.
+export async function generateMetadata(
+  { params }: ProjectPageProps,
+  parent: ResolvingMetadata, // Assuming parent is needed, add if necessary
+): Promise<Metadata> {
+  // --- Maintain direct slug access from params ---
+  const slug = params.slug;
+  const project: Project | undefined = getProjectById(slug);
 
   if (!project) {
     // Return default metadata if project not found
@@ -54,17 +61,20 @@ export async function generateStaticParams() {
   }));
 }
 
-// The main page component (BACK TO SERVER COMPONENT)
-export default async function ProjectPage({
-  params,
-}: { params: { slug: string } }) {
-  // Fetch data on the server side
-  const project: Project | undefined = getProjectById(params.slug);
+// The main page component (SERVER COMPONENT)
+// --- Proposed Change: Update signature and destructure slug ---
+export default async function ProjectPage({ params }: ProjectPageProps) {
+  // 1. Directly destructure 'slug' from the 'params' prop immediately.
+  const { slug } = params;
 
+  // 2. Call the data fetching function using the destructured 'slug'.
+  const project: Project | undefined = getProjectById(slug);
+
+  // 3. Handle the case where the project data is not found.
   if (!project) {
     notFound();
   }
 
-  // Render the client component, passing the project data
+  // 4. Render the client component, passing the project data
   return <ProjectDetailClient project={project} />;
 }
