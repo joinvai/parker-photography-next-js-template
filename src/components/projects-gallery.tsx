@@ -38,14 +38,6 @@ export function ProjectsGallery() {
     };
   }, []);
 
-  // Update gap size based on viewport width
-  const getGapClass = () => {
-    if (windowWidth < 640) return "gap-y-8"; // Mobile
-    if (windowWidth < 768) return "gap-x-5 gap-y-10"; // Small tablets
-    if (windowWidth < 1024) return "gap-x-5 gap-y-10"; // Tablets
-    return "gap-x-6 gap-y-12"; // Larger gaps on desktop
-  };
-
   if (!projects || projects.length === 0) {
     return (
       <div
@@ -61,7 +53,7 @@ export function ProjectsGallery() {
 
   return (
     <div
-      className="grid grid-cols-1 md:grid-cols-2 gap-8 transition-all duration-300"
+      className="grid grid-cols-1 md:grid-cols-2 gap-y-8 md:gap-x-12 md:gap-y-12 transition-all duration-300"
       aria-live={loading ? "polite" : "off"}
       aria-busy={loading}
     >
@@ -96,6 +88,9 @@ export function ProjectsGallery() {
             behavior="navigate"
             aspectRatio="aspect-[4/3]"
           />
+          <p className="mt-4 text-center font-heading text-2xl text-black">
+            {project.name}
+          </p>
         </div>
       ))}
 

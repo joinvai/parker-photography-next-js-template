@@ -78,14 +78,14 @@ export default async function ProjectsPage() {
 
       {/* Projects Gallery - Apply wider container style */}
       <section
-        className="pb-12 sm:pb-16 md:pb-20 -mx-4 sm:-mx-6 md:-mx-8 transition-all duration-300"
+        className="pb-12 sm:pb-16 md:pb-20 transition-all duration-300"
         aria-labelledby="projects-section-heading"
       >
         <h1 id="projects-section-heading" className="sr-only">
           Our Interior Design Projects
         </h1>
         {/* Add inner div with padding */}
-        <div className="px-8">
+        <div className="px-12">
           <ProjectsGallery />
         </div>
       </section>
