@@ -1,89 +1,123 @@
-# PRD: Full-Width Project Image Grid
+# Product Requirements Document: Project Page Visual Harmonization
 
-# Overview
-This document outlines requirements for enhancing the individual project page photo gallery on the Sire Design website. Currently, the gallery uses a standard grid constrained within the main content area. This project aims to solve the limitation of smaller image presentation by transforming the gallery (excluding the hero image) into a full-width, immersive experience. It's for site visitors interested in viewing project details, providing value through larger, more engaging visuals that better showcase the design work.
+## Overview
 
-# Core Features
-**Full-Width Alternating Image Grid**
-*   **What it does:** Displays project photos (after the initial hero image) in a grid that spans the full viewport width with consistent padding. The grid follows an alternating pattern: a row with two images side-by-side, followed by a row with a single image spanning the width, repeating for all available photos.
-*   **Why it's important:** Maximizes visual impact, makes project photography the central focus, creates a more modern and engaging user experience, and utilizes screen real estate more effectively, especially on larger displays.
-*   **How it works:** Leverages Tailwind CSS grid utilities. The main container will have horizontal padding (32px). Logic within the page component (`src/app/projects/[slug]/page.tsx`) will iterate through the project's photos (index 1 onwards) and apply appropriate Tailwind classes to position images in either a two-column or single-column full-width row based on their index, maintaining defined aspect ratios (`aspect-[4/3]` for two-column items, `aspect-[21/9]` for single-column items) and gutters (32px).
+This document outlines the requirements for enhancing the visual consistency and quality between the main projects listing page (`/projects`) and individual project detail pages (`/projects/[slug]`) on the Sire Design website. The goal is to ensure users experience a uniformly high standard of image presentation and layout regardless of which project page they are viewing. This involves standardizing image quality settings, applying consistent image loading animations, and refining the layout of the main projects page to align structurally with the individual project pages while maintaining its own specific grid format.
 
-# User Experience
-*   **User Personas:** Primarily targets potential clients, design enthusiasts, and returning visitors interested in Sire Design's portfolio. These users value high-quality visuals and an aesthetically pleasing browsing experience.
-*   **Key User Flow:**
-    1.  User navigates to an individual project page (e.g., `/projects/[slug]`).
-    2.  User views the initial project details and hero image.
-    3.  User scrolls down to the photo gallery section.
-    4.  User observes images presented in the full-width, alternating grid layout.
-    5.  User scrolls through the gallery, viewing all images.
-    6.  User clicks on an image to potentially open the existing lightbox view (interaction behavior remains unchanged).
-*   **UI/UX Considerations:**
-    *   **Visual Hierarchy:** The large, full-width images will dominate the visual hierarchy in this section, emphasizing the photography.
-    *   **Padding & Spacing:** Consistent 32px padding on the left/right of the grid container and 32px gutters between images (rows and columns) are crucial for a clean, balanced look.
-    *   **Responsiveness:** The grid must adapt seamlessly to various screen sizes. On smaller screens (e.g., below `md` breakpoint), images should stack vertically while maintaining full-width presentation (with padding). Aspect ratios must be preserved.
-    *   **Load Performance:** Image loading should remain optimized using `next/image` properties (`priority`, `lazy`, `sizes`) to ensure a smooth experience without layout shifts or long waits. The existing `IndividualProjectImage` component handles this.
+## Core features
 
-# Technical Architecture
-*   **System Components:**
-    *   `src/app/projects/[slug]/page.tsx`: Next.js page component. Requires modification to implement the new grid container and mapping logic.
-    *   `src/components/individual-project/individual-project-image.tsx`: Reusable Next.js component for displaying individual images. Expected to be used as-is, receiving appropriate props (`src`, `alt`, `aspectRatio`, `priority`, `sizes`, potentially `isFullWidthGridItem` or similar).
-    *   `src/lib/projects.ts`: Contains data fetching logic (`getProjectById`, `getAllProjects`) - Used as-is.
-*   **Data Models:** Relies on the existing `Project` type, specifically the `photos: string[]` array.
-*   **APIs and Integrations:** None. All data is sourced internally.
-*   **Infrastructure Requirements:** Runs on the existing Next.js/Vercel infrastructure.
-*   **Styling:** Implemented entirely using Tailwind CSS utility classes. No custom CSS files should be needed. Responsive design handled via Tailwind breakpoints (`sm:`, `md:`, etc.).
+1.  **Harmonize image quality settings**
+    *   **What it does:** Applies the image quality parameters (e.g., `quality`, potentially `sizes`, `priority` logic) used on the `/projects` page (likely within the `ProjectsGallery` component or its children) to the images displayed on the `/projects/[slug]` pages (specifically within the `IndividualProjectImage` component and potentially the hero image).
+    *   **Why it's important:** Ensures all project photography is displayed at the highest perceived quality across the site, providing a consistent and premium user experience.
+    *   **How it works:** Identify the specific `next/image` component props responsible for the high-quality rendering on `/projects`. Update the `Image` components used in `/projects/[slug]/page.tsx` (both the hero image and those within the grid via `IndividualProjectImage`) to use these same settings or equivalent configurations.
 
-# Development Roadmap
-*   **MVP Requirements:**
-    1.  Modify the gallery section container in `page.tsx` to span full viewport width.
-    2.  Apply 32px horizontal padding (`px-8`) to the container.
-    3.  Implement the mapping logic over `project.photos.slice(1)` to generate the alternating grid structure (2-col row, 1-col row).
-    4.  Apply 32px vertical and horizontal gutters (`gap-8`) between grid items.
-    5.  Pass correct props (`aspectRatio`, Tailwind classes for grid placement) to the `IndividualProjectImage` component based on the image's position in the alternating layout.
-    6.  Implement responsive behavior: ensure layout works on desktop and stacks vertically (maintaining full-width + padding) on smaller screens (e.g., below `md` breakpoint).
-    7.  Ensure the layout correctly handles varying numbers of photos (edge cases: 1, 2, 3 additional photos, and lists ending mid-pattern).
-*   **Future Enhancements:**
-    *   (Out of scope for now) Explore different grid layout options or animations.
+2.  **Implement consistent image load animation**
+    *   **What it does:** Applies the fade-in animation effect observed on images loading within the `/projects` page to the images loading on the `/projects/[slug]` page.
+    *   **Why it's important:** Creates a smoother, more polished visual transition as images load, reinforcing the site's premium aesthetic and providing a consistent feel across different project views.
+    *   **How it works:** Analyze the CSS or JavaScript mechanism implementing the fade-in effect on `/projects`. Replicate this mechanism (e.g., CSS classes, animation libraries, state hooks) for the images loading within `/projects/[slug]/page.tsx`, ensuring it applies correctly to both the hero image and grid images.
 
-# Logical Dependency Chain
-1.  **Foundation:** Existing project structure, `page.tsx`, `IndividualProjectImage` component, and data fetching (`getProjectById`) must be functional.
-2.  **Container Setup:** Implement the full-width container with correct padding in `page.tsx`. This provides the canvas for the grid.
-3.  **Grid Logic Implementation:** Develop the core logic within the `.map()` function in `page.tsx` to calculate the row type (2-col or 1-col) and apply appropriate Tailwind grid classes (`col-span-1`, `col-span-2` relative to a 2-column grid definition for the container) based on the image index.
-4.  **Component Integration:** Pass the determined `aspectRatio` and any necessary classes/flags to `IndividualProjectImage`.
-5.  **Responsiveness:** Apply Tailwind breakpoint modifiers to ensure the grid collapses correctly to a single column layout on smaller viewports.
-6.  **Testing:** Test thoroughly across breakpoints and with projects having different numbers of photos (1, 2, 3, many).
+3.  **Refactor projects page layout**
+    *   **What it does:** Modifies the layout of the main `/projects` page to adopt the structural pattern of the `/projects/[slug]` page's photo gallery, but enforces a strict two-column grid throughout, instead of the alternating two-column/one-column pattern used on the individual project pages.
+    *   **Why it's important:** Creates better visual rhythm and consistency on the main projects overview page, making it easier to scan while aligning its underlying structure closer to the detail pages for potential future component reuse or simplification.
+    *   **How it works:** Adapt the grid container and item structure from `/projects/[slug]/page.tsx` (specifically the `div` containing `IndividualProjectImage` components). Apply this structure to the `/projects` page (likely modifying the `ProjectsGallery` component). Ensure the grid CSS forces a two-column layout (`grid-cols-2` or equivalent) consistently for all items, removing the logic that creates single full-width columns.
 
-*Goal Order:* Establish the basic full-width container -> Implement the alternating grid structure for desktop -> Ensure responsiveness -> Test edge cases.
+## User experience
 
-# Risks and Mitigations
-*   **Technical Challenge:** Implementing the alternating row logic cleanly within the map function.
-    *   **Mitigation:** Plan the modulo arithmetic or index tracking carefully. Test iterations thoroughly. Consider a small helper function if logic becomes complex.
-*   **Technical Challenge:** Ensuring seamless responsive transitions and correct stacking.
-    *   **Mitigation:** Define a clear breakpoint (`md` recommended) for the transition. Test extensively using browser developer tools and real devices if possible. Ensure `next/image` `sizes` prop is correctly updated if needed.
-*   **Visual Inconsistency:** Potential for slight misalignments or unexpected spacing issues across browsers/devices.
-    *   **Mitigation:** Rely strictly on Tailwind utilities, which are generally cross-browser consistent. Test on major browsers (Chrome, Firefox, Safari).
-*   **Scope Creep:** Desire to add more complex animations or grid variations.
-    *   **Mitigation:** Adhere strictly to the MVP requirements defined in this document. Defer any additional features.
+*   **User personas:**
+    *   *Potential Client:* High-net-worth individual or representative interested in luxury interior design services. Values premium aesthetics, attention to detail, and a seamless browsing experience. Uses the website to evaluate Sire Design's style and past work.
+    *   *Design Enthusiast:* Visitor interested in interior design trends and high-quality project photography. Browses the site for inspiration.
+*   **Key user flows:**
+    1.  User navigates to the `/projects` page.
+    2.  User scrolls through the gallery of projects, observing images load with a fade-in effect and displayed in a consistent two-column layout.
+    3.  User clicks on a project image or title, navigating to the `/projects/[slug]` page for that specific project.
+    4.  User views the hero image and scrolls down to the photo gallery on the individual project page.
+    5.  User observes that all images (hero and gallery) load with the same fade-in effect and are displayed with high visual quality, consistent with the `/projects` page.
+*   **UI/UX considerations:**
+    *   Image loading transitions should be smooth and non-jarring.
+    *   Perceived image quality must be consistently high across both page types.
+    *   Layout changes on the `/projects` page should feel natural and improve scannability.
+    *   Responsiveness across different screen sizes must be maintained or improved for both pages.
+    *   Loading performance should not be negatively impacted; optimizations may be necessary.
 
-# Appendix
-*   **Files Involved:**
-    *   `src/app/projects/[slug]/page.tsx` (Primary modification)
-    *   `src/components/individual-project/individual-project-image.tsx` (Usage, likely no modification)
-*   **Explicitly Out of Scope:**
-    *   Changes to hero image section.
-    *   Changes to project text content or navigation links.
-    *   Lightbox functionality changes.
-    *   Image captions or credits.
-    *   Alternative grid layouts.
-*   **User Stories & Acceptance Criteria (Reference)**
-    *   **US-001:** As a site visitor browsing a project page, I want the photo gallery images to extend across the full width of my screen so that I can see larger, more detailed photos.
-        *   **AC-001:** Container spans full viewport width; 32px left/right padding applied; images utilize available space per layout rules minus gutters.
-    *   **US-002:** As a site visitor, I want the images in the gallery (after the hero image) to be arranged in an alternating pattern of a two-column row followed by a single full-width row, so the layout is dynamic and visually interesting.
-        *   **AC-002:** Row 1 = 2 images; Row 2 = 1 image; Row 3 = 2 images; Row 4 = 1 image, etc., pattern continues.
-    *   **US-003:** As a site visitor, I want consistent spacing (gutters) between images and around the entire grid, so the layout looks clean, organized, and professional.
-        *   **AC-003:** 32px horizontal gap between images in 2-col rows; 32px vertical gap between all rows; 32px left/right padding on main container.
-    *   **US-004:** As a site visitor, I expect the full-width grid layout to adapt correctly to different screen sizes (mobile, tablet, desktop), so I have a good viewing experience regardless of my device.
-        *   **AC-004:** Layout functions across Tailwind breakpoints; stacks gracefully below `md` (TBD) breakpoint; aspect ratios maintained.
-    *   **US-005:** As a developer implementing this feature, I need the grid logic to correctly handle projects with varying numbers of photos (from one additional photo up to approximately 40), applying the alternating pattern as far as possible.
-        *   **AC-005:** Renders correctly for 1, 2, 3 additional photos; handles lists ending mid-pattern gracefully (e.g., single image in a 2-col row slot).
+## User stories and acceptance criteria
+
+*   **US-001:** As a website visitor, I want project images on individual project pages (`/projects/[slug]`) to be displayed with the same high quality settings as images on the main projects page (`/projects`), so that the visual standard is consistent throughout the portfolio.
+    *   **AC-001.1:** The `next/image` components used for the hero image and grid images on `/projects/[slug]/page.tsx` utilize `quality` and other relevant props identified from the `/projects` page implementation.
+    *   **AC-001.2:** Visual inspection confirms images on `/projects/[slug]` appear as sharp and clear as those on `/projects`.
+    *   **AC-001.3:** Image properties (like resolution requested, format) are comparable when inspecting network requests for images on both page types.
+
+*   **US-002:** As a website visitor, I want images on individual project pages (`/projects/[slug]`) to fade in smoothly upon loading, matching the effect on the main projects page (`/projects`), so that the browsing experience feels polished and consistent.
+    *   **AC-002.1:** A fade-in transition effect is applied to the hero image on `/projects/[slug]/page.tsx` as it loads.
+    *   **AC-002.2:** A fade-in transition effect is applied to the grid images rendered by `IndividualProjectImage` on `/projects/[slug]/page.tsx` as they load.
+    *   **AC-002.3:** The duration, easing, and appearance of the fade-in effect visually match the effect implemented on the `/projects` page.
+    *   **AC-002.4:** The fade-in effect works correctly across supported browsers and screen sizes.
+
+*   **US-003:** As a website visitor viewing the main projects page (`/projects`), I want to see project images displayed in a consistent two-column grid layout, so that the page has a balanced and easy-to-scan structure.
+    *   **AC-003.1:** The `ProjectsGallery` component (or equivalent rendering logic on `/projects/page.tsx`) renders project items in a grid that always maintains two columns on medium-to-large screens.
+    *   **AC-003.2:** The alternating two-column / one-column layout pattern is removed from the `/projects` page.
+    *   **AC-003.3:** The layout adapts appropriately for smaller screens (e.g., single column).
+    *   **AC-003.4:** The underlying structure of the grid implementation is adapted from the `/projects/[slug]` page's photo gallery structure.
+
+## Technical architecture
+
+*   **System components:**
+    *   `src/app/projects/page.tsx`: Main projects listing page.
+    *   `src/app/projects/[slug]/page.tsx`: Individual project detail page.
+    *   `src/components/projects-gallery.tsx`: Component likely rendering the grid on the main projects page. (Needs verification)
+    *   `src/components/individual-project/individual-project-image.tsx`: Component rendering images within the grid on the individual project page.
+    *   `next/image`: Next.js component used for image optimization and rendering.
+    *   CSS Modules / Tailwind CSS: Styling solutions likely used for layout and animations.
+*   **Data models:**
+    *   `Project` type (defined in `src/lib/projects.ts`): Contains project details including `id`, `name`, `year`, `mainImage`, `photos`, `description`. No changes to the data model are expected.
+*   **APIs and integrations:**
+    *   `getAllProjects()`: Fetches data for the main projects page.
+    *   `getProjectById(slug)`: Fetches data for the individual project page. No external APIs involved.
+*   **Infrastructure requirements:**
+    *   Existing Next.js/Vercel deployment environment. No changes required.
+
+## Development roadmap
+
+*   **Phase 1: Individual Project Page Enhancement (MVP Focus)**
+    1.  **Analyze `/projects` Page:** Thoroughly inspect `src/app/projects/page.tsx` and its components (like `ProjectsGallery`) to identify the exact `next/image` props contributing to high quality (e.g., `quality`, `sizes`, `priority`) and the CSS/JS implementing the fade-in effect.
+    2.  **Implement Image Quality on `/[slug]`:** Update the `next/image` instances in `src/app/projects/[slug]/page.tsx` (hero image) and within `IndividualProjectImage` to match the quality settings identified in step 1.
+    3.  **Implement Fade-in Effect on `/[slug]`:** Apply the fade-in animation logic (identified in step 1) to the hero image and the `IndividualProjectImage` component on the `/projects/[slug]` page. Ensure it triggers correctly on load.
+    4.  **Testing:** Verify image quality and fade-in effect visually and functionally across browsers/devices for the `/projects/[slug]` pages. Check for performance regressions.
+
+*   **Phase 2: Projects Page Layout Refactor**
+    1.  **Analyze `/[slug]` Layout:** Understand the specific DOM structure and CSS grid/flexbox implementation used for the photo gallery section in `src/app/projects/[slug]/page.tsx`.
+    2.  **Refactor `/projects` Layout:** Modify `src/app/projects/page.tsx` (likely impacting `ProjectsGallery`) to use the layout structure from step 1.
+    3.  **Enforce 2-Column Grid:** Adapt the CSS for the refactored layout on `/projects` to ensure a consistent two-column grid presentation, removing any logic for single-column spans within the main grid flow.
+    4.  **Testing:** Verify the new two-column layout on `/projects` page across browsers/devices. Ensure responsiveness and visual consistency. Test navigation flow between `/projects` and `/[slug]` pages.
+
+## Logical dependency chain
+
+1.  **Analysis (`/projects` page):** Must first understand how quality and fade-in are achieved on the source page. (Phase 1, Step 1)
+2.  **Analysis (`/[slug]` layout):** Must understand the target layout structure before applying it elsewhere. (Phase 2, Step 1)
+3.  **`/[slug]` Page Updates (Quality & Fade-in):** Implement the visual enhancements on the individual project pages. These changes depend on the analysis (1) but are independent of the `/projects` page layout refactor. (Phase 1, Steps 2-3)
+4.  **`/projects` Page Layout Refactor:** Implement the layout changes on the main projects page. This depends on the layout analysis (2) and is best done *after* the `/[slug]` page visuals are finalized to ensure consistency is based on the updated target. (Phase 2, Steps 2-3)
+5.  **Testing:** Occurs after each implementation phase.
+
+*Getting to visible front-end:* Phase 1 delivers visible improvements to the individual project pages first. Phase 2 modifies the main projects page.
+
+## Risks and mitigations
+
+*   **Risk:** Difficulty identifying the *exact* quality settings or fade-in implementation from `/projects` page code.
+    *   **Mitigation:** Allocate specific time for code analysis. If direct replication is complex, implement visually equivalent settings/animations.
+*   **Risk:** Performance degradation due to higher quality image settings or animations.
+    *   **Mitigation:** Test page load times (LCP, CLS) before and after changes using tools like Lighthouse. Optimize image `sizes` props. Ensure animations are performant (using CSS transforms/opacity).
+*   **Risk:** Refactoring `ProjectsGallery` or page layouts introduces visual bugs or breaks responsiveness.
+    *   **Mitigation:** Conduct thorough cross-browser and cross-device testing. Consider using visual regression testing tools if available. Implement layout changes carefully, potentially isolating them initially.
+*   **Risk:** Styles bleeding or conflicting between the shared components/pages after changes.
+    *   **Mitigation:** Use scoped CSS (e.g., CSS Modules) or utility-first classes (Tailwind) effectively. Ensure component styles are well-encapsulated.
+*   **Risk (MVP Scope):** The visual improvements on the `/[slug]` page might not perfectly match `/projects` if the underlying components or context differ significantly.
+    *   **Mitigation:** Aim for functional equivalence and visual parity. Document any necessary deviations if exact replication isn't feasible or optimal.
+
+## Appendix
+
+*   **Relevant Code Files:**
+    *   `src/app/projects/page.tsx`
+    *   `src/app/projects/[slug]/page.tsx`
+    *   `src/components/projects-gallery.tsx` (Assumption, verify existence/relevance)
+    *   `src/components/individual-project/individual-project-image.tsx`
+    *   `src/lib/projects.ts`
+*   **Visual References:** (Screenshots comparing current state and desired state for both pages would be included here in a real PRD)
