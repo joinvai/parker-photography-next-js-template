@@ -1,1 +1,82 @@
-We need to include the name of the project below each project on the projects/page.tsx
+# Overview
+This document outlines the requirements for a new "Watch" page on the website. This page solves the need to showcase client appearances on notable television shows (initially HGTV and Netflix), enhancing brand prestige and providing direct access for visitors to view these features. It's for website visitors interested in the company's high-profile work and successes. Its value lies in consolidating proof of client success, driving engagement to external platforms (Max, Netflix), and reinforcing the brand's connection to major media outlets.
+
+# Core Features
+- **Show Listing Display:**
+    - *What it does:* Renders a dedicated page displaying distinct sections for each featured TV show appearance.
+    - *Why it's important:* Provides a centralized, organized view of client media features.
+    - *How it works:* The page dynamically iterates over a data structure (defined in `src/app/watch/data.ts` or similar), rendering a section for each show object. Each section includes the network name, a primary image, the show's title, a description, and a "Watch" button.
+- **Dynamic Content Rendering:**
+    - *What it does:* Pulls all displayed information (network, image path, title, description, button text, target URL) for each show from a structured data source.
+    - *Why it's important:* Allows easy updates and additions of show appearances without modifying the page's core component code.
+    - *How it works:* A React component reads an array of `ShowAppearance` objects and uses the data within each object to populate the corresponding section on the page. Images are loaded from the `/public/watch/` directory based on the `mainImage` path in the data.
+- **External Linking:**
+    - *What it does:* Provides clickable buttons within each show's section that link to the respective viewing platform.
+    - *Why it's important:* Drives traffic directly to the platforms where users can watch the featured content, fulfilling the page's engagement goal.
+    - *How it works:* Each button uses the `watchUrl` property from the corresponding show's data object as its `href` target. Links are configured to open in a new browser tab (`target="_blank"`).
+
+# User Experience
+- **User Personas:**
+    - *Prospective Client:* Evaluating the company's portfolio and prestige. Wants to see evidence of high-profile work.
+    - *Industry Peer:* Researching the company's projects and media presence.
+    - *General Website Visitor:* Browsing the site, potentially interested in the company's design work and media appearances.
+- **Key User Flows:**
+    1. *Discovery:* User navigates to the `/watch` page via site navigation or a direct link.
+    2. *Information Consumption:* User scans the page, viewing the listed shows (HGTV, Netflix), including images, titles, and descriptions.
+    3. *Engagement:* User clicks the "WATCH ON MAX" or "WATCH ON NETFLIX" button for a show of interest.
+    4. *Redirection:* User is redirected to the corresponding external platform (Max/Netflix) in a new tab.
+- **UI/UX Considerations:**
+    - Layout should be clean, vertical, with clear visual separation between show sections.
+    - Styling must align with the existing website's design language (fonts, colors, spacing).
+    - Images should be high-quality and displayed prominently.
+    - Buttons need clear hover/active states.
+    - The page must be fully responsive across desktop, tablet, and mobile devices, ensuring readability and usability on all screen sizes.
+
+# Technical Architecture
+- **System Components:**
+    - A Next.js page component (e.g., `src/app/watch/page.tsx`).
+    - A data module (e.g., `src/app/watch/data.ts`) exporting the array of `ShowAppearance` objects.
+    - Public assets folder (`/public/watch/`) for storing images (`tv-1.jpeg`, `tv-2.jpeg`).
+- **Data Models:**
+    - `ShowAppearance` interface: `{ tvNetwork: string; mainImage: string; showName: string; showDescription: string; buttonText: string; watchUrl: string; }`
+- **APIs and Integrations:** None directly required for MVP (links are simple external URLs).
+- **Infrastructure Requirements:** Standard Next.js hosting environment.
+
+# Development Roadmap
+- **MVP Requirements:**
+    1. Create the data structure (`data.ts`) with the initial HGTV and Netflix show data, including placeholder `watchUrl`s.
+    2. Place images (`tv-1.jpeg`, `tv-2.jpeg`) in `/public/watch/`.
+    3. Develop the React/Next.js page component (`page.tsx`) at `/watch`.
+    4. Implement dynamic rendering of show sections based on the data structure.
+    5. Style the page and show sections according to UI/UX guidelines and ensure responsiveness.
+    6. Implement button functionality with external links opening in a new tab.
+    7. Add basic image alt text (e.g., "[Show Name] on [TV Network]").
+- **Future Enhancements:**
+    - Update `watchUrl`s with actual deep links when available.
+    - Implement analytics tracking for button clicks.
+    - Enhance accessibility features (more descriptive alt text, ARIA attributes if needed).
+    - Consider CMS integration for managing show data.
+    - Add video embeds if possible/desired.
+    - Implement filtering/sorting if the list grows.
+
+# Logical Dependency Chain
+1.  **Data Structure & Assets:** Define the `ShowAppearance` interface and create the `data.ts` file with initial show objects. Place image assets in the public folder. (Foundation)
+2.  **Component Rendering:** Create the basic `page.tsx` component. Implement logic to map over the `showData` array and render the core elements (text, image placeholders, buttons) for each show without styling. (Get structure visible)
+3.  **Styling & Layout:** Apply CSS/Tailwind classes to match the design mockups/guidelines. Ensure correct layout, typography, colors, and spacing. Implement responsiveness. (Make it look right)
+4.  **Functionality:** Implement the button `onClick` or `href` logic using the `watchUrl` from the data. Ensure links open in a new tab. Add alt text to images. (Make it work)
+5.  **Testing & Refinement:** Test on different browsers and devices. Verify links, image loading, and layout. Refine styles as needed. (Ensure quality)
+
+# Risks and Mitigations
+- **Technical Challenges:**
+    - *Risk:* Ensuring correct image paths and loading. *Mitigation:* Test image loading thoroughly during development; ensure paths in `data.ts` match file locations.
+    - *Risk:* Achieving consistent responsiveness across all target devices. *Mitigation:* Use responsive design principles (e.g., Tailwind breakpoints), test extensively using browser developer tools and real devices if possible.
+- **Figuring out the MVP:**
+    - *Risk:* Scope creep beyond the initial two shows and basic display. *Mitigation:* Strictly adhere to the MVP requirements defined in the Development Roadmap. Defer enhancements like analytics or CMS integration.
+- **Resource Constraints:**
+    - *Risk:* Development time underestimated. *Mitigation:* Follow the logical dependency chain to prioritize core functionality first. Clearly define MVP scope.
+- **External Link Accuracy:**
+    - *Risk:* Placeholder `watchUrl`s are not updated or become broken. *Mitigation:* Establish a process to verify and update URLs periodically. Use placeholder URLs initially but plan for obtaining correct links.
+
+# Appendix
+- **Non-functional Requirements Ref:** Accessibility (WCAG 2.1 AA), Cross-Browser Compatibility (Latest Chrome, Firefox, Safari, Edge).
+- **Future Considerations Ref:** Analytics tracking, video embeds, CMS integration.

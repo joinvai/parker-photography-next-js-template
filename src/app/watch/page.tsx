@@ -1,74 +1,38 @@
-import { motion } from "framer-motion";
+import WatchPageClient from "@/components/watch/watch-page-client"; // Import the new client component
+import type { Metadata } from "next";
+import { showData } from "./data"; // Keep static data import
 
+// Metadata remains the same
+export const metadata: Metadata = {
+  title: "Watch Our Shows | Sire Design",
+  description:
+    "See Sire Design clients featured on hit shows like HGTV's Divided by Design and Netflix's Designing Miami.",
+  openGraph: {
+    title: "Watch Our Shows | Sire Design",
+    description:
+      "See Sire Design clients featured on hit shows like HGTV's Divided by Design and Netflix's Designing Miami.",
+    type: "website",
+    url: "/watch",
+  },
+  keywords:
+    "Sire Design, TV appearances, HGTV, Netflix, Divided by Design, Designing Miami, interior design shows",
+  robots: "index, follow",
+  viewport: "width=device-width, initial-scale=1",
+  alternates: {
+    canonical: "/watch",
+  },
+};
+
+// Server component - simpler structure
 export default function WatchPage() {
   return (
-    <main className="min-h-screen bg-black text-white p-8 md:p-16">
-      <motion.h1 className="text-4xl md:text-6xl font-geist-mono tracking-tighter mb-12 text-center">
+    <main className="min-h-screen text-black p-8 md:p-16">
+      {/* Title can remain here or be moved to client component if it needs animation */}
+      <h1 className="text-4xl md:text-6xl font-geist-mono tracking-tighter mb-12 text-center">
         Watch Our Shows
-      </motion.h1>
-      <div className="space-y-16">
-        {/* HGTV Appearance Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.5 }}
-          className="flex flex-col md:flex-row items-center gap-8"
-        >
-          <motion.img
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.3, duration: 0.5 }}
-            src="/shows/hgtv-show.jpg"
-            alt="HGTV Show Appearance"
-            className="w-full md:w-1/2 rounded-lg shadow-lg"
-          />
-          <div className="md:w-1/2">
-            <h2 className="text-3xl font-geist-mono mb-4">HGTV Show Appearance</h2>
-            <p className="mb-4">
-              Catch our client on the hit HGTV show where innovative design meets practical execution in transforming spaces.
-            </p>
-            <a
-              href="https://www.hgtv.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block bg-white text-black px-6 py-3 rounded hover:bg-gray-200 transition-colors"
-            >
-              Watch on HGTV
-            </a>
-          </div>
-        </motion.div>
-
-        {/* Netflix Appearance Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.5 }}
-          className="flex flex-col md:flex-row items-center gap-8"
-        >
-          <motion.img
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.5, duration: 0.5 }}
-            src="/shows/netflix-show.jpg"
-            alt="Netflix Show Appearance"
-            className="w-full md:w-1/2 rounded-lg shadow-lg"
-          />
-          <div className="md:w-1/2">
-            <h2 className="text-3xl font-geist-mono mb-4">Netflix Show Appearance</h2>
-            <p className="mb-4">
-              Don’t miss our client’s feature on Netflix, showcasing their unique approach to modern design in a groundbreaking series.
-            </p>
-            <a
-              href="https://www.netflix.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block bg-white text-black px-6 py-3 rounded hover:bg-gray-200 transition-colors"
-            >
-              Watch on Netflix
-            </a>
-          </div>
-        </motion.div>
-      </div>
+      </h1>
+      {/* Render the client component, passing the data */}
+      <WatchPageClient showData={showData} />
     </main>
   );
 }
