@@ -1,3 +1,4 @@
+import AboutSection from "@/components/studio/about-section";
 import StudioQuote from "@/components/studio/studio-quote";
 import TeamPageClient from "@/components/team/team-page-client";
 import type { Metadata } from "next";
@@ -27,6 +28,7 @@ export default function StudioPage() {
   return (
     <main className="min-h-screen text-black">
       <StudioQuote />
+      <AboutSection />
       <div className="p-8 md:p-16">
         <h1 className="text-4xl md:text-6xl font-geist-mono tracking-tighter mb-12 text-center">
           Our Team

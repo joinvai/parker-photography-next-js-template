@@ -1,111 +1,134 @@
 # Overview  
-The "Studio" page project aims to create a new section on the Sire Design website dedicated to showcasing the design team. This page will introduce visitors to the 8 core team members through a visually consistent design that matches the existing "Watch" page. The project solves the problem of lacking team visibility on the website, is targeted at site visitors who want to learn more about the people behind Sire Design's work, and adds value by humanizing the brand and building trust with potential clients.
+This feature enhances the Studio page by adding an "About Us" section between the existing founder quote and team member sections. It provides visitors with essential information about Sire Design's philosophy, approach, and project experience, helping potential clients understand the company's values and expertise before reviewing individual team members.
 
 # Core Features  
-## Team Member Profiles
-- **What it does**: Displays individual profile cards for each team member with their photo, name, role, and bio
-- **Why it's important**: Puts faces to the Sire Design brand and highlights the expertise behind the company
-- **How it works**: Retrieves team member data from a structured `team.ts` file and renders it in a responsive grid layout
+- **Company Description Display**: Presents Sire Design's design philosophy, approach, and expertise using structured, readable text content that emphasizes the company's unique selling points.
+  - Important for establishing brand identity and communicating value proposition
+  - Implemented as semantic heading and paragraph elements with appropriate typography
 
-## Consistent Design System
-- **What it does**: Replicates the exact layout, styling, and component behavior of the existing Watch page
-- **Why it's important**: Maintains visual coherence across the website and leverages existing, proven UI patterns
-- **How it works**: Reuses the same component structure, styling, and image handling techniques from the Watch page implementation
-
-## Data Structure
-- **What it does**: Establishes a maintainable data source for team member information
-- **Why it's important**: Creates a single source of truth for team data that can be easily updated
-- **How it works**: Defines a TypeScript interface for team member data with fields for fullName, role, bio, and mainImage
+- **Complementary Imagery**: Incorporates a visual representation of the company or its work through a featured image.
+  - Important for creating visual interest and reinforcing the design-focused brand identity
+  - Implemented using Next.js Image component with consistent styling and animations matching the team photos
 
 # User Experience  
-## User Personas
-- **Website Visitors**: People interested in learning about the team behind Sire Design's services and work
-- **Potential Clients**: Individuals evaluating Sire Design who want to see the expertise of team members
-- **Media/Press**: Journalists or content creators looking for information about the studio team
+- **Primary User Persona**: Potential clients considering Sire Design for interior design projects
+  - Seeking to understand the company's approach and expertise
+  - Need clear, concise information about the company's values and capabilities
 
-## Key User Flows
-- User navigates to the "Studio" page from site navigation
-- User views the grid of team members
-- User reads individual team member profiles (name, role, bio)
-- User visually connects with team members through professional photos
+- **Key User Flow**:
+  1. User navigates to the Studio page to learn about the company
+  2. Views the founder's quote at the top of the page
+  3. Scrolls down to read about the company's design approach and philosophy
+  4. Continues to scroll to view individual team members
 
-## UI/UX Considerations
-- Responsive grid layout (2 columns on desktop, 1 column on mobile)
-- Consistent typography and spacing matching Watch page
-- Professional image presentation with optimized loading
-- Visual hierarchy that emphasizes photos first, then name, role, and bio
-- No specific accessibility requirements beyond standard practices
+- **UI/UX Considerations**:
+  - Section must visually integrate with the existing page design
+  - Typography must maintain brand consistency using the established font hierarchy
+  - Image animation should match team photos for visual cohesion
+  - Content should be scannable with clear visual hierarchy
 
 # Technical Architecture  
-## System Components
-- **Server Component**: `src/app/team/page.tsx` - Handles page metadata and imports data
-- **Client Component**: `src/components/team/team-page-client.tsx` - Handles rendering and animations
-- **Data Source**: `src/app/team/team.ts` - Contains team member information
+- **System Components**:
+  - New React component (`about-section.tsx`) to be placed in the Studio page component
+  - Uses Next.js Image component for optimized image loading and display
+  - Implements Framer Motion for animations consistent with team section
 
-## Data Models
-```typescript
-interface TeamMember {
-  fullName: string;  // Name derived from image filename
-  role: string;      // Initially "TBD"
-  bio: string;       // Initially "TBD"
-  mainImage: string; // Path to image in public/team directory
-}
-```
+- **Data Model**:
+  - Static content embedded directly in the component
+  - No database or API integration required
+  - Future consideration: potential CMS integration for editable content
 
-## Infrastructure Requirements
-- Images must be properly placed in `public/team/` directory
-- Next.js Image component to be used for optimized image loading
-- Framer Motion (if used in Watch page) for animations
+- **Component Structure**:
+  ```tsx
+  // about-section.tsx
+  "use client";
+  
+  import { motion } from "framer-motion";
+  import Image from "next/image";
+  
+  export default function AboutSection() {
+    // Animation variants matching TeamPageClient
+    // Image loading state management
+    // Return JSX with heading, paragraphs, and image
+  }
+  ```
+
+- **Integration Points**:
+  - Import and place between StudioQuote and TeamPageClient components in studio/page.tsx
+  - Maintain consistent padding and layout with surrounding sections
 
 # Development Roadmap  
-## MVP Requirements
-1. Create `team.ts` data file with the TeamMember interface
-2. Populate data for 8 team members with derived names and placeholder content
-3. Implement server component (`page.tsx`) with proper metadata
-4. Implement client component with responsive grid layout
-5. Style components to exactly match Watch page design
-6. Implement optimized image loading with blur placeholders
+- **MVP Requirements (Phase 1)**:
+  1. Create AboutSection component with basic structure
+     - Static heading and paragraph text
+     - Simple image implementation
+     - Basic responsive layout
+  2. Integrate component into Studio page between quote and team sections
+  3. Apply basic styling for typography and spacing
+  4. Implement basic responsive behavior
+  
+- **Enhancements (Phase 2)**:
+  1. Add image loading animations matching team photos
+     - Implement shimmer effect placeholder
+     - Add fade-in animation
+  2. Improve typography and spacing
+     - Fine-tune font sizes across breakpoints
+     - Optimize paragraph width for readability
+  3. Refine responsive layout
+     - Adjust image and text positioning for different screen sizes
 
-## Future Enhancements
-1. Replace "TBD" placeholders with actual role and bio information
-2. Add social media links for team members
-3. Add sorting/filtering capabilities
-4. Implement individual team member detail pages
-5. Consider migrating data to a CMS or database for easier maintenance
+- **Future Iterations (Phase 3)**:
+  1. Extract content to CMS for easy updates without code changes
+  2. Add multiple image capability with carousel or grid display
+  3. Implement localization support for international visitors
 
 # Logical Dependency Chain
-1. **Foundation**: Create the `team.ts` data structure and populate with initial data
-2. **Component Structure**: Set up the server and client component files following Next.js patterns
-3. **Basic Rendering**: Implement grid layout and basic team member cards
-4. **Styling**: Apply all styling to match Watch page exactly
-5. **Image Optimization**: Implement Next.js Image component with blur placeholders
-6. **Animations**: Add any motion effects present in the Watch page
+1. **Foundation First**:
+   - Study existing components (StudioQuote.tsx and TeamPageClient.tsx) to understand styling and animation patterns
+   - Ensure the studio.jpg image is properly prepared and optimized
+
+2. **Quick Visible Results**:
+   - Implement basic section structure first with the heading and text content
+   - Add the image with basic styling to get a functional, visible component
+
+3. **Component Structure**:
+   - Create about-section.tsx component in the appropriate directory
+   - Integrate it into studio/page.tsx
+   - Implement basic styling to match the page design
+
+4. **Progressive Enhancement**:
+   - Add animations only after the basic structure is working
+   - Implement responsive behavior and test across breakpoints
+   - Fine-tune typography and spacing last
 
 # Risks and Mitigations  
-## Technical Challenges
-- **Risk**: Difficulty matching exact styling and behavior of Watch page
-- **Mitigation**: Carefully analyze and reuse styling code from Watch page client component
+- **Technical Challenges**:
+  - **Risk**: Image loading may cause layout shifts affecting user experience
+  - **Mitigation**: Implement proper image dimensions, aspect ratio, and placeholder
 
-## Resource Constraints
-- **Risk**: Image assets may not be optimized for web
-- **Mitigation**: Use Next.js Image component to handle optimization automatically
+- **MVP Scope**:
+  - **Risk**: Section might look inconsistent with team section if animations are complex
+  - **Mitigation**: Start with simpler implementation, then incrementally match animation complexity
 
-## Data Maintenance
-- **Risk**: Static data file may become outdated as team changes
-- **Mitigation**: Design data structure for easy updates; consider future migration to CMS
+- **Resource Constraints**:
+  - **Risk**: Time required to perfectly match team section animations could be excessive
+  - **Mitigation**: Prioritize content placement and basic styling first, enhance animations in later iterations
 
 # Appendix  
-## Image File Inventory
-- daniela.jpg
-- diana.jpg
-- eilyn.jpg
-- jackie.jpg
-- karina.jpg
-- maria.jpg
-- thalia.jpg
-- yanin.jpg
+- **Technical Specifications**:
+  - React/Next.js component
+  - Framer Motion for animations
+  - Tailwind CSS for styling
+  - Next.js Image component for performance optimization
 
-## Related Components
-- Watch page implementation at `src/app/watch/page.tsx`
-- Watch client component at `src/components/watch/watch-page-client.tsx`
-- Watch data structure at `src/app/watch/data.ts`
+- **Content Requirements**:
+  - Heading: "About Sire Design" (h1 with header font)
+  - Body Text: Three paragraphs as specified in requirements
+  - Image: public/studio.jpg (to be displayed using Next.js Image component)
+
+- **Design System Notes**:
+  - Font hierarchy:
+    - Heading: font-geist-mono (matches "Our Team" heading)
+    - Body text: Default site paragraph styling
+  - Color scheme: Maintains existing site colors
+  - Spacing: Consistent with surrounding sections
