@@ -1,134 +1,121 @@
-# Overview  
-This feature enhances the Studio page by adding an "About Us" section between the existing founder quote and team member sections. It provides visitors with essential information about Sire Design's philosophy, approach, and project experience, helping potential clients understand the company's values and expertise before reviewing individual team members.
+# Product Requirements Document: Footer Newsletter Subscription
 
-# Core Features  
-- **Company Description Display**: Presents Sire Design's design philosophy, approach, and expertise using structured, readable text content that emphasizes the company's unique selling points.
-  - Important for establishing brand identity and communicating value proposition
-  - Implemented as semantic heading and paragraph elements with appropriate typography
+# Overview
+This document outlines the requirements for a newsletter subscription feature integrated into the website's footer. The goal is to provide a simple, minimally designed input for users (site visitors) to submit their email addresses for future newsletter campaigns. The feature solves the need for capturing user interest subtly and efficiently, leveraging Next.js server actions and Google Sheets for data storage. It aims to be valuable by providing a low-friction way to build an email list directly from the website.
 
-- **Complementary Imagery**: Incorporates a visual representation of the company or its work through a featured image.
-  - Important for creating visual interest and reinforcing the design-focused brand identity
-  - Implemented using Next.js Image component with consistent styling and animations matching the team photos
+# Core Features
+*   **Subscription Input UI (`subscribe-input.tsx`)**:
+    *   **What:** A minimal input field displayed within the site footer (`footer.tsx`).
+    *   **Why:** Provides a persistent and accessible, yet subtle, way for users to subscribe.
+    *   **How:** A single line-style input field accompanied by the text "SUBSCRIBE TO NEWSLETTER" (all caps, header font). Submission is triggered by the Enter key press.
+*   **Email Validation (Zod)**:
+    *   **What:** Validation of the entered text to ensure it's a correctly formatted email address.
+    *   **Why:** Prevents invalid data from being submitted and stored, ensuring data quality.
+    *   **How:** Implemented both client-side (for immediate feedback) and server-side (for security) using the Zod library. Validation errors are displayed to the user (beige text).
+*   **Server Action (`app/actions/add-email-to-sheet.ts`)**:
+    *   **What:** A Next.js server action responsible for handling the subscription submission.
+    *   **Why:** Provides a secure backend endpoint to process the email, perform server-side validation, and interact with the Google Sheets API.
+    *   **How:** Receives the email from the frontend, re-validates it, authenticates with Google Sheets API using a service account, and appends the email and timestamp to the designated sheet.
+*   **Google Sheets Integration**:
+    *   **What:** Storing submitted email addresses and timestamps in a specific Google Sheet.
+    *   **Why:** Provides a simple, accessible database for collecting subscription data without requiring complex backend infrastructure.
+    *   **How:** The server action uses the `googleapis` library and service account credentials (`lib/siredesign-4227867bd281.json`) to append a new row with the email and an ET-formatted timestamp to the `SireDesign.com Web Submissions` sheet (ID: `1uBawMgtpx7h0AEL1dlnHq221T5wDR5QirHQR7ZnxLeI`).
+*   **User Feedback (shadcn/ui Toast)**:
+    *   **What:** Notifications displayed to the user upon submission attempt.
+    *   **Why:** Informs the user about the outcome of their action (success or failure/validation error).
+    *   **How:** Uses shadcn/ui toast component for success messages. Validation errors are displayed as inline text near the input. Basic UI-level spam prevention (temporary input disablement) is included.
 
-# User Experience  
-- **Primary User Persona**: Potential clients considering Sire Design for interior design projects
-  - Seeking to understand the company's approach and expertise
-  - Need clear, concise information about the company's values and capabilities
+# User Experience
+*   **User Persona:** Any visitor to the SireDesign website interested in receiving updates.
+*   **Key User Flow:**
+    1.  User scrolls to the footer of the website.
+    2.  User notices the subtle "SUBSCRIBE TO NEWSLETTER" input in the bottom right.
+    3.  User types their email address into the input field.
+    4.  User presses the Enter key.
+    5.  *If valid:* User sees a success toast notification.
+    6.  *If invalid:* User sees a beige error message indicating an invalid email format.
+*   **UI/UX Considerations:**
+    *   **Minimalism:** The design must be extremely subtle and align with the site's aesthetic. Avoid prominent buttons or flashy elements.
+    *   **Placement:** Bottom-right corner of the footer.
+    *   **Clarity:** Despite minimalism, the "SUBSCRIBE TO NEWSLETTER" text (header font, all caps) should clearly indicate the input's purpose.
+    *   **Feedback:** Immediate and clear feedback via toast (success) or inline message (validation error).
+    *   **Accessibility:** Ensure the input field and any feedback messages meet basic accessibility standards.
 
-- **Key User Flow**:
-  1. User navigates to the Studio page to learn about the company
-  2. Views the founder's quote at the top of the page
-  3. Scrolls down to read about the company's design approach and philosophy
-  4. Continues to scroll to view individual team members
+# Technical Architecture
+*   **System Components:**
+    *   `footer.tsx`: React component rendering the site footer, including the subscription input.
+    *   `subscribe-input.tsx`: React component containing the input field, label, client-side validation logic, and submission trigger.
+    *   `app/actions/add-email-to-sheet.ts`: Next.js Server Action handling backend logic (validation, Google Sheets API interaction).
+*   **Data Model (Google Sheet Row):**
+    *   `email` (string): The validated email address.
+    *   `timestamp` (string): Submission timestamp formatted to Eastern Time (America/New_York).
+*   **APIs and Integrations:**
+    *   Google Sheets API v4 (via `googleapis` Node.js library).
+    *   Google Cloud Service Account for authentication.
+*   **Libraries/Frameworks:**
+    *   Next.js (App Router)
+    *   React
+    *   Zod (validation)
+    *   `googleapis`
+    *   shadcn/ui (Toast component)
+    *   Date handling library (e.g., `date-fns-tz`) for timezone conversion.
+*   **Infrastructure Requirements:**
+    *   Node.js environment.
+    *   Google Cloud Project with Sheets API enabled and a Service Account configured.
+    *   Deployed Next.js application environment capable of securely storing and accessing the service account key file.
 
-- **UI/UX Considerations**:
-  - Section must visually integrate with the existing page design
-  - Typography must maintain brand consistency using the established font hierarchy
-  - Image animation should match team photos for visual cohesion
-  - Content should be scannable with clear visual hierarchy
-
-# Technical Architecture  
-- **System Components**:
-  - New React component (`about-section.tsx`) to be placed in the Studio page component
-  - Uses Next.js Image component for optimized image loading and display
-  - Implements Framer Motion for animations consistent with team section
-
-- **Data Model**:
-  - Static content embedded directly in the component
-  - No database or API integration required
-  - Future consideration: potential CMS integration for editable content
-
-- **Component Structure**:
-  ```tsx
-  // about-section.tsx
-  "use client";
-  
-  import { motion } from "framer-motion";
-  import Image from "next/image";
-  
-  export default function AboutSection() {
-    // Animation variants matching TeamPageClient
-    // Image loading state management
-    // Return JSX with heading, paragraphs, and image
-  }
-  ```
-
-- **Integration Points**:
-  - Import and place between StudioQuote and TeamPageClient components in studio/page.tsx
-  - Maintain consistent padding and layout with surrounding sections
-
-# Development Roadmap  
-- **MVP Requirements (Phase 1)**:
-  1. Create AboutSection component with basic structure
-     - Static heading and paragraph text
-     - Simple image implementation
-     - Basic responsive layout
-  2. Integrate component into Studio page between quote and team sections
-  3. Apply basic styling for typography and spacing
-  4. Implement basic responsive behavior
-  
-- **Enhancements (Phase 2)**:
-  1. Add image loading animations matching team photos
-     - Implement shimmer effect placeholder
-     - Add fade-in animation
-  2. Improve typography and spacing
-     - Fine-tune font sizes across breakpoints
-     - Optimize paragraph width for readability
-  3. Refine responsive layout
-     - Adjust image and text positioning for different screen sizes
-
-- **Future Iterations (Phase 3)**:
-  1. Extract content to CMS for easy updates without code changes
-  2. Add multiple image capability with carousel or grid display
-  3. Implement localization support for international visitors
+# Development Roadmap
+*   **MVP Requirements:**
+    1.  **Google Sheets Setup:** Create the target Google Sheet (`SireDesign.com Web Submissions`) with `email` and `timestamp` columns. Ensure service account (`lib/siredesign-4227867bd281.json`) has write access.
+    2.  **Server Action (`add-email-to-sheet.ts`):** Implement core logic: receive email, perform server-side Zod validation, authenticate with Google API, format timestamp to ET, append valid email and timestamp to the sheet, return success/error status.
+    3.  **Subscription Input Component (`subscribe-input.tsx`):** Create the input field, label ("SUBSCRIBE TO NEWSLETTER"), implement Enter key submission trigger, integrate client-side Zod validation, display beige validation error messages, call the server action on valid submission.
+    4.  **Footer Component (`footer.tsx`):** Create the basic footer structure and integrate the `subscribe-input.tsx` component in the bottom-right position.
+    5.  **Feedback Integration:** Implement shadcn/ui toast notification for successful submissions based on the server action's response. Implement basic UI input disabling after submission attempt.
+*   **Future Enhancements:**
+    *   Implement server-side rate limiting.
+    *   Add double opt-in email confirmation flow.
+    *   More sophisticated spam detection/prevention (e.g., honeypot field, CAPTCHA).
+    *   Integration with a dedicated Email Service Provider (ESP).
 
 # Logical Dependency Chain
-1. **Foundation First**:
-   - Study existing components (StudioQuote.tsx and TeamPageClient.tsx) to understand styling and animation patterns
-   - Ensure the studio.jpg image is properly prepared and optimized
+1.  **Foundation (Setup & Backend):**
+    *   Configure Google Sheet and Service Account access. (External Prerequisite)
+    *   Implement the core `add-email-to-sheet.ts` server action, including Google API authentication, data writing logic, server-side validation, and timestamp formatting. Test this action independently if possible.
+2.  **Frontend Core (Input & Validation):**
+    *   Build the `subscribe-input.tsx` component with the visual input, label, client-side Zod validation, and Enter key submission trigger mechanism that calls the (now existing) server action.
+3.  **Integration & UI:**
+    *   Create the `footer.tsx` component and place the `subscribe-input.tsx` within it, styling for position (bottom-right) and subtlety.
+    *   Integrate the shadcn/ui toast feedback based on the success/error response from the server action call in `subscribe-input.tsx`. Add UI disablement logic.
+4.  **Refinement:**
+    *   Fine-tune styling to perfectly match the site's aesthetic.
+    *   Ensure responsiveness across devices.
 
-2. **Quick Visible Results**:
-   - Implement basic section structure first with the heading and text content
-   - Add the image with basic styling to get a functional, visible component
+# Risks and Mitigations
+*   **Technical - Google API Authentication:** Service account setup or authentication flow might be complex or fail.
+    *   **Mitigation:** Carefully follow Google Cloud documentation, test authentication logic early and independently, ensure key file is correctly placed and secured. Log errors clearly server-side.
+*   **Technical - Timezone Handling:** Incorrectly handling timestamp conversion to ET.
+    *   **Mitigation:** Use a reliable date/time library (like `date-fns-tz`), explicitly set the target timezone (`America/New_York`), and test timestamp output.
+*   **Scope - Defining MVP:** Ensuring the initial build focuses only on core requirements without feature creep.
+    *   **Mitigation:** Strictly adhere to the MVP requirements defined in the "Development Roadmap". Defer all "Future Enhancements" until the MVP is fully functional and tested.
+*   **Security - Service Account Key Exposure:** Risk of committing the key file to version control or exposing it client-side.
+    *   **Mitigation:** Add the key file path (`lib/siredesign-4227867bd281.json`) to `.gitignore` immediately. Ensure all file access occurs *only* within the server action (`add-email-to-sheet.ts`). Conduct code reviews focusing on security.
+*   **Data - Sheet Access Issues:** Google Sheet permissions might change, or the sheet might be modified unexpectedly.
+    *   **Mitigation:** Ensure the service account has explicit, minimal permissions. Implement robust error handling in the server action for API write failures. Regularly check sheet integrity (though this is outside the app's scope).
 
-3. **Component Structure**:
-   - Create about-section.tsx component in the appropriate directory
-   - Integrate it into studio/page.tsx
-   - Implement basic styling to match the page design
-
-4. **Progressive Enhancement**:
-   - Add animations only after the basic structure is working
-   - Implement responsive behavior and test across breakpoints
-   - Fine-tune typography and spacing last
-
-# Risks and Mitigations  
-- **Technical Challenges**:
-  - **Risk**: Image loading may cause layout shifts affecting user experience
-  - **Mitigation**: Implement proper image dimensions, aspect ratio, and placeholder
-
-- **MVP Scope**:
-  - **Risk**: Section might look inconsistent with team section if animations are complex
-  - **Mitigation**: Start with simpler implementation, then incrementally match animation complexity
-
-- **Resource Constraints**:
-  - **Risk**: Time required to perfectly match team section animations could be excessive
-  - **Mitigation**: Prioritize content placement and basic styling first, enhance animations in later iterations
-
-# Appendix  
-- **Technical Specifications**:
-  - React/Next.js component
-  - Framer Motion for animations
-  - Tailwind CSS for styling
-  - Next.js Image component for performance optimization
-
-- **Content Requirements**:
-  - Heading: "About Sire Design" (h1 with header font)
-  - Body Text: Three paragraphs as specified in requirements
-  - Image: public/studio.jpg (to be displayed using Next.js Image component)
-
-- **Design System Notes**:
-  - Font hierarchy:
-    - Heading: font-geist-mono (matches "Our Team" heading)
-    - Body text: Default site paragraph styling
-  - Color scheme: Maintains existing site colors
-  - Spacing: Consistent with surrounding sections
+# Appendix
+*   **Google Sheet Name:** `SireDesign.com Web Submissions`
+*   **Google Sheet ID:** `1uBawMgtpx7h0AEL1dlnHq221T5wDR5QirHQR7ZnxLeI`
+*   **Google Service Account Key File:** `lib/siredesign-4227867bd281.json` (Ensure this is in `.gitignore`)
+*   **Required Sheet Columns:** `email`, `timestamp` (in that order)
+*   **Target Timestamp Timezone:** `America/New_York` (ET)
+*   **Validation Library:** Zod
+*   **Feedback Component:** shadcn/ui Toast
+*   **Font:** Use designated site header font for "SUBSCRIBE TO NEWSLETTER".
+*   **Detailed User Stories (Reference):**
+    *   US-001: Find and use form in footer.
+    *   US-002: Submit via Enter key.
+    *   US-003: Receive success confirmation (toast).
+    *   US-004: Receive invalid format notification (beige text).
+    *   US-005: Prevent rapid resubmission (UI disable).
+    *   US-006: System authenticates securely via Service Account.
+    *   US-007: System records email and ET timestamp in Google Sheet upon valid submission.

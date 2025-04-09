@@ -23,6 +23,7 @@
 # misc
 .DS_Store
 *.pem
+lib/siredesign-4227867bd281.json
 
 # debug
 npm-debug.log*
