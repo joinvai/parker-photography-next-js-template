@@ -82,20 +82,20 @@ export default function TeamPageClient({ teamData }: TeamPageClientProps) {
             />
           </div>
           <div className="w-full">
-            <h3 className="text-sm uppercase tracking-widest text-gray-500 mb-2">
+            <h3 className="font-sans text-sm uppercase text-[#1a1b1f] tracking-widest mb-2">
               {member.role}
             </h3>
             <h2 className="text-3xl font-geist-mono mb-4">{member.fullName}</h2>
-            <Accordion type="single" collapsible className="w-full">
-              <AccordionItem value="item-1">
-                <AccordionTrigger className="font-sans hover:no-underline justify-start gap-2 py-1 mb-6 text-gray-700 font-normal text-base">
-                  Read Bio
-                </AccordionTrigger>
-                <AccordionContent>
-                  <p className="text-gray-700">{member.bio}</p>
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
+            {member.bio && (
+              <Accordion type="single" collapsible>
+                <AccordionItem value="item-1">
+                  <AccordionTrigger className="py-1 mb-6 mx-auto" />
+                  <AccordionContent>
+                    <p className="text-gray-700">{member.bio}</p>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+            )}
           </div>
         </motion.div>
       ))}
