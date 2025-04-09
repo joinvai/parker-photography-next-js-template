@@ -16,7 +16,7 @@ import { z } from "zod";
 
 // Assuming you have a header font defined in your Tailwind config or global CSS
 // Use the variable defined in layout.tsx (e.g., editorialNew.variable is --font-editorial-new)
-const headerFontClass = "font-editorial"; // Use the CSS variable name directly
+// const headerFontClass = "font-editorial"; // Use the CSS variable name directly
 const beigeTextColor = "text-beige-600"; // Define your beige color class - needs configuration in tailwind.config.js
 
 // Component to handle newsletter subscription input
@@ -70,48 +70,50 @@ const SubscribeInput: FC = () => {
   };
 
   return (
-    <form
-      ref={formRef}
-      onSubmit={handleSubmit}
-      className="relative w-full max-w-xs"
-    >
-      <label
-        htmlFor="email-subscribe"
-        className={`block text-sm font-medium uppercase mb-1 ${headerFontClass}`}
+    // Use relative positioning for the error message container
+    <div className="relative w-full max-w-xs">
+      <form
+        ref={formRef}
+        onSubmit={handleSubmit}
+        className="flex items-baseline" // Use flex and align baseline for label/input
       >
-        SUBSCRIBE TO NEWSLETTER
-      </label>
-      <input
-        id="email-subscribe"
-        type="email"
-        name="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        onKeyDown={handleKeyDown}
-        placeholder="Enter your email"
-        disabled={isPending}
-        className={`
-          block w-full px-3 py-2 
-          border-b border-gray-500 dark:border-gray-400 
-          bg-transparent 
-          focus:outline-none focus:border-black dark:focus:border-white
-          placeholder-gray-400 dark:placeholder-gray-500
-          text-sm
-          ${isPending ? "opacity-50 cursor-not-allowed" : ""}
-          ${error ? "border-red-500" : ""} // Use red for error border for now
-        `}
-        aria-describedby="email-error"
-      />
+        <label
+          htmlFor="email-subscribe"
+          className="text-sm font-medium uppercase mr-2 whitespace-nowrap font-heading"
+        >
+          SUBSCRIBE TO NEWSLETTER
+        </label>
+        <input
+          id="email-subscribe"
+          type="email"
+          name="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          onKeyDown={handleKeyDown}
+          // Remove placeholder
+          disabled={isPending}
+          className={`
+            flex-grow // Allow input to take remaining space
+            border-b border-gray-500 dark:border-gray-400
+            bg-transparent
+            focus:outline-none focus:border-black dark:focus:border-white
+            text-sm leading-none py-1 // Adjusted padding/leading for minimal look
+            ${isPending ? "opacity-50 cursor-not-allowed" : ""}
+            ${error ? "border-red-500" : ""} 
+          `}
+          aria-describedby="email-error"
+        />
+      </form>
       {error && (
+        // Position error below the form container
         <p
           id="email-error"
-          className={`mt-1 text-xs ${beigeTextColor} absolute -bottom-5 left-0`}
+          className={`mt-1 text-xs ${beigeTextColor} absolute left-0`}
         >
           {error}
         </p>
       )}
-      {/* Success message handling is now done via Toast */}
-    </form>
+    </div>
   );
 };
 
