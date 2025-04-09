@@ -4,6 +4,14 @@ import type { TeamMember } from "@/app/studio/team";
 import { motion } from "framer-motion";
 import Image from "next/image";
 
+// Import the Accordion components
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+
 interface TeamPageClientProps {
   teamData: TeamMember[];
 }
@@ -50,7 +58,7 @@ export default function TeamPageClient({ teamData }: TeamPageClientProps) {
 
   return (
     <motion.div
-      className="mx-auto grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-16"
+      className="mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
@@ -78,7 +86,16 @@ export default function TeamPageClient({ teamData }: TeamPageClientProps) {
               {member.role}
             </h3>
             <h2 className="text-3xl font-geist-mono mb-4">{member.fullName}</h2>
-            <p className="mb-6 text-gray-700">{member.bio}</p>
+            <Accordion type="single" collapsible className="w-full">
+              <AccordionItem value="item-1">
+                <AccordionTrigger className="font-sans hover:no-underline justify-start gap-2 py-1 mb-6 text-gray-700 font-normal text-base">
+                  Read Bio
+                </AccordionTrigger>
+                <AccordionContent>
+                  <p className="text-gray-700">{member.bio}</p>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
           </div>
         </motion.div>
       ))}

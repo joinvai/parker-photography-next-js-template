@@ -1,121 +1,88 @@
-# Product Requirements Document: Footer Newsletter Subscription
-
 # Overview
-This document outlines the requirements for a newsletter subscription feature integrated into the website's footer. The goal is to provide a simple, minimally designed input for users (site visitors) to submit their email addresses for future newsletter campaigns. The feature solves the need for capturing user interest subtly and efficiently, leveraging Next.js server actions and Google Sheets for data storage. It aims to be valuable by providing a low-friction way to build an email list directly from the website.
+This document outlines the requirements for updating the team member display grid on the `/src/app/studio/page.tsx` page and enhancing the existing accordion UI component located at `/src/components/ui/accordion.tsx`. The primary problem is the current two-column layout for the team grid is not optimal for scannability on larger screens, and the existing accordion component lacks clear visual state indication and interactivity. This project aims to improve the visual layout of the team section, enhance the accordion's usability with a rotating icon and smooth animations, and ensure the improved accordion is a reusable component for consistency across the application. This benefits site visitors by providing a clearer interface and developers by providing a more robust UI primitive.
 
 # Core Features
-*   **Subscription Input UI (`subscribe-input.tsx`)**:
-    *   **What:** A minimal input field displayed within the site footer (`footer.tsx`).
-    *   **Why:** Provides a persistent and accessible, yet subtle, way for users to subscribe.
-    *   **How:** A single line-style input field accompanied by the text "SUBSCRIBE TO NEWSLETTER" (all caps, header font). Submission is triggered by the Enter key press.
-*   **Email Validation (Zod)**:
-    *   **What:** Validation of the entered text to ensure it's a correctly formatted email address.
-    *   **Why:** Prevents invalid data from being submitted and stored, ensuring data quality.
-    *   **How:** Implemented both client-side (for immediate feedback) and server-side (for security) using the Zod library. Validation errors are displayed to the user (beige text).
-*   **Server Action (`app/actions/add-email-to-sheet.ts`)**:
-    *   **What:** A Next.js server action responsible for handling the subscription submission.
-    *   **Why:** Provides a secure backend endpoint to process the email, perform server-side validation, and interact with the Google Sheets API.
-    *   **How:** Receives the email from the frontend, re-validates it, authenticates with Google Sheets API using a service account, and appends the email and timestamp to the designated sheet.
-*   **Google Sheets Integration**:
-    *   **What:** Storing submitted email addresses and timestamps in a specific Google Sheet.
-    *   **Why:** Provides a simple, accessible database for collecting subscription data without requiring complex backend infrastructure.
-    *   **How:** The server action uses the `googleapis` library and service account credentials (`lib/siredesign-4227867bd281.json`) to append a new row with the email and an ET-formatted timestamp to the `SireDesign.com Web Submissions` sheet (ID: `1uBawMgtpx7h0AEL1dlnHq221T5wDR5QirHQR7ZnxLeI`).
-*   **User Feedback (shadcn/ui Toast)**:
-    *   **What:** Notifications displayed to the user upon submission attempt.
-    *   **Why:** Informs the user about the outcome of their action (success or failure/validation error).
-    *   **How:** Uses shadcn/ui toast component for success messages. Validation errors are displayed as inline text near the input. Basic UI-level spam prevention (temporary input disablement) is included.
+## 1. Team Grid Layout Update
+*   **What it does:** Modifies the team member section on `/src/app/studio/page.tsx` to display content in a three-column grid layout on larger screens (Tailwind `lg` breakpoint and up).
+*   **Why it's important:** Improves scannability and information density for users viewing the site on desktops or larger tablets.
+*   **How it works:** Achieved by applying appropriate Tailwind CSS v3 grid utility classes to the container element wrapping the team members. The layout will responsively adjust to fewer columns on smaller breakpoints (`md`, `sm`). (REQ-GRID-001, REQ-GRID-002)
+
+## 2. Enhanced Accordion Component
+*   **What it does:** Modifies the existing reusable accordion component (`/src/components/ui/accordion.tsx`) to include an interactive SVG icon that indicates the collapsed/expanded state.
+*   **Why it's important:** Provides clear visual feedback to users about the accordion's state and improves the perceived quality and interactivity of the UI. Ensures consistency for this pattern across the site.
+*   **How it works:**
+    *   Integrates a beige SVG triangle icon within the accordion's trigger element. (REQ-ACC-001, REQ-ACC-002 - updated color)
+        ```xml
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><title>caret-down</title><g fill="#F5F5DC"> <path d="M21 7L3 7L12 19L21 7Z" fill="#F5F5DC"></path> </g></svg> 
+        ```
+        *(Note: Using beige `#F5F5DC`)*
+    *   The icon visually points upwards (rotated 180 degrees or default up) when collapsed and downwards (default down or rotated back) when expanded. (REQ-ACC-003, REQ-ACC-004)
+    *   Clicking/activating the trigger toggles the content's visibility and animates the icon's rotation by 180 degrees using Tailwind CSS transform and transition utilities (`transition-transform`, `rotate-180`, appropriate duration). (REQ-ACC-005, REQ-ACC-007)
+    *   The expansion/collapse of the content area is also smoothly animated. (REQ-ACC-006)
+    *   Accordion expansion/collapse correctly pushes/pulls subsequent page content. (REQ-ACC-008)
+    *   All modifications are encapsulated within the reusable component. (REQ-ACC-009)
 
 # User Experience
-*   **User Persona:** Any visitor to the SireDesign website interested in receiving updates.
-*   **Key User Flow:**
-    1.  User scrolls to the footer of the website.
-    2.  User notices the subtle "SUBSCRIBE TO NEWSLETTER" input in the bottom right.
-    3.  User types their email address into the input field.
-    4.  User presses the Enter key.
-    5.  *If valid:* User sees a success toast notification.
-    6.  *If invalid:* User sees a beige error message indicating an invalid email format.
+*   **User Personas:**
+    *   **Site Visitor (Desktop/Mobile):** Wants to easily scan the team members and understand how to reveal more information (like biographies).
+    *   **Keyboard-Only User:** Needs to be able to navigate and operate interactive elements like accordions without a mouse. (US-005)
+    *   **Developer:** Needs reusable, consistent, and accessible UI components. (US-004)
+*   **Key User Flows:**
+    1.  Visitor navigates to the Studio page.
+    2.  Visitor observes the team grid layout (3 columns on large screens, responsive otherwise). (US-001)
+    3.  Visitor sees an accordion element (e.g., for a team member bio) with an upward-pointing beige triangle. (US-002)
+    4.  Visitor clicks (or activates via keyboard) the accordion trigger.
+    5.  Visitor observes the triangle smoothly rotate downwards as the content area smoothly expands, pushing down other content. (US-003)
+    6.  Visitor clicks again; observes the reverse animation.
 *   **UI/UX Considerations:**
-    *   **Minimalism:** The design must be extremely subtle and align with the site's aesthetic. Avoid prominent buttons or flashy elements.
-    *   **Placement:** Bottom-right corner of the footer.
-    *   **Clarity:** Despite minimalism, the "SUBSCRIBE TO NEWSLETTER" text (header font, all caps) should clearly indicate the input's purpose.
-    *   **Feedback:** Immediate and clear feedback via toast (success) or inline message (validation error).
-    *   **Accessibility:** Ensure the input field and any feedback messages meet basic accessibility standards.
+    *   **Visual Feedback:** The rotating icon provides immediate feedback on state changes.
+    *   **Smoothness:** Animations must be fluid and non-jarring (REQ-NFR-002).
+    *   **Responsiveness:** Grid and accordion must function correctly on all standard device sizes (REQ-NFR-001).
+    *   **Accessibility:** Accordion must be keyboard navigable and ARIA attributes must be correctly implemented for screen readers (REQ-NFR-003, US-005). The beige icon color should be checked for sufficient contrast against its background.
 
 # Technical Architecture
 *   **System Components:**
-    *   `footer.tsx`: React component rendering the site footer, including the subscription input.
-    *   `subscribe-input.tsx`: React component containing the input field, label, client-side validation logic, and submission trigger.
-    *   `app/actions/add-email-to-sheet.ts`: Next.js Server Action handling backend logic (validation, Google Sheets API interaction).
-*   **Data Model (Google Sheet Row):**
-    *   `email` (string): The validated email address.
-    *   `timestamp` (string): Submission timestamp formatted to Eastern Time (America/New_York).
-*   **APIs and Integrations:**
-    *   Google Sheets API v4 (via `googleapis` Node.js library).
-    *   Google Cloud Service Account for authentication.
-*   **Libraries/Frameworks:**
-    *   Next.js (App Router)
-    *   React
-    *   Zod (validation)
-    *   `googleapis`
-    *   shadcn/ui (Toast component)
-    *   Date handling library (e.g., `date-fns-tz`) for timezone conversion.
-*   **Infrastructure Requirements:**
-    *   Node.js environment.
-    *   Google Cloud Project with Sheets API enabled and a Service Account configured.
-    *   Deployed Next.js application environment capable of securely storing and accessing the service account key file.
+    *   Frontend application (React/Next.js assumed).
+    *   Target Page: `/src/app/studio/page.tsx`.
+    *   Target Component: `/src/components/ui/accordion.tsx`.
+*   **Styling:** Tailwind CSS v3 utility classes.
+*   **Key Libraries/Frameworks:** React (or similar framework handling the component logic).
+*   **Implementation Details:**
+    *   Modify CSS classes (Tailwind) on the grid container in `studio/page.tsx`.
+    *   Modify the React component structure in `ui/accordion.tsx` to include the SVG and state management (likely React state) to toggle classes/styles for rotation and expansion.
+    *   Use Tailwind utilities for:
+        *   Grid layout (`grid`, `grid-cols-3`, `md:grid-cols-2`, etc.)
+        *   Transitions (`transition-transform`, `transition-all`, `duration-200`, `ease-in-out`, etc.)
+        *   Transforms (`rotate-180`)
+    *   Implement ARIA attributes (`aria-expanded`, `aria-controls`) dynamically based on component state.
 
 # Development Roadmap
 *   **MVP Requirements:**
-    1.  **Google Sheets Setup:** Create the target Google Sheet (`SireDesign.com Web Submissions`) with `email` and `timestamp` columns. Ensure service account (`lib/siredesign-4227867bd281.json`) has write access.
-    2.  **Server Action (`add-email-to-sheet.ts`):** Implement core logic: receive email, perform server-side Zod validation, authenticate with Google API, format timestamp to ET, append valid email and timestamp to the sheet, return success/error status.
-    3.  **Subscription Input Component (`subscribe-input.tsx`):** Create the input field, label ("SUBSCRIBE TO NEWSLETTER"), implement Enter key submission trigger, integrate client-side Zod validation, display beige validation error messages, call the server action on valid submission.
-    4.  **Footer Component (`footer.tsx`):** Create the basic footer structure and integrate the `subscribe-input.tsx` component in the bottom-right position.
-    5.  **Feedback Integration:** Implement shadcn/ui toast notification for successful submissions based on the server action's response. Implement basic UI input disabling after submission attempt.
+    1.  Modify `/src/components/ui/accordion.tsx` to include the beige SVG icon, rotation animation based on state, and smooth content expansion/collapse using Tailwind utilities. Ensure accessibility attributes are correct.
+    2.  Update `/src/app/studio/page.tsx` to use a 3-column responsive grid layout for the team section using Tailwind utilities.
+    3.  Ensure the Studio page uses the updated accordion component correctly (if applicable for team bios).
 *   **Future Enhancements:**
-    *   Implement server-side rate limiting.
-    *   Add double opt-in email confirmation flow.
-    *   More sophisticated spam detection/prevention (e.g., honeypot field, CAPTCHA).
-    *   Integration with a dedicated Email Service Provider (ESP).
+    *   (None specified in this scope). Potential future items could include persisting accordion state or adding configuration options to the component.
 
 # Logical Dependency Chain
-1.  **Foundation (Setup & Backend):**
-    *   Configure Google Sheet and Service Account access. (External Prerequisite)
-    *   Implement the core `add-email-to-sheet.ts` server action, including Google API authentication, data writing logic, server-side validation, and timestamp formatting. Test this action independently if possible.
-2.  **Frontend Core (Input & Validation):**
-    *   Build the `subscribe-input.tsx` component with the visual input, label, client-side Zod validation, and Enter key submission trigger mechanism that calls the (now existing) server action.
-3.  **Integration & UI:**
-    *   Create the `footer.tsx` component and place the `subscribe-input.tsx` within it, styling for position (bottom-right) and subtlety.
-    *   Integrate the shadcn/ui toast feedback based on the success/error response from the server action call in `subscribe-input.tsx`. Add UI disablement logic.
-4.  **Refinement:**
-    *   Fine-tune styling to perfectly match the site's aesthetic.
-    *   Ensure responsiveness across devices.
+1.  **Foundation:** Confirm the existence and basic functionality of the `/src/components/ui/accordion.tsx` component.
+2.  **Component Enhancement:** Modify `/src/components/ui/accordion.tsx` to implement the new icon, rotation, and animation features. This can be developed and tested in isolation (e.g., using Storybook or a dedicated test page).
+3.  **Page Integration:** Update the `/src/app/studio/page.tsx` grid layout. If this page uses the accordion, verify it integrates correctly with the enhanced component. Implementing the visual component change first allows for quicker feedback.
 
 # Risks and Mitigations
-*   **Technical - Google API Authentication:** Service account setup or authentication flow might be complex or fail.
-    *   **Mitigation:** Carefully follow Google Cloud documentation, test authentication logic early and independently, ensure key file is correctly placed and secured. Log errors clearly server-side.
-*   **Technical - Timezone Handling:** Incorrectly handling timestamp conversion to ET.
-    *   **Mitigation:** Use a reliable date/time library (like `date-fns-tz`), explicitly set the target timezone (`America/New_York`), and test timestamp output.
-*   **Scope - Defining MVP:** Ensuring the initial build focuses only on core requirements without feature creep.
-    *   **Mitigation:** Strictly adhere to the MVP requirements defined in the "Development Roadmap". Defer all "Future Enhancements" until the MVP is fully functional and tested.
-*   **Security - Service Account Key Exposure:** Risk of committing the key file to version control or exposing it client-side.
-    *   **Mitigation:** Add the key file path (`lib/siredesign-4227867bd281.json`) to `.gitignore` immediately. Ensure all file access occurs *only* within the server action (`add-email-to-sheet.ts`). Conduct code reviews focusing on security.
-*   **Data - Sheet Access Issues:** Google Sheet permissions might change, or the sheet might be modified unexpectedly.
-    *   **Mitigation:** Ensure the service account has explicit, minimal permissions. Implement robust error handling in the server action for API write failures. Regularly check sheet integrity (though this is outside the app's scope).
+*   **Technical Challenges:**
+    *   *Risk:* Ensuring smooth animation performance across all target browsers/devices.
+    *   *Mitigation:* Use hardware-accelerated CSS transitions/transforms (standard with Tailwind utilities). Test thoroughly on different browsers and devices.
+    *   *Risk:* Ensuring correct ARIA implementation for accessibility.
+    *   *Mitigation:* Follow ARIA authoring practices for accordions. Test with screen readers (e.g., NVDA, VoiceOver).
+    *   *Risk:* Potential CSS conflicts with existing styles.
+    *   *Mitigation:* Scope styles appropriately or rely on Tailwind's utility-first nature which minimizes conflicts. Test layout changes carefully.
+    *   *Risk:* Contrast issues with the beige icon against various potential backgrounds.
+    *   *Mitigation:* Test the icon against expected background colors. Consider defining the icon color via CSS variable or prop for flexibility if needed, though hardcoding beige is requested for now.
+*   **Figuring out the MVP:** The MVP scope is well-defined and small, risk is low.
+*   **Resource Constraints:** Assumes developer availability to implement the changes.
 
 # Appendix
-*   **Google Sheet Name:** `SireDesign.com Web Submissions`
-*   **Google Sheet ID:** `1uBawMgtpx7h0AEL1dlnHq221T5wDR5QirHQR7ZnxLeI`
-*   **Google Service Account Key File:** `lib/siredesign-4227867bd281.json` (Ensure this is in `.gitignore`)
-*   **Required Sheet Columns:** `email`, `timestamp` (in that order)
-*   **Target Timestamp Timezone:** `America/New_York` (ET)
-*   **Validation Library:** Zod
-*   **Feedback Component:** shadcn/ui Toast
-*   **Font:** Use designated site header font for "SUBSCRIBE TO NEWSLETTER".
-*   **Detailed User Stories (Reference):**
-    *   US-001: Find and use form in footer.
-    *   US-002: Submit via Enter key.
-    *   US-003: Receive success confirmation (toast).
-    *   US-004: Receive invalid format notification (beige text).
-    *   US-005: Prevent rapid resubmission (UI disable).
-    *   US-006: System authenticates securely via Service Account.
-    *   US-007: System records email and ET timestamp in Google Sheet upon valid submission.
+*   **SVG Icon Color:** Beige (`#F5F5DC`) - verify contrast accessibility.
+*   **Tailwind CSS Version:** Assumed v3.x.
+*   **Open Questions Resolved:** Icon color specified as beige. Default animation timings assumed unless specified otherwise during development.
