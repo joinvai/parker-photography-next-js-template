@@ -46,7 +46,6 @@ export default function ProjectDetailClient({
                 !heroImageLoaded && "blur-sm",
               )}
               priority={true}
-              quality={95}
               sizes="100vw"
               placeholder="blur"
               blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQwIiBoZWlnaHQ9IjQ4MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2ZXJzaW9uPSIxLjEiLz4="

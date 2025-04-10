@@ -166,7 +166,6 @@ export default function IndividualProjectImage({
           )}
           priority={shouldPrioritize}
           sizes={imageSizes}
-          quality={shouldPrioritize ? 95 : 85}
           onLoad={() => setImageLoaded(true)}
           loading={shouldPrioritize ? "eager" : "lazy"}
           placeholder="blur"
@@ -185,7 +184,6 @@ export default function IndividualProjectImage({
                 : "opacity-0",
             )}
             sizes={imageSizes}
-            quality={75}
             loading="lazy"
             aria-hidden="true"
             onLoad={() => setHoverImageLoaded(true)}

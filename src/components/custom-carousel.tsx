@@ -196,7 +196,6 @@ export function CustomCarousel({ projects, className }: CustomCarouselProps) {
                     priority={originalIndex < itemsPerView}
                     src={project.mainImage}
                     alt={project.name}
-                    quality={100}
                     className="object-cover w-full h-full"
                   />
                   {/* Show text overlay based on hoveredIndex state and position based on mouse */}

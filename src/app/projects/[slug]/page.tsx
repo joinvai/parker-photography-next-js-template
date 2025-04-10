@@ -7,22 +7,14 @@ import type { Metadata, ResolvingMetadata } from "next"; // Ensure ResolvingMeta
 import { notFound } from "next/navigation";
 // motion and cn imports removed
 
-// --- Proposed Change: Define ProjectPageProps ---
-// Define the expected shape of params for clarity and type safety
-interface ProjectPageProps {
-  params: {
-    slug: string;
-  };
-  // searchParams?: { [key: string]: string | string[] | undefined }; // Keep if needed, as per spec comment
-}
-
 // Function to generate metadata for the page (Server-side)
-// Note: Updated to use ProjectPageProps for consistency, though the core issue is in the page component itself.
 export async function generateMetadata(
-  { params }: ProjectPageProps,
-  parent: ResolvingMetadata, // Assuming parent is needed, add if necessary
+  // Adjust signature to accept props, allowing await on params
+  props: { params: { slug: string } },
+  parent: ResolvingMetadata,
 ): Promise<Metadata> {
-  // --- Maintain direct slug access from params ---
+  // Await params before accessing its properties
+  const params = await props.params;
   const slug = params.slug;
   const project: Project | undefined = getProjectById(slug);
 
@@ -62,8 +54,9 @@ export async function generateStaticParams() {
 }
 
 // The main page component (SERVER COMPONENT)
-// --- Proposed Change: Update signature and destructure slug ---
-export default async function ProjectPage({ params }: ProjectPageProps) {
+export default async function ProjectPage({
+  params,
+}: { params: { slug: string } }) {
   // 1. Directly destructure 'slug' from the 'params' prop immediately.
   const { slug } = params;
 
