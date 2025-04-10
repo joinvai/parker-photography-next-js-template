@@ -55,6 +55,11 @@ function useMediaQuery(query: string): boolean {
   return matches;
 }
 
+// Define a type for event listener options that includes passive
+interface EventListenerOptionsWithPassive extends EventListenerOptions {
+  passive?: boolean;
+}
+
 function Header({ defaultLogo = false }: HeaderProps) {
   // Responsive breakpoints
   const isMobile = useMediaQuery("(max-width: 639px)");
@@ -232,9 +237,10 @@ function Header({ defaultLogo = false }: HeaderProps) {
         navigator.maxTouchPoints > 0 ||
         (navigator as unknown as { msMaxTouchPoints: number })
           .msMaxTouchPoints > 0 ||
-        ((window as unknown as { DocumentTouch: any }).DocumentTouch &&
+        ((window as unknown as { DocumentTouch?: unknown }).DocumentTouch &&
           document instanceof
-            (window as unknown as { DocumentTouch: any }).DocumentTouch);
+            (window as unknown as { DocumentTouch: { new (): unknown } })
+              .DocumentTouch);
 
       setIsTouchDevice(isTouchCapable);
     };
@@ -243,13 +249,14 @@ function Header({ defaultLogo = false }: HeaderProps) {
     detectTouch();
 
     // Use passive events when supported for better scroll performance
-    const eventOptions = supportsPassive ? { passive: true } : false;
+    const eventOptions: boolean | EventListenerOptionsWithPassive =
+      supportsPassive ? { passive: true } : false;
 
     // Also listen for resize events as device orientation might change capabilities
     window.addEventListener("resize", detectTouch, eventOptions);
 
     return () => {
-      window.removeEventListener("resize", detectTouch, eventOptions as any);
+      window.removeEventListener("resize", detectTouch, eventOptions);
     };
   }, [supportsPassive]);
 
@@ -306,13 +313,10 @@ function Header({ defaultLogo = false }: HeaderProps) {
 
     const handleScroll = () => {
       const currentScrollPosition =
-        window.pageYOffset !== undefined
-          ? window.pageYOffset
-          : (
-              document.documentElement ||
-              document.body.parentNode ||
-              document.body
-            ).scrollTop;
+        window.pageYOffset ?? // Use nullish coalescing for modern browsers
+        document.documentElement.scrollTop ?? // Check documentElement first
+        document.body?.scrollTop ?? // Check body safely
+        0; // Default to 0 if none are available
 
       // Determine scroll direction
       const isScrollingDownNow = currentScrollPosition > previousScrollPosition;
@@ -354,16 +358,13 @@ function Header({ defaultLogo = false }: HeaderProps) {
       }
     };
 
-    // Use passive event listeners when supported
-    const scrollOptions = supportsPassive ? { passive: true } : false;
-    window.addEventListener("scroll", scrollListener, scrollOptions as any);
+    // Use passive events when supported for better scroll performance
+    const scrollOptions: boolean | EventListenerOptionsWithPassive =
+      supportsPassive ? { passive: true } : false;
+    window.addEventListener("scroll", scrollListener, scrollOptions);
 
     return () => {
-      window.removeEventListener(
-        "scroll",
-        scrollListener,
-        scrollOptions as any,
-      );
+      window.removeEventListener("scroll", scrollListener, scrollOptions);
     };
   }, [
     previousScrollPosition,

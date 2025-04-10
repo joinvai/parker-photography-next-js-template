@@ -1,6 +1,5 @@
 "use client"; // Mark this as a Client Component due to useState, useEffect, Framer Motion
 
-import path from "node:path"; // Import path for parsing
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import { useEffect, useState } from "react"; // Keep runtime imports here
@@ -22,16 +21,22 @@ const getAltTextFromPath = (imagePath: string): string => {
     if (parts.length >= 3 && parts[0] === "projects") {
       const projectName = parts[1];
       const imageNameWithExt = parts[parts.length - 1];
-      const imageName = path.parse(imageNameWithExt).name; // Remove file extension
+      // Browser-compatible way to remove extension:
+      const imageName =
+        imageNameWithExt.substring(0, imageNameWithExt.lastIndexOf(".")) ||
+        imageNameWithExt;
       // Replace hyphens/underscores in image name with spaces for better readability
       const formattedImageName = imageName.replace(/[-_]/g, " ");
       return `${projectName} - ${formattedImageName}`;
     }
     // Fallback if structure is different
-    const fallbackName = path
-      .parse(parts[parts.length - 1])
-      .name.replace(/[-_]/g, " ");
-    return fallbackName || "Project image";
+    // Browser-compatible way to remove extension:
+    const fallbackFileName = parts[parts.length - 1];
+    const fallbackName =
+      fallbackFileName.substring(0, fallbackFileName.lastIndexOf(".")) ||
+      fallbackFileName;
+    const formattedFallbackName = fallbackName.replace(/[-_]/g, " ");
+    return formattedFallbackName || "Project image";
   } catch (error) {
     console.error("Error parsing image path for alt text:", error);
     return "Project image"; // Fallback on error

@@ -156,73 +156,81 @@ export function CustomCarousel({ projects, className }: CustomCarouselProps) {
           {visibleProjects.map((projectWithIndex) => {
             const { originalIndex, ...project } = projectWithIndex;
             const isLargeScreen = itemsPerView === 3;
-            // Use originalIndex from the mapped array
             const isPrevTrigger = originalIndex === 0 && isLargeScreen;
             const isNextTrigger =
               originalIndex === itemsPerView - 1 && isLargeScreen;
             const isNavTrigger = isPrevTrigger || isNextTrigger;
 
             return (
-              <motion.div
-                key={project.id} // Use project ID as key within the page
-                className={cn(
-                  // Use the new larger height
-                  "relative overflow-hidden h-[75vh]",
-                  "rounded-none",
-                  // Apply cursor-none only when the text should appear
-                  isNavTrigger && "lg:cursor-none",
-                )}
-                // Use state for hover effects
-                onMouseEnter={() =>
-                  isNavTrigger && setHoveredIndex(originalIndex)
-                }
-                onMouseLeave={() => isNavTrigger && setHoveredIndex(null)}
-                // Add mouse move handler
-                onMouseMove={(e) =>
-                  isNavTrigger && handleMouseMove(e, originalIndex)
-                }
-                onClick={
-                  isNavTrigger
-                    ? isPrevTrigger
-                      ? goToPrevious
-                      : goToNext
-                    : undefined
-                }
-              >
-                <Image
-                  fill
-                  sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                  priority={originalIndex < itemsPerView}
-                  src={project.mainImage}
-                  alt={project.name}
-                  quality={100}
-                  className="object-cover w-full h-full"
-                />
-                {/* Show text overlay based on hoveredIndex state and position based on mouse */}
-                {isNavTrigger &&
-                  hoveredIndex === originalIndex &&
-                  mousePosition[originalIndex] && (
-                    <motion.div
-                      // Animate presence of text slightly
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.8 }}
-                      transition={{ duration: 0.1 }}
-                      className="absolute pointer-events-none z-20"
-                      style={{
-                        // Position based on mouse coordinates
-                        left: `${mousePosition[originalIndex].x}px`,
-                        top: `${mousePosition[originalIndex].y}px`,
-                        transform: "translate(-50%, -50%)", // Center on cursor
-                      }}
-                    >
-                      {/* Change text color, add heading font, remove drop shadow */}
-                      <span className="text-black font-heading text-2xl font-medium select-none">
-                        {isPrevTrigger ? "Prev" : "Next"}
-                      </span>
-                    </motion.div>
+              // Add a wrapping div for image + name
+              <div key={project.id} className="flex flex-col">
+                <motion.div
+                  // key={project.id} // Key is now on the parent div
+                  className={cn(
+                    // Use the new larger height
+                    "relative overflow-hidden h-[70vh]", // Slightly reduce image height to make space for text
+                    "rounded-none",
+                    // Apply cursor-none only when the text should appear
+                    isNavTrigger && "lg:cursor-none",
                   )}
-              </motion.div>
+                  // Use state for hover effects
+                  onMouseEnter={() =>
+                    isNavTrigger && setHoveredIndex(originalIndex)
+                  }
+                  onMouseLeave={() => isNavTrigger && setHoveredIndex(null)}
+                  // Add mouse move handler
+                  onMouseMove={(e) =>
+                    isNavTrigger && handleMouseMove(e, originalIndex)
+                  }
+                  onClick={
+                    isNavTrigger
+                      ? isPrevTrigger
+                        ? goToPrevious
+                        : goToNext
+                      : undefined
+                  }
+                >
+                  <Image
+                    fill
+                    sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                    priority={originalIndex < itemsPerView}
+                    src={project.mainImage}
+                    alt={project.name}
+                    quality={100}
+                    className="object-cover w-full h-full"
+                  />
+                  {/* Show text overlay based on hoveredIndex state and position based on mouse */}
+                  {isNavTrigger &&
+                    hoveredIndex === originalIndex &&
+                    mousePosition[originalIndex] && (
+                      <motion.div
+                        // Animate presence of text slightly
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.8 }}
+                        transition={{ duration: 0.1 }}
+                        className="absolute pointer-events-none z-20"
+                        style={{
+                          // Position based on mouse coordinates
+                          left: `${mousePosition[originalIndex].x}px`,
+                          top: `${mousePosition[originalIndex].y}px`,
+                          transform: "translate(-50%, -50%)", // Center on cursor
+                        }}
+                      >
+                        {/* Change text color, add heading font, remove drop shadow */}
+                        <span className="text-black font-heading text-2xl font-medium select-none">
+                          {isPrevTrigger ? "Prev" : "Next"}
+                        </span>
+                      </motion.div>
+                    )}
+                </motion.div>
+                {/* Project Name Below Image */}
+                <div className="mt-3 text-left">
+                  <h3 className="font-heading text-black text-base md:text-lg lg:text-xl">
+                    {project.name}
+                  </h3>
+                </div>
+              </div> // Close the wrapping div for image + name
             );
           })}
         </motion.div>

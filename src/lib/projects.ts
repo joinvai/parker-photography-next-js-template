@@ -337,7 +337,7 @@ const projects: Project[] = [
     id: "no-4706",
     name: "NO. 4706",
     year: "2022",
-    mainImage: "/projects/No.4706-2022/main.jpg",
+    mainImage: "/projects/No.4706-2022 /main.jpg",
     hoverImage: "/projects/No.4706-2022/hover.jpg",
     photos: [
       "/projects/No.4706-2022/1.jpg",
