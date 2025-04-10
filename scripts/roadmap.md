@@ -1,8 +1,5 @@
 - look for other things from this project
 - fix carousel to be a random featured project
 - small component that lets you change the mouse cursor
-- Contact page forms 
 - make sure spacing on carousel matches gutter width
 - add coming soon slot with blur over it for the projects section
-- add view current role side drawer trigger on contact page
-- add project inquiry form from https://www.mimdesign.com.au/contact/

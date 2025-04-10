@@ -1,125 +1,99 @@
-# Product Requirements Document: Project Inquiry Form
+# Product Requirements Document: Contact Page Careers Section
 
 # Overview
-This document outlines the requirements for implementing a project inquiry form on the website's contact page (`app/contact/page.tsx`). The goal is to provide a structured and user-friendly way for potential clients to submit details about their projects, replacing the entire existing form section below the "Get In Touch" header. This feature aims to capture leads effectively, standardize data collection, streamline the initial contact process, and centralize inquiry data in a designated Google Sheet (`Website Leads` tab, ID: `1uBawMgtpx7h0AEL1dlnHq221T5wDR5QirHQR7ZnxLeI`) using a Next.js server action, mirroring the existing email signup process.
+This document outlines the requirements for adding a static "CAREERS" section to the Sire Design contact page (`src/app/contact/page.tsx`). Currently, there's no designated area for potential applicants to learn about job opportunities or how to submit their qualifications. This feature solves this by adding a dedicated section with a button that reveals studio hiring status and contact information via a sheet component. It's intended for potential design applicants visiting the website and adds value by centralizing career inquiries and managing expectations clearly, even when no roles are actively open. It leverages existing UI components for consistency.
 
 # Core Features
--   **Inquiry Trigger:**
-    -   Displays introductory text: "If you have a new project, please complete our new project form below."
-    -   Provides a link-style button labeled "New Project Inquiry" using `src/components/ui/button.tsx`.
-    -   Clicking the button opens a dialog (`src/components/ui/dialog.tsx`).
-    -   Replaces the *entire* existing form section on `app/contact/page.tsx`.
--   **Inquiry Form Dialog:**
-    -   Presents a form within the dialog.
-    -   Contains fields for: First Name, Last Name, Contact Email, Phone Number, Project Address, Referral Source, Project Type, Project Description, Ongoing Project (Checkbox), Project Details, Project State (Radio Group), Budget (Select/Dropdown), Project Scope Details.
-    -   Uses appropriate input components (`Input`, `Textarea`, `Checkbox`, `RadioGroup`, `Select` from `src/components/ui/`).
-    -   Marks required fields clearly.
-    -   Includes options for 'Project State' (Construction commenced, DA / Town Planning Approval, Pre DA / Town Planning and Approvals, Not yet started, initial inquiries and research) and 'Budget' (No budget as yet, seeking guidance, Less than $500K, $500K - $1.5M, $1.5 - 2.5M, $2.5M+, Other).
-    -   Provides a submit button.
-    -   Is dismissible via an 'X' button or clicking outside the dialog.
--   **Data Submission & Storage:**
-    -   Uses a Next.js server action (adapted from `src/actions/add-email-to-sheet.ts`).
-    -   Performs client-side and server-side validation using Zod.
-    -   On successful validation, appends data to the specified Google Sheet (`Website Leads` tab, ID: `1uBawMgtpx7h0AEL1dlnHq221T5wDR5QirHQR7ZnxLeI`).
-    -   Maps form fields to Google Sheet columns A-M using human-readable headers (e.g., "First Name").
-    -   Uses Google Service Account credentials (`src/lib/siredesign-4227867bd281.json`).
--   **User Feedback:**
-    -   Provides clear success messages upon successful submission (following common UX patterns).
-    -   Displays clear, beige-colored error messages near relevant fields upon validation failure (client or server-side), consistent with `subscribe-input.tsx`.
-    -   Shows an error message if the server action fails to write to the Google Sheet.
-    -   Preserves form data on submission errors.
+*   **CAREERS Section Display:**
+    *   *What it does:* Adds a new, visually distinct section titled "CAREERS" to the contact page (`src/app/contact/page.tsx`).
+    *   *Why it's important:* Creates a dedicated, easily findable space for career-related information, enhancing user navigation.
+    *   *How it works:* A new static heading/text element "CAREERS" is added to the page's component structure.
+
+*   **Job Availability Button/Link:**
+    *   *What it does:* Introduces a clickable button, styled as a link, labeled "View Job Availabilities" within the CAREERS section.
+    *   *Why it's important:* Provides a clear call-to-action for users interested in career opportunities. Ensures visual consistency by matching existing link styles.
+    *   *How it works:* Utilizes the `link` variant of the existing `src/components/ui/button.tsx` component, styled to match the "Project Inquiry Link".
+
+*   **Information Sheet Display:**
+    *   *What it does:* Opens an overlay sheet component (`src/components/ui/sheet.tsx`) when the "View Job Availabilities" button is clicked. This sheet displays static text about current openings and application instructions.
+    *   *Why it's important:* Delivers the necessary career information contextually without navigating the user away from the contact page. Manages expectations regarding open roles.
+    *   *How it works:* An `onClick` handler on the button triggers the Sheet component, populating it with predefined static text content (title: "Current Openings", body: explanation, call-to-action: email address). The email address is a `mailto:` link.
 
 # User Experience
--   **User Personas:** Potential clients visiting the website seeking design or related services.
--   **Key User Flow:**
-    1.  User navigates to the Contact page (`app/contact/page.tsx`).
-    2.  User sees the introductory text and the "New Project Inquiry" button below the "Get In Touch" header.
-    3.  User clicks the "New Project Inquiry" button.
-    4.  A dialog containing the inquiry form opens.
-    5.  User fills out the form fields, selecting options for 'Project State' and 'Budget'.
-    6.  User clicks the submit button.
-    7.  **(Success Path):** Form validates successfully. Data is sent via server action to Google Sheets. A success message appears in the dialog. The dialog may close automatically or offer a close button.
-    8.  **(Validation Error Path):** Form fails validation. Beige error messages appear near invalid fields. Submission is blocked. User corrects errors and resubmits.
-    9.  **(Server Error Path):** Form validates, but the server action fails (e.g., cannot write to sheet). An error message appears in the dialog. Form data remains. User may try again later.
-    10. **(Dismissal Path):** User clicks the 'X' button or outside the dialog area at any point before successful submission. The dialog closes without submitting.
--   **UI/UX Considerations:**
-    -   All components (button, dialog, form elements) must adhere to the site's existing visual style (Shadcn UI).
-    -   The form must be responsive and usable on desktop, tablet, and mobile devices.
-    -   WCAG AA accessibility standards must be met (keyboard navigation, screen reader compatibility, labeling).
-    -   Interaction feedback (dialog opening, submission status) should be prompt and clear.
-    -   Error messages must be user-friendly and informative, styled consistently in beige.
+*   **User Personas:**
+    *   *Potential Applicant:* A talented designer (or other relevant role) exploring the Sire Design website, interested in potential career opportunities. They are looking for clear information on whether the studio is hiring and how to submit their resume/portfolio.
+
+*   **Key User Flows:**
+    1.  User navigates to the contact page (`src/app/contact/page.tsx`).
+    2.  User scrolls or visually scans the page and identifies the "CAREERS" section.
+    3.  User clicks the "View Job Availabilities" button/link within the CAREERS section.
+    4.  A sheet component slides into view.
+    5.  User reads the "Current Openings" title, the message about availability, and the instructions to email their resume/portfolio.
+    6.  User optionally clicks the `mailto:` link to open their email client.
+    7.  User closes the sheet (e.g., clicking an 'X' button or outside the sheet).
+
+*   **UI/UX Considerations:**
+    *   The CAREERS section should integrate seamlessly with the existing page layout and design.
+    *   The "View Job Availabilities" button must visually match the "Project Inquiry Link" style exactly (font, color, hover states).
+    *   The sheet opening/closing animation should be smooth and non-disruptive.
+    *   All elements must be fully responsive and usable across desktop, tablet, and mobile viewports.
+    *   Standard accessibility practices should be followed (e.g., keyboard navigation, ARIA attributes if needed beyond component defaults).
 
 # Technical Architecture
--   **Frontend:**
-    -   Framework: Next.js / React
-    -   UI Components: Shadcn UI components (`Button`, `Dialog`, `Input`, `Textarea`, `Checkbox`, `RadioGroup`, `Select`) from `src/components/ui/`.
-    -   Validation Library: Zod
-    -   State Management: React `useState` / potentially `react-hook-form`.
-    -   Primary File Modification: `app/contact/page.tsx`.
-    -   New Component Recommendation: `src/components/project-inquiry-form.tsx`.
--   **Backend:**
-    -   Technology: Next.js Server Actions
-    -   Validation: Zod (server-side validation mirroring client-side).
-    -   API Integration: Google Sheets API v4.
-    -   Authentication: Google Service Account via JSON key (`src/lib/siredesign-4227867bd281.json`).
-    -   Dependencies: `googleapis`, `zod`.
--   **Data Model:**
-    -   Interface `ProjectForm` defines the structure.
-    -   Google Sheet `1uBawMgtpx7h0AEL1dlnHq221T5wDR5QirHQR7ZnxLeI`, tab `Website Leads`, columns A-M with headers matching form labels.
+*   **System Components:**
+    *   `src/app/contact/page.tsx`: The primary Next.js page component where the new section, button, and sheet trigger logic will be added.
+    *   `src/components/ui/button.tsx`: Existing shadcn/ui component used for the "View Job Availabilities" clickable element (link variant).
+    *   `src/components/ui/sheet.tsx`: Existing shadcn/ui component used to display the career information upon button click.
+
+*   **Data Models:**
+    *   N/A. All content ("CAREERS" heading, sheet title, body text, email address) is static and hardcoded within the frontend component.
+
+*   **APIs and Integrations:**
+    *   N/A. This feature does not require any external or internal API calls or integrations.
+
+*   **Infrastructure Requirements:**
+    *   N/A. No changes to the existing hosting or infrastructure are required.
 
 # Development Roadmap
--   **MVP (Minimum Viable Product):**
-    1.  Implement the introductory text and "New Project Inquiry" button on `app/contact/page.tsx`, replacing the old form section.
-    2.  Create the basic dialog structure (`src/components/ui/dialog.tsx`).
-    3.  Build the core form component (`src/components/project-inquiry-form.tsx`) with all specified fields using Shadcn UI components (`Input`, `Textarea`, `Checkbox`, `RadioGroup`, `Select`).
-    4.  Implement client-side validation using Zod for required fields and email format. Display basic validation errors (beige text).
-    5.  Create the Next.js server action.
-    6.  Implement server-side Zod validation within the action.
-    7.  Integrate Google Sheets API using `googleapis` and the service account key to append data to the specified sheet and tab.
-    8.  Connect the form submission to the server action.
-    9.  Implement basic success and server error feedback messages in the dialog.
-    10. Ensure dialog dismissal works (X button, click outside).
-    11. Basic responsiveness for desktop and mobile.
--   **Future Enhancements (Out of Scope for MVP):**
-    -   More sophisticated validation rules (e.g., phone number format).
-    -   Loading indicators during submission.
-    -   Saving partially filled form state (e.g., to local storage).
-    -   Email notifications on submission.
-    -   Admin interface for viewing submissions.
+*   **MVP Requirements:**
+    1.  Add the static "CAREERS" heading/section structure to `src/app/contact/page.tsx`.
+    2.  Implement the "View Job Availabilities" button using the `link` variant from `src/components/ui/button.tsx`.
+    3.  Integrate the `src/components/ui/sheet.tsx` component.
+    4.  Configure the button's `onClick` event to trigger the opening of the sheet.
+    5.  Populate the sheet with the specified static text content ("Current Openings", body, call-to-action with `mailto:` link).
+    6.  Ensure the sheet has a standard close mechanism.
+    7.  Style the "View Job Availabilities" button to precisely match the "Project Inquiry Link" styling.
+    8.  Verify responsiveness across major breakpoints (desktop, tablet, mobile).
+
+*   **Future Enhancements:**
+    *   Integrate with an Applicant Tracking System (ATS).
+    *   Dynamically fetch job openings from a CMS or API.
+    *   Develop a dedicated, more detailed Careers page.
+    *   Add an inline form for direct application submission.
+    *   Allow administrators to update the sheet content via a CMS.
 
 # Logical Dependency Chain
-1.  **UI Foundation:** Update `app/contact/page.tsx` to remove the old form and add the new text/button trigger.
-2.  **Dialog Shell:** Implement the basic `Dialog` component structure that opens on button click.
-3.  **Form Component:** Create the `ProjectInquiryForm` component with all input fields (Layout and basic state).
-4.  **Client-Side Validation:** Integrate Zod for client-side validation and display error messages.
-5.  **Server Action (Core Logic):** Create the Next.js server action, including server-side Zod validation.
-6.  **Google Sheets Integration:** Implement the `googleapis` logic within the server action to write data to the sheet using the service account. Test this independently if possible.
-7.  **End-to-End Connection:** Connect the form's onSubmit handler to the server action.
-8.  **Feedback Implementation:** Add success and specific server error handling/messaging.
-9.  **Styling & Refinement:** Ensure consistent styling, accessibility, and responsiveness.
+1.  **Foundation (HTML Structure):** Add the basic div structure and the "CAREERS" heading text within `src/app/contact/page.tsx`. (Allows visual placement confirmation).
+2.  **Interaction Element:** Add the `Button` component (`link` variant) with the text "View Job Availabilities" below the heading. (Creates the trigger).
+3.  **Sheet Integration:** Add the `Sheet` component structure and the static text content ("Current Openings", body, email CTA) within the `SheetContent`. (Makes the target content available).
+4.  **Trigger Logic:** Implement the state management (`useState`) and `onClick` handler on the button to control the sheet's open/closed state. (Connects button to sheet visibility).
+5.  **Styling:** Apply the necessary styling (likely via class names) to the "View Job Availabilities" button to match the "Project Inquiry Link". (Ensures visual consistency).
+6.  **Refinement & Responsiveness:** Test the flow, adjust spacing/layout as needed, and verify correct appearance and functionality across different screen sizes. Add `mailto:` link functionality. Test closing mechanisms.
 
 # Risks and Mitigations
--   **Technical Challenge (Google Sheets API):** Potential issues with authentication, permissions, or API quotas.
-    -   **Mitigation:** Thoroughly test the Google Sheets integration early using the provided credentials. Implement robust error handling and logging for API calls. Ensure service account has correct permissions for the target sheet.
--   **Validation Complexity:** Ensuring consistent validation logic between client and server using Zod. Handling edge cases in user input.
-    -   **Mitigation:** Define a single Zod schema used by both client and server. Test validation logic thoroughly with various inputs (valid, invalid, edge cases). Use a form library like `react-hook-form` to simplify integration.
--   **UI Consistency:** Ensuring the new form elements match the existing site design perfectly.
-    -   **Mitigation:** Strictly use components from `src/components/ui/`. Refer to existing forms/components (`subscribe-input.tsx`) for styling cues, especially error message styling. Test across browsers and devices.
--   **Scope Creep:** Adding features beyond the defined MVP during development.
-    -   **Mitigation:** Strictly adhere to the requirements outlined in this PRD for the initial implementation. Log any new feature requests for consideration in future iterations (see Future Enhancements).
+*   **Technical Challenges:**
+    *   *Risk:* Minor styling conflicts between the new button/section and existing page styles, or unexpected behavior from the shadcn/ui Sheet component.
+    *   *Mitigation:* Thoroughly test styling across browsers and viewports. Consult shadcn/ui documentation for sheet implementation details and potential edge cases. Use browser developer tools to debug CSS conflicts.
+*   **Figuring out the MVP:**
+    *   *Risk:* Scope creep – adding features beyond the defined static text display (e.g., attempting dynamic content loading).
+    *   *Mitigation:* Strictly adhere to the MVP requirements defined in the "Development Roadmap". Defer all other ideas to "Future Enhancements".
+*   **Resource Constraints:**
+    *   *Risk:* Development time underestimated.
+    *   *Mitigation:* The scope is small and uses existing components, minimizing this risk. Break down implementation according to the "Logical Dependency Chain" for clear progress tracking.
 
 # Appendix
--   **Google Sheet ID:** `1uBawMgtpx7h0AEL1dlnHq221T5wDR5QirHQR7ZnxLeI`
--   **Google Sheet Tab Name:** `Website Leads`
--   **Service Account Key:** `src/lib/siredesign-4227867bd281.json`
--   **Referenced UI Components:**
-    -   `src/components/ui/button.tsx`
-    -   `src/components/ui/dialog.tsx`
-    -   `src/components/ui/input.tsx`
-    -   `src/components/ui/textarea.tsx`
-    -   `src/components/ui/checkbox.tsx`
-    -   `src/components/ui/radio-group.tsx`
-    -   `src/components/ui/select.tsx`
--   **Reference Action:** `src/actions/add-email-to-sheet.ts`
--   **Reference Styling:** `src/components/subscribe-input.tsx` (for error message styling)
--   **Data Column Mapping:** Form fields map sequentially to columns A-M in the `Website Leads` tab, using human-readable headers matching form labels. 
+*   **Open Issues / Questions:**
+    *   Confirm the exact vertical placement/ordering of the "CAREERS" section relative to other sections (e.g., Project Inquiries) on the contact page.
+    *   Verify if specific ARIA attributes are needed for the button or sheet beyond the defaults provided by shadcn/ui components to ensure accessibility compliance.
+*   **Research Findings:** N/A
+*   **Technical Specifications:** Refer to shadcn/ui documentation for `Button` and `Sheet` component props and usage: [https://ui.shadcn.com/docs/components/button](https://ui.shadcn.com/docs/components/button), [https://ui.shadcn.com/docs/components/sheet](https://ui.shadcn.com/docs/components/sheet)

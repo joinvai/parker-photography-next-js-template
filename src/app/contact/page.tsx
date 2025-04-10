@@ -9,11 +9,21 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { motion } from "framer-motion";
 import { useState } from "react";
 
 export default function ContactPage() {
   const [isHovered, setIsHovered] = useState(false);
+  const [isCareersSheetOpen, setIsCareersSheetOpen] = useState(false);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -113,6 +123,41 @@ export default function ContactPage() {
             </div>
           </motion.div>
         </motion.div>
+
+        {/* NEW CAREERS SECTION START */}
+        <motion.div variants={itemVariants} className="mt-16">
+          <h2 className="text-2xl font-geist-mono mb-6">CAREERS</h2>
+          <Sheet open={isCareersSheetOpen} onOpenChange={setIsCareersSheetOpen}>
+            <Button
+              variant="link"
+              className="p-0 h-auto text-base"
+              onClick={() => setIsCareersSheetOpen(true)}
+            >
+              View Job Availabilities
+            </Button>
+            <SheetContent>
+              <SheetHeader>
+                <SheetTitle>Current Openings</SheetTitle>
+                <SheetDescription>
+                  We don't currently have any roles available to fill within our
+                  studio, however we are always on the lookout for talented
+                  designers to join our team.
+                  <br />
+                  <br />
+                  Please send through your resume and portfolio to{" "}
+                  <a
+                    href="mailto:info@siredesign.com"
+                    className="underline hover:text-neutral-800 transition-colors"
+                  >
+                    info@siredesign.com
+                  </a>
+                  .
+                </SheetDescription>
+              </SheetHeader>
+            </SheetContent>
+          </Sheet>
+        </motion.div>
+        {/* NEW CAREERS SECTION END */}
       </motion.div>
     </main>
   );
