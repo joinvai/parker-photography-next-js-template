@@ -85,7 +85,7 @@ export default async function ProjectsPage() {
           Our Interior Design Projects
         </h1>
         {/* Add inner div with padding */}
-        <div className="px-12">
+        <div className="px-2 md:px-12">
           <ProjectsGallery />
         </div>
       </section>

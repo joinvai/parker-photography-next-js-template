@@ -1,88 +1,110 @@
+# PRD: Mobile Project Image Gallery Enhancement
+
 # Overview
-This document outlines the requirements for updating the team member display grid on the `/src/app/studio/page.tsx` page and enhancing the existing accordion UI component located at `/src/components/ui/accordion.tsx`. The primary problem is the current two-column layout for the team grid is not optimal for scannability on larger screens, and the existing accordion component lacks clear visual state indication and interactivity. This project aims to improve the visual layout of the team section, enhance the accordion's usability with a rotating icon and smooth animations, and ensure the improved accordion is a reusable component for consistency across the application. This benefits site visitors by providing a clearer interface and developers by providing a more robust UI primitive.
+This document outlines the requirements for enhancing the user experience of viewing project images on individual project pages, specifically targeting mobile and tablet users (Tailwind `sm` and `md` breakpoints). The current implementation displays images with varying heights, leading to an inconsistent scrolling experience on smaller screens. This project aims to solve this by implementing a visually appealing, standardized, two-column, staggered grid layout for these images, improving scannability and aesthetic consistency while retaining essential lightbox functionality. It's designed for website visitors browsing project details on phones and tablets.
 
 # Core Features
-## 1. Team Grid Layout Update
-*   **What it does:** Modifies the team member section on `/src/app/studio/page.tsx` to display content in a three-column grid layout on larger screens (Tailwind `lg` breakpoint and up).
-*   **Why it's important:** Improves scannability and information density for users viewing the site on desktops or larger tablets.
-*   **How it works:** Achieved by applying appropriate Tailwind CSS v3 grid utility classes to the container element wrapping the team members. The layout will responsively adjust to fewer columns on smaller breakpoints (`md`, `sm`). (REQ-GRID-001, REQ-GRID-002)
 
-## 2. Enhanced Accordion Component
-*   **What it does:** Modifies the existing reusable accordion component (`/src/components/ui/accordion.tsx`) to include an interactive SVG icon that indicates the collapsed/expanded state.
-*   **Why it's important:** Provides clear visual feedback to users about the accordion's state and improves the perceived quality and interactivity of the UI. Ensures consistency for this pattern across the site.
-*   **How it works:**
-    *   Integrates a beige SVG triangle icon within the accordion's trigger element. (REQ-ACC-001, REQ-ACC-002 - updated color)
-        ```xml
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><title>caret-down</title><g fill="#F5F5DC"> <path d="M21 7L3 7L12 19L21 7Z" fill="#F5F5DC"></path> </g></svg> 
-        ```
-        *(Note: Using beige `#F5F5DC`)*
-    *   The icon visually points upwards (rotated 180 degrees or default up) when collapsed and downwards (default down or rotated back) when expanded. (REQ-ACC-003, REQ-ACC-004)
-    *   Clicking/activating the trigger toggles the content's visibility and animates the icon's rotation by 180 degrees using Tailwind CSS transform and transition utilities (`transition-transform`, `rotate-180`, appropriate duration). (REQ-ACC-005, REQ-ACC-007)
-    *   The expansion/collapse of the content area is also smoothly animated. (REQ-ACC-006)
-    *   Accordion expansion/collapse correctly pushes/pulls subsequent page content. (REQ-ACC-008)
-    *   All modifications are encapsulated within the reusable component. (REQ-ACC-009)
+1.  **Responsive Staggered Grid Layout (`sm`, `md` breakpoints)**
+    *   **What it does:** Arranges project images into a two-column, vertically staggered (Masonry-style) grid on screen widths between 640px and 1023px.
+    *   **Why it's important:** Creates a visually engaging, consistent, and predictable browsing experience on common mobile and tablet sizes, eliminating jarring height shifts during scrolling.
+    *   **How it works:** Utilizes CSS (primarily Tailwind CSS utility classes) to define a two-column grid container. Child images are rendered with a fixed aspect ratio, and the browser/CSS naturally arranges them into the staggered layout based on their height after conforming to the aspect ratio.
+
+2.  **Single Column Layout (`< sm` breakpoint)**
+    *   **What it does:** Displays project images in a single, full-width column on screen widths less than 640px.
+    *   **Why it's important:** Ensures optimal viewing and usability on very narrow screens where a multi-column layout would be too cramped.
+    *   **How it works:** Applies Tailwind classes to ensure images stack vertically, each taking the available container width while maintaining the standard aspect ratio.
+
+3.  **Consistent Image Aspect Ratio & Cropping**
+    *   **What it does:** Forces all images within the mobile/tablet views (`< lg`) to display using a fixed landscape aspect ratio (e.g., 16:9) and applies center-cropping.
+    *   **Why it's important:** Standardizes the visual presentation, allowing the grid layout to function correctly and providing a uniform look and feel. Prevents image distortion.
+    *   **How it works:** Applies Tailwind aspect ratio utilities (e.g., `aspect-video`) and object-fit utilities (e.g., `object-cover`, `object-center`) to the `Image` component or its container.
+
+4.  **Lightbox Integration**
+    *   **What it does:** Retains the ability for users to tap or click on any image in the gallery (regardless of screen size or layout) to open it in the existing `ProjectLightbox` component.
+    *   **Why it's important:** Maintains the core functionality for users to view high-resolution images and details.
+    *   **How it works:** Ensures the `button` element wrapping the `ProjectImage` (or `IndividualProjectImage`) component correctly triggers the state change to open the `ProjectLightbox` with the appropriate `initialSlide` index.
+
+5.  **Consistent Spacing**
+    *   **What it does:** Applies uniform gaps (e.g., 16px) between images, both horizontally and vertically in the grid layout, and vertically in the single-column layout.
+    *   **Why it's important:** Creates visual breathing room and reinforces the grid structure for better readability.
+    *   **How it works:** Uses Tailwind gap utilities (e.g., `gap-4`) on the grid container and/or margin/space utilities (e.g., `space-y-4`) for single-column layouts.
 
 # User Experience
+
 *   **User Personas:**
-    *   **Site Visitor (Desktop/Mobile):** Wants to easily scan the team members and understand how to reveal more information (like biographies).
-    *   **Keyboard-Only User:** Needs to be able to navigate and operate interactive elements like accordions without a mouse. (US-005)
-    *   **Developer:** Needs reusable, consistent, and accessible UI components. (US-004)
+    *   *Mobile Browser:* A user visiting the portfolio site on their smartphone (e.g., iPhone, Android phone). They expect a smooth, visually appealing experience optimized for touch interaction and vertical scrolling.
+    *   *Tablet Browser:* A user visiting the site on a tablet (e.g., iPad). They expect a slightly more spacious layout than mobile but still optimized for touch and potentially varying orientations.
 *   **Key User Flows:**
-    1.  Visitor navigates to the Studio page.
-    2.  Visitor observes the team grid layout (3 columns on large screens, responsive otherwise). (US-001)
-    3.  Visitor sees an accordion element (e.g., for a team member bio) with an upward-pointing beige triangle. (US-002)
-    4.  Visitor clicks (or activates via keyboard) the accordion trigger.
-    5.  Visitor observes the triangle smoothly rotate downwards as the content area smoothly expands, pushing down other content. (US-003)
-    6.  Visitor clicks again; observes the reverse animation.
+    1.  **Browsing Project Images (Mobile/Tablet):** User navigates to an individual project page -> User scrolls down the page -> User encounters the image gallery section -> Images are presented in a 2-column (sm/md) or 1-column (<sm) grid with consistent aspect ratios -> User scrolls smoothly through the images.
+    2.  **Viewing Image Detail (Mobile/Tablet):** User is browsing the image gallery -> User finds an image of interest -> User taps the image -> The `ProjectLightbox` opens, displaying the tapped image at a larger size -> User interacts with the lightbox (swipes, closes).
 *   **UI/UX Considerations:**
-    *   **Visual Feedback:** The rotating icon provides immediate feedback on state changes.
-    *   **Smoothness:** Animations must be fluid and non-jarring (REQ-NFR-002).
-    *   **Responsiveness:** Grid and accordion must function correctly on all standard device sizes (REQ-NFR-001).
-    *   **Accessibility:** Accordion must be keyboard navigable and ARIA attributes must be correctly implemented for screen readers (REQ-NFR-003, US-005). The beige icon color should be checked for sufficient contrast against its background.
+    *   **Smooth Scrolling:** The layout implementation should prioritize smooth scrolling performance, especially on less powerful mobile devices.
+    *   **Touch Targets:** Ensure images/buttons are easily tappable, meeting accessibility guidelines for target size.
+    *   **Visual Consistency:** The transition between single-column and two-column layouts as the viewport resizes should be seamless.
+    *   **Loading States:** Maintain existing placeholder/blur effects while images load to prevent layout shifts (CLS).
+    *   **Responsiveness:** Layout must strictly adhere to the specified breakpoints (`<sm`, `sm`, `md`, `lg+`).
 
 # Technical Architecture
+
 *   **System Components:**
-    *   Frontend application (React/Next.js assumed).
-    *   Target Page: `/src/app/studio/page.tsx`.
-    *   Target Component: `/src/components/ui/accordion.tsx`.
-*   **Styling:** Tailwind CSS v3 utility classes.
-*   **Key Libraries/Frameworks:** React (or similar framework handling the component logic).
-*   **Implementation Details:**
-    *   Modify CSS classes (Tailwind) on the grid container in `studio/page.tsx`.
-    *   Modify the React component structure in `ui/accordion.tsx` to include the SVG and state management (likely React state) to toggle classes/styles for rotation and expansion.
-    *   Use Tailwind utilities for:
-        *   Grid layout (`grid`, `grid-cols-3`, `md:grid-cols-2`, etc.)
-        *   Transitions (`transition-transform`, `transition-all`, `duration-200`, `ease-in-out`, etc.)
-        *   Transforms (`rotate-180`)
-    *   Implement ARIA attributes (`aria-expanded`, `aria-controls`) dynamically based on component state.
+    *   **Frontend Application:** Next.js/React application.
+    *   **Image Component:** `src/components/individual-project/individual-project-image.tsx` (or potentially `src/components/project/project-image-with-lightbox.tsx` if used on project pages). This component will need modification to handle the new aspect ratio and potentially conditional rendering/styling based on props or context.
+    *   **Gallery Container Component:** The parent component rendering the list of images (e.g., potentially within `project-detail-client.tsx` or a dedicated `projects-gallery` component if it exists). This container will need the grid and gap CSS applied conditionally based on breakpoints.
+    *   **Styling:** Tailwind CSS for utility classes (grid, aspect-ratio, object-fit, gap, responsive modifiers).
+    *   **Lightbox Component:** `src/components/project/project-lightbox.tsx` (Usage remains the same, no internal changes needed).
+*   **Data Models:**
+    *   `Project` type (as defined in `src/lib/projects` or inferred from component props): Contains an array of image URLs (`photos` or `allImages`). No changes required to the data model itself.
+*   **APIs and Integrations:** None directly impacted. This is a frontend presentation layer change.
+*   **Infrastructure Requirements:** None. Uses existing hosting infrastructure.
 
 # Development Roadmap
-*   **MVP Requirements:**
-    1.  Modify `/src/components/ui/accordion.tsx` to include the beige SVG icon, rotation animation based on state, and smooth content expansion/collapse using Tailwind utilities. Ensure accessibility attributes are correct.
-    2.  Update `/src/app/studio/page.tsx` to use a 3-column responsive grid layout for the team section using Tailwind utilities.
-    3.  Ensure the Studio page uses the updated accordion component correctly (if applicable for team bios).
-*   **Future Enhancements:**
-    *   (None specified in this scope). Potential future items could include persisting accordion state or adding configuration options to the component.
+
+*   **Phase 1: MVP (Core Mobile/Tablet Grid)**
+    1.  **Breakpoint Logic:** Implement the core logic (likely via Tailwind responsive modifiers like `sm:`, `md:`, `lg:`) in the gallery container component to switch between single-column (< sm) and two-column (`sm` and `md`) grid layouts.
+    2.  **Aspect Ratio & Cropping:** Modify the `IndividualProjectImage` component to enforce the 16:9 aspect ratio (`aspect-video`) and center cropping (`object-cover`, `object-center`) for all images when displayed within the mobile/tablet context. This might involve passing a prop or using CSS overrides within the gallery container.
+    3.  **Staggered Layout Styling:** Apply necessary Tailwind classes (`grid`, `grid-cols-1`, `sm:grid-cols-2`, `lg:grid-cols-none` - *adjust lg as needed to revert* , `gap-4`) to the container component. Note: True CSS Masonry is complex; a simple staggered effect might rely on CSS Grid's natural flow or require a minimal JS helper/library if pure CSS isn't sufficient for staggering *within* the fixed aspect ratio constraint. Initially, target the two-column structure.
+    4.  **Lightbox Trigger:** Verify that tapping images in the new grid layout correctly opens the `ProjectLightbox` with the correct initial image.
+    5.  **Revert for Large Screens:** Ensure the layout reverts to the *original* state for `lg` breakpoints and larger (effectively removing the grid styling applied for smaller screens).
+
+*   **Phase 2: Future Enhancements (Post-MVP)**
+    1.  **Performance Optimization:** Analyze scrolling performance on various devices and optimize if needed (e.g., image loading strategies, virtualization if many images were present - though limited to 18 currently).
+    2.  **Refined Staggering:** If the initial CSS grid approach doesn't provide sufficient staggering, investigate lightweight Masonry JS libraries or more advanced CSS techniques.
+    3.  **Animation:** Consider subtle entrance animations for images loading into the grid (leveraging `framer-motion` if already in use).
+    4.  **Accessibility Audit:** Perform a thorough accessibility check for keyboard navigation and screen reader compatibility specifically for the new grid layouts.
 
 # Logical Dependency Chain
-1.  **Foundation:** Confirm the existence and basic functionality of the `/src/components/ui/accordion.tsx` component.
-2.  **Component Enhancement:** Modify `/src/components/ui/accordion.tsx` to implement the new icon, rotation, and animation features. This can be developed and tested in isolation (e.g., using Storybook or a dedicated test page).
-3.  **Page Integration:** Update the `/src/app/studio/page.tsx` grid layout. If this page uses the accordion, verify it integrates correctly with the enhanced component. Implementing the visual component change first allows for quicker feedback.
+
+1.  **Container Styling (`sm`, `md`):** Define the two-column grid container and apply gaps using Tailwind responsive modifiers (`sm:grid-cols-2`, `md:grid-cols-2`, `gap-4`). This sets up the basic structure.
+2.  **Container Styling (`<sm`):** Define the single-column layout (`grid-cols-1`, `gap-4` or `space-y-4`).
+3.  **Image Component Styling:** Modify `IndividualProjectImage` to accept/apply the fixed 16:9 aspect ratio and center-cropping. This ensures images have uniform dimensions *before* being placed in the grid.
+4.  **Container Styling (`lg+`):** Explicitly define the styles for the `lg` breakpoint and larger to *undo* or override the grid styles, ensuring it reverts to the original layout. This might involve `lg:block` or resetting grid properties.
+5.  **Integration & Testing:** Render the modified image components within the styled container, test across breakpoints (<sm, sm, md, lg), verify scrolling, and ensure lightbox functionality remains intact.
+
+*Rationale:* Build the container structure first, then ensure the items fit that structure uniformly, then verify the revert logic, and finally test the integrated whole. This prioritizes getting the visual structure in place for the target devices quickly.
 
 # Risks and Mitigations
-*   **Technical Challenges:**
-    *   *Risk:* Ensuring smooth animation performance across all target browsers/devices.
-    *   *Mitigation:* Use hardware-accelerated CSS transitions/transforms (standard with Tailwind utilities). Test thoroughly on different browsers and devices.
-    *   *Risk:* Ensuring correct ARIA implementation for accessibility.
-    *   *Mitigation:* Follow ARIA authoring practices for accordions. Test with screen readers (e.g., NVDA, VoiceOver).
-    *   *Risk:* Potential CSS conflicts with existing styles.
-    *   *Mitigation:* Scope styles appropriately or rely on Tailwind's utility-first nature which minimizes conflicts. Test layout changes carefully.
-    *   *Risk:* Contrast issues with the beige icon against various potential backgrounds.
-    *   *Mitigation:* Test the icon against expected background colors. Consider defining the icon color via CSS variable or prop for flexibility if needed, though hardcoding beige is requested for now.
-*   **Figuring out the MVP:** The MVP scope is well-defined and small, risk is low.
-*   **Resource Constraints:** Assumes developer availability to implement the changes.
+
+*   **Risk: Visual Inconsistency:** Achieving a visually pleasing *staggered* look with fixed aspect ratios in pure CSS Grid can be tricky. Images might align too uniformly.
+    *   **Mitigation:** Accept a basic two-column grid as MVP. If more staggering is essential post-MVP, evaluate lightweight JS Masonry libraries (e.g., `macy.js`) or refined CSS techniques, assessing performance impact.
+*   **Risk: Performance Degradation:** Applying new styles and potentially layout calculations could impact mobile performance.
+    *   **Mitigation:** Rely heavily on Tailwind's optimized utility classes. Test performance on target devices early and often. Ensure image lazy-loading and placeholders are effective.
+*   **Risk: CSS Specificity/Overrides:** Existing styles might interfere with the new responsive grid styles. Ensuring the `lg+` revert works correctly is crucial.
+    *   **Mitigation:** Use Tailwind's responsive modifiers correctly. Use browser developer tools extensively to inspect applied styles and specificity. Test the `lg` breakpoint transition thoroughly.
+*   **Risk: Scope Creep:** Desire to tweak the layout for `lg+` screens or add more complex animations.
+    *   **Mitigation:** Strictly adhere to the defined scope. Defer non-essential visual tweaks or features to Phase 2 (Future Enhancements).
 
 # Appendix
-*   **SVG Icon Color:** Beige (`#F5F5DC`) - verify contrast accessibility.
-*   **Tailwind CSS Version:** Assumed v3.x.
-*   **Open Questions Resolved:** Icon color specified as beige. Default animation timings assumed unless specified otherwise during development.
+
+*   **Tailwind Breakpoints Reference:**
+    *   `sm`: min-width: 640px
+    *   `md`: min-width: 768px
+    *   `lg`: min-width: 1024px
+*   **Target Aspect Ratio:** 16:9 (`aspect-video`)
+*   **Target Spacing:** 16px (`gap-4`)
+*   **Inspirational Layout Concept:** (Reference to the provided image - visually similar to Pinterest/Instagram feed layout, but using landscape images and no text overlays).
+*   **Key Files Potentially Involved:**
+    *   `src/components/individual-project/individual-project-image.tsx`
+    *   `src/components/project/project-lightbox.tsx` (usage only)
+    *   Parent component rendering the image list (e.g., `project-detail-client.tsx`, `projects-gallery` TBC)
+    *   `tailwind.config.js` (for reference, no changes needed)

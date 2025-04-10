@@ -145,7 +145,7 @@ export function ProjectImage({
       ref={linkRef}
       href={`/projects/${project.id}`}
       className={cn(
-        "block outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-black rounded-lg",
+        "block outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-black",
         className,
       )}
       data-testid={testId}
@@ -178,14 +178,14 @@ export function ProjectImage({
       >
         <motion.div
           className={cn(
-            "relative overflow-hidden rounded-lg h-full", // Added h-full for proper sizing
-            aspectRatio, // Apply aspect ratio class
+            "relative overflow-hidden h-full",
+            aspectRatio,
             imageClassName,
-            !imageLoaded && "bg-gray-200", // Background placeholder while loading
+            !imageLoaded && "bg-gray-200",
           )}
           initial={{ opacity: 0 }}
           animate={{ opacity: imageLoaded ? 1 : 0.8 }}
-          transition={{ duration: 0.6, ease: "easeOut" }} // Slightly longer fade-in
+          transition={{ duration: 0.6, ease: "easeOut" }}
         >
           {/* Main image */}
           <Image
@@ -197,13 +197,13 @@ export function ProjectImage({
               effectiveHoverState ? "opacity-0" : "opacity-100",
               !imageLoaded && "blur-sm",
             )}
-            priority={shouldPrioritize} // Prioritize loading for above-fold images
+            priority={shouldPrioritize}
             sizes={imageSizes}
-            quality={shouldPrioritize ? 90 : 75} // Higher quality for prioritized images
-            onLoad={() => setImageLoaded(true)} // Track when image has loaded
-            loading={shouldPrioritize ? "eager" : "lazy"} // Lazy load images below the fold
+            quality={shouldPrioritize ? 90 : 75}
+            onLoad={() => setImageLoaded(true)}
+            loading={shouldPrioritize ? "eager" : "lazy"}
             placeholder="blur"
-            blurDataURL={placeholderSvg} // Minimal SVG placeholder
+            blurDataURL={placeholderSvg}
           />
 
           {/* Hover image - only render if useHoverImage is true */}
@@ -218,10 +218,10 @@ export function ProjectImage({
                 !imageLoaded && "blur-sm",
               )}
               sizes={imageSizes}
-              quality={shouldPrioritize ? 85 : 70} // Slightly lower quality for hover images
-              loading="lazy" // Always lazy load hover images
+              quality={shouldPrioritize ? 85 : 70}
+              loading="lazy"
               placeholder="blur"
-              blurDataURL={placeholderSvg} // Minimal SVG placeholder
+              blurDataURL={placeholderSvg}
             />
           )}
 
@@ -236,7 +236,7 @@ export function ProjectImage({
         {showCaption && (
           <div
             className="flex justify-between items-center mt-2 sm:mt-3 px-0 sm:px-1 transition-all duration-300"
-            aria-hidden="true" // Hide from screen readers since it's duplicated in the link's aria-label
+            aria-hidden="true"
           >
             <h3 className="text-base sm:text-lg font-light uppercase transition-all duration-300">
               {project.name}

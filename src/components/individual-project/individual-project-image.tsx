@@ -137,7 +137,7 @@ export default function IndividualProjectImage({
     <div className="group overflow-hidden transition-all duration-300">
       <motion.div
         className={cn(
-          "relative overflow-hidden rounded-lg h-full",
+          "relative overflow-hidden rounded-none h-full",
           aspectRatio,
           imageClassName,
           !imageLoaded && "bg-gray-200",
