@@ -17,7 +17,16 @@ export const projectInquirySchema = z.object({
   ongoingProject: z.boolean(),
   projectDetails: z.string().optional(),
   projectState: z.string().optional(), // Can refine with enum later if needed
-  budget: z.string().optional(), // Can refine with enum later if needed
+  budget: z
+    .enum([
+      "No budget",
+      "Less than $500k",
+      "$500k - $1.5M",
+      "$1.5M - $2.5M",
+      "$2.5M +",
+      "Other",
+    ])
+    .optional(), // Make the enum optional
   projectScopeDetails: z.string().optional(),
 });
 
