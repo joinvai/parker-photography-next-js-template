@@ -1,7 +1,9 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import About from "@/components/about";
+import { CustomCarousel } from "@/components/custom-carousel";
 import FullPageCarousel from "@/components/full-page-carousel"; // Adjust path if needed
+import { getAllProjects } from "@/lib/projects";
 
 // Function to recursively get all image file paths from a directory
 async function getImagePaths(dir: string): Promise<string[]> {
@@ -37,6 +39,9 @@ export default async function HomePage() {
   const projectsDir = path.join(process.cwd(), "public", "projects");
   const imagePaths = await getImagePaths(projectsDir);
 
+  // Fetch project data for the new carousel
+  const projects = getAllProjects();
+
   // Shuffle the image array for variety (optional)
   // function shuffleArray(array: any[]) {
   //   for (let i = array.length - 1; i > 0; i--) {
@@ -47,14 +52,20 @@ export default async function HomePage() {
   // shuffleArray(imagePaths);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between">
+    <main className="flex min-h-screen flex-col items-center justify-start">
       {/* Render the Full Page Carousel at the top */}
       <FullPageCarousel imagePaths={imagePaths} />
 
-      {/* Rest of the page content */}
-      <div className="z-10 relative p-8 bg-white bg-opacity-70">
+      {/* Container for About section (keeps it centered) */}
+      <div className="z-10 relative p-8 w-full max-w-7xl mx-auto mt-16">
         <About />
       </div>
+
+      {/* Section for the edge-to-edge CustomCarousel */}
+      {/* Added vertical margin for spacing */}
+      <section className="w-full mt-16 mb-16">
+        <CustomCarousel projects={projects} />
+      </section>
     </main>
   );
 }

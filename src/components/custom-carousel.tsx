@@ -1,43 +1,52 @@
 "use client";
 
+import { AnimatePresence, motion } from "framer-motion";
+import Image from "next/image";
 import type React from "react";
-
-import { cn } from "@/lib/utils";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-interface CarouselItem {
-  id: number;
-  color: string;
-}
+import type { Project } from "@/lib/projects";
+import { cn } from "@/lib/utils";
 
 interface CustomCarouselProps {
+  projects: Project[];
   className?: string;
 }
 
-// Define items outside the component to prevent recreation on each render
-const carouselItems: CarouselItem[] = [
-  { id: 1, color: "bg-rose-400" },
-  { id: 2, color: "bg-emerald-400" },
-  { id: 3, color: "bg-amber-400" },
-  { id: 4, color: "bg-sky-400" },
-  { id: 5, color: "bg-purple-400" },
-];
+// Define slide animation variants
+const variants = {
+  enter: (direction: number) => ({
+    x: direction > 0 ? 1000 : -1000, // Start off-screen
+    opacity: 0,
+  }),
+  center: {
+    zIndex: 1,
+    x: 0, // Slide to center
+    opacity: 1,
+  },
+  exit: (direction: number) => ({
+    zIndex: 0,
+    x: direction < 0 ? 1000 : -1000, // Slide off-screen
+    opacity: 0,
+  }),
+};
 
-export function CustomCarousel({ className }: CustomCarouselProps) {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [visibleItems, setVisibleItems] = useState<CarouselItem[]>([]);
+// Define transition properties for slide
+const transitionProps = {
+  x: { type: "spring", stiffness: 300, damping: 30 },
+  opacity: { duration: 0.2 },
+};
 
-  // Mouse position tracking
+export function CustomCarousel({ projects, className }: CustomCarouselProps) {
+  // Use a tuple [page, direction] for state
+  const [[page, direction], setPage] = useState([0, 0]);
+  const [itemsPerView, setItemsPerView] = useState(3);
+  // State to track hovered item index for Prev/Next text
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  // Re-introduce mousePosition state
   const [mousePosition, setMousePosition] = useState<{
     [key: number]: { x: number; y: number };
   }>({});
-  const [hoveredItem, setHoveredItem] = useState<number | null>(null);
-
-  // Calculate how many items to show based on viewport
-  const [itemsPerView, setItemsPerView] = useState(3);
-
-  // Memoize the items array to prevent recreation on each render
-  const items = useMemo(() => carouselItems, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -49,45 +58,39 @@ export function CustomCarousel({ className }: CustomCarouselProps) {
         setItemsPerView(3);
       }
     };
-
-    // Set initial value
     handleResize();
-
-    // Add event listener
     window.addEventListener("resize", handleResize);
-
-    // Clean up
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Use useCallback to memoize the navigation functions
+  // Wrap the index calculation
+  const projectIndex = useMemo(() => {
+    // Ensure index stays within bounds
+    return ((page % projects.length) + projects.length) % projects.length;
+  }, [page, projects.length]);
+
+  // Update paginate function to set direction
+  const paginate = useCallback(
+    (newDirection: number) => {
+      setPage([page + newDirection, newDirection]);
+    },
+    [page],
+  );
+
   const goToPrevious = useCallback(() => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? items.length - 1 : prevIndex - 1,
-    );
-  }, [items.length]);
+    paginate(-1);
+  }, [paginate]);
 
   const goToNext = useCallback(() => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % items.length);
-  }, [items.length]);
+    paginate(1);
+  }, [paginate]);
 
-  // Update visible items when currentIndex or itemsPerView changes
-  useEffect(() => {
-    const visibleBoxes = [];
-    for (let i = 0; i < itemsPerView; i++) {
-      const index = (currentIndex + i) % items.length;
-      visibleBoxes.push(items[index]);
-    }
-    setVisibleItems(visibleBoxes);
-  }, [currentIndex, itemsPerView, items]);
-
-  // Memoize the mouse handlers to prevent recreation on each render
+  // Re-introduce handleMouseMove
   const handleMouseMove = useCallback(
     (e: React.MouseEvent<HTMLDivElement>, idx: number) => {
       const rect = e.currentTarget.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
-
       setMousePosition((prev) => ({
         ...prev,
         [idx]: { x, y },
@@ -96,85 +99,156 @@ export function CustomCarousel({ className }: CustomCarouselProps) {
     [],
   );
 
-  const handleMouseEnter = useCallback((idx: number) => {
-    setHoveredItem(idx);
-  }, []);
+  if (!projects || projects.length === 0) {
+    return null;
+  }
 
-  const handleMouseLeave = useCallback(() => {
-    setHoveredItem(null);
-  }, []);
+  // Calculate visible projects based on page index and itemsPerView
+  const visibleProjects = useMemo(() => {
+    const itemsToShow = [];
+    const numProjects = projects.length;
+    const count = Math.min(itemsPerView, numProjects);
+    for (let i = 0; i < count; i++) {
+      const index = (projectIndex + i + numProjects) % numProjects;
+      itemsToShow.push({ ...projects[index], originalIndex: i }); // Add originalIndex for hover logic
+    }
+    return itemsToShow;
+  }, [projectIndex, projects, itemsPerView]);
 
   return (
-    <div className={cn("w-full overflow-hidden", className)}>
-      <div className="flex justify-center">
-        <div className="flex gap-4 w-full max-w-4xl">
-          {visibleItems.map((item, idx) => (
-            // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
-            <div
-              key={`${item.id}-${idx}`}
-              className={cn(
-                "relative overflow-hidden rounded-lg transition-all duration-300",
-                "w-full h-64 sm:h-80 md:h-96",
-                item.color,
-                hoveredItem === idx &&
-                  (idx === 0 || idx === itemsPerView - 1) &&
-                  "cursor-none",
-              )}
-              onClick={() =>
-                idx === 0
-                  ? goToPrevious()
-                  : idx === itemsPerView - 1
-                    ? goToNext()
-                    : null
-              }
-              onMouseMove={(e) => handleMouseMove(e, idx)}
-              onMouseEnter={() => handleMouseEnter(idx)}
-              onMouseLeave={handleMouseLeave}
-            >
-              {/* Box number indicator */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-white text-4xl font-bold">{item.id}</span>
-              </div>
+    <motion.div
+      // Add explicit height and relative positioning to the main container
+      className={cn(
+        "relative w-full overflow-hidden",
+        // Make carousel much taller
+        "h-[75vh]", // Adjust as needed
+        className,
+      )}
+    >
+      {/* AnimatePresence now wraps the sliding container */}
+      <AnimatePresence initial={false} custom={direction} mode="popLayout">
+        {/* This inner div handles the sliding animation */}
+        <motion.div
+          key={page} // Animate when page changes
+          custom={direction}
+          variants={variants}
+          initial="enter"
+          animate="center"
+          exit="exit"
+          transition={transitionProps}
+          className={cn(
+            "absolute inset-0 grid justify-center gap-4", // Use absolute positioning for sliding
+            "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3",
+          )}
+          // Prevent dragging interfering with clicks
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={1}
+          onDragEnd={(e, { offset, velocity }) => {
+            const swipe = Math.abs(offset.x) * velocity.x;
+            if (swipe < -10000) {
+              paginate(1);
+            } else if (swipe > 10000) {
+              paginate(-1);
+            }
+          }}
+        >
+          {visibleProjects.map((projectWithIndex) => {
+            const { originalIndex, ...project } = projectWithIndex;
+            const isLargeScreen = itemsPerView === 3;
+            // Use originalIndex from the mapped array
+            const isPrevTrigger = originalIndex === 0 && isLargeScreen;
+            const isNextTrigger =
+              originalIndex === itemsPerView - 1 && isLargeScreen;
+            const isNavTrigger = isPrevTrigger || isNextTrigger;
 
-              {/* Navigation text that follows mouse */}
-              {hoveredItem === idx &&
-                (idx === 0 || idx === itemsPerView - 1) &&
-                mousePosition[idx] && (
-                  <div
-                    className="absolute pointer-events-none"
-                    style={{
-                      left: `${mousePosition[idx].x}px`,
-                      top: `${mousePosition[idx].y}px`,
-                      transform: "translate(-50%, -50%)",
-                    }}
-                  >
-                    <span className="text-white text-2xl font-medium drop-shadow-lg">
-                      {idx === 0 ? "Previous" : "Next"}
-                    </span>
-                  </div>
+            return (
+              <motion.div
+                key={project.id} // Use project ID as key within the page
+                className={cn(
+                  // Use the new larger height
+                  "relative overflow-hidden h-[75vh]",
+                  "rounded-none",
+                  // Apply cursor-none only when the text should appear
+                  isNavTrigger && "lg:cursor-none",
                 )}
-            </div>
-          ))}
-        </div>
-      </div>
+                // Use state for hover effects
+                onMouseEnter={() =>
+                  isNavTrigger && setHoveredIndex(originalIndex)
+                }
+                onMouseLeave={() => isNavTrigger && setHoveredIndex(null)}
+                // Add mouse move handler
+                onMouseMove={(e) =>
+                  isNavTrigger && handleMouseMove(e, originalIndex)
+                }
+                onClick={
+                  isNavTrigger
+                    ? isPrevTrigger
+                      ? goToPrevious
+                      : goToNext
+                    : undefined
+                }
+              >
+                <Image
+                  fill
+                  sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                  priority={originalIndex < itemsPerView}
+                  src={project.mainImage}
+                  alt={project.name}
+                  quality={100}
+                  className="object-cover w-full h-full"
+                />
+                {/* Show text overlay based on hoveredIndex state and position based on mouse */}
+                {isNavTrigger &&
+                  hoveredIndex === originalIndex &&
+                  mousePosition[originalIndex] && (
+                    <motion.div
+                      // Animate presence of text slightly
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.8 }}
+                      transition={{ duration: 0.1 }}
+                      className="absolute pointer-events-none z-20"
+                      style={{
+                        // Position based on mouse coordinates
+                        left: `${mousePosition[originalIndex].x}px`,
+                        top: `${mousePosition[originalIndex].y}px`,
+                        transform: "translate(-50%, -50%)", // Center on cursor
+                      }}
+                    >
+                      {/* Change text color, add heading font, remove drop shadow */}
+                      <span className="text-black font-heading text-2xl font-medium select-none">
+                        {isPrevTrigger ? "Prev" : "Next"}
+                      </span>
+                    </motion.div>
+                  )}
+              </motion.div>
+            );
+          })}
+        </motion.div>
+      </AnimatePresence>
 
-      {/* Mobile navigation (only visible on small screens) */}
-      <div className="flex justify-between mt-4 sm:hidden">
+      {/* Keep Mobile/Tablet navigation buttons */}
+      <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-4 lg:hidden z-10">
         <button
           type="button"
           onClick={goToPrevious}
-          className="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300 transition-colors"
+          // Add font-heading, remove rounded-full
+          className="px-4 py-2 bg-white/70 text-black font-heading shadow-md hover:bg-white transition-colors"
+          aria-label="Previous project"
         >
-          Previous
+          Prev
         </button>
         <button
           type="button"
           onClick={goToNext}
-          className="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300 transition-colors"
+          // Add font-heading, remove rounded-full
+          className="px-4 py-2 bg-white/70 text-black font-heading shadow-md hover:bg-white transition-colors"
+          aria-label="Next project"
         >
           Next
         </button>
       </div>
-    </div>
+    </motion.div>
   );
 }
