@@ -100,7 +100,6 @@ export default function ContactPage() {
                   <br />
                   MIAMI FL 33138
                   <br />
-                  VIEW MAP
                 </p>
               </div>
             </div>
