@@ -1,0 +1,5 @@
+our build bundle is too big for vercel because of our huge images... we need to use cloudflare as a cdn but i have no clue how to do it help 
+
+our images are used literally in everything
+
+and its all the proejcts inside of public/projects
