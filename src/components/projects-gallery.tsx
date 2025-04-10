@@ -88,7 +88,7 @@ export function ProjectsGallery() {
             behavior="navigate"
             aspectRatio="aspect-[4/3]"
           />
-          <p className="mt-4 text-center font-heading text-2xl text-black">
+          <p className="mt-4 text-left font-heading text-2xl text-black">
             {project.name}
           </p>
         </div>

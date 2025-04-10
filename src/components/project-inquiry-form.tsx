@@ -50,7 +50,7 @@ export function ProjectInquiryForm() {
       ongoingProject: false,
       projectDetails: "",
       projectState: "",
-      budget: undefined,
+      budget: "No budget",
       projectScopeDetails: "",
     },
   });
@@ -366,10 +366,12 @@ export function ProjectInquiryForm() {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="<50k">Less than $50,000</SelectItem>
-                  <SelectItem value="50k-100k">$50,000 - $100,000</SelectItem>
-                  <SelectItem value="100k-250k">$100,000 - $250,000</SelectItem>
-                  <SelectItem value="250k+">$250,000+</SelectItem>
+                  <SelectItem value="<500k">Less than $500,000</SelectItem>
+                  <SelectItem value="500k-1m">$500,000 - $1,000,000</SelectItem>
+                  <SelectItem value="1m-25m">
+                    $1,000,000 - $2,500,000
+                  </SelectItem>
+                  <SelectItem value="2.5m+">$2,500,000+</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage className="text-destructive" />
