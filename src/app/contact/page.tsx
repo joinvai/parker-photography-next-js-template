@@ -96,22 +96,14 @@ export default function ContactPage() {
           </div>
 
           <motion.div variants={itemVariants} className="space-y-8">
-            <div
-              onMouseEnter={() => setIsHovered(true)}
-              onMouseLeave={() => setIsHovered(false)}
-              className="relative overflow-hidden"
-            >
-              <div className="relative z-10 p-8 border border-neutral-300">
-                <h3 className="text-xl font-geist-mono mb-4">
-                  Studio Location
-                </h3>
-                <p className="text-neutral-600">
-                  7500 NE 4TH COURT, #103
-                  <br />
-                  MIAMI FL 33138
-                  <br />
-                </p>
-              </div>
+            <div>
+              <h3 className="text-xl font-geist-mono mb-4">Studio Location</h3>
+              <p className="text-neutral-600">
+                7500 NE 4TH COURT, #103
+                <br />
+                MIAMI FL 33138
+                <br />
+              </p>
             </div>
 
             <div className="space-y-4">
