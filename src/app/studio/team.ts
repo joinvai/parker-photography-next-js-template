@@ -37,8 +37,8 @@ export const teamData: TeamMember[] = [
     mainImage: "/team/yanin.jpg",
   },
   {
-    fullName: "Maria",
-    role: "TBD",
+    fullName: "Maria Karla Fernandez",
+    role: "Visual Illustrator",
     bio: "TBD",
     mainImage: "/team/maria.jpg",
   },

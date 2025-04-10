@@ -9,13 +9,13 @@
 
   body {
     @apply font-sans;
-    background-color: #FAF9F5;
+    background-color: #FAF9F4;
   }
 }
 
 /* Define custom CSS variables for light and dark background colors */
 :root {
-  --background-light: #f9fafb;
+  --background-light: #FAF9F4;
   --background-dark: #1f2937;
   --selected-day-bg: #f3f4f6;
   --selected-day-color: #111827;

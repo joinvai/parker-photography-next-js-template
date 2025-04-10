@@ -1,5 +1,3 @@
-- look for other things from this project
 - fix carousel to be a random featured project
 - small component that lets you change the mouse cursor
-- make sure spacing on carousel matches gutter width
 - add coming soon slot with blur over it for the projects section
