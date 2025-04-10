@@ -1,5 +1,14 @@
 "use client";
 
+import { ProjectInquiryForm } from "@/components/project-inquiry-form";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { motion } from "framer-motion";
 import { useState } from "react";
 
@@ -49,41 +58,31 @@ export default function ContactPage() {
         >
           <div>
             <h2 className="text-2xl font-geist-mono mb-6">Get in Touch</h2>
-            <motion.form
-              className="space-y-8"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 }}
-            >
-              <div>
-                <input
-                  type="text"
-                  placeholder="Name"
-                  className="w-full bg-transparent border-b border-neutral-300 py-2 focus:outline-none focus:border-neutral-600 transition-colors text-neutral-800 placeholder-neutral-400"
-                />
-              </div>
-              <div>
-                <input
-                  type="email"
-                  placeholder="Email"
-                  className="w-full bg-transparent border-b border-neutral-300 py-2 focus:outline-none focus:border-neutral-600 transition-colors text-neutral-800 placeholder-neutral-400"
-                />
-              </div>
-              <div>
-                <textarea
-                  placeholder="Message"
-                  rows={4}
-                  className="w-full bg-transparent border-b border-neutral-300 py-2 focus:outline-none focus:border-neutral-600 transition-colors text-neutral-800 placeholder-neutral-400"
-                />
-              </div>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-8 py-3 bg-neutral-900 text-white font-geist-mono hover:bg-neutral-800 transition-colors"
+            <Dialog>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.5 }}
+                className="space-y-4"
               >
-                Send Message
-              </motion.button>
-            </motion.form>
+                <p className="text-neutral-600">
+                  If you have a new project, please complete our new project
+                  form below.
+                </p>
+                <DialogTrigger asChild>
+                  <Button variant="link" className="p-0 h-auto text-base">
+                    New Project Inquiry
+                  </Button>
+                </DialogTrigger>
+              </motion.div>
+
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>New Project Inquiry</DialogTitle>
+                </DialogHeader>
+                <ProjectInquiryForm />
+              </DialogContent>
+            </Dialog>
           </div>
 
           <motion.div variants={itemVariants} className="space-y-8">

@@ -1,110 +1,125 @@
-# PRD: Mobile Project Image Gallery Enhancement
+# Product Requirements Document: Project Inquiry Form
 
 # Overview
-This document outlines the requirements for enhancing the user experience of viewing project images on individual project pages, specifically targeting mobile and tablet users (Tailwind `sm` and `md` breakpoints). The current implementation displays images with varying heights, leading to an inconsistent scrolling experience on smaller screens. This project aims to solve this by implementing a visually appealing, standardized, two-column, staggered grid layout for these images, improving scannability and aesthetic consistency while retaining essential lightbox functionality. It's designed for website visitors browsing project details on phones and tablets.
+This document outlines the requirements for implementing a project inquiry form on the website's contact page (`app/contact/page.tsx`). The goal is to provide a structured and user-friendly way for potential clients to submit details about their projects, replacing the entire existing form section below the "Get In Touch" header. This feature aims to capture leads effectively, standardize data collection, streamline the initial contact process, and centralize inquiry data in a designated Google Sheet (`Website Leads` tab, ID: `1uBawMgtpx7h0AEL1dlnHq221T5wDR5QirHQR7ZnxLeI`) using a Next.js server action, mirroring the existing email signup process.
 
 # Core Features
-
-1.  **Responsive Staggered Grid Layout (`sm`, `md` breakpoints)**
-    *   **What it does:** Arranges project images into a two-column, vertically staggered (Masonry-style) grid on screen widths between 640px and 1023px.
-    *   **Why it's important:** Creates a visually engaging, consistent, and predictable browsing experience on common mobile and tablet sizes, eliminating jarring height shifts during scrolling.
-    *   **How it works:** Utilizes CSS (primarily Tailwind CSS utility classes) to define a two-column grid container. Child images are rendered with a fixed aspect ratio, and the browser/CSS naturally arranges them into the staggered layout based on their height after conforming to the aspect ratio.
-
-2.  **Single Column Layout (`< sm` breakpoint)**
-    *   **What it does:** Displays project images in a single, full-width column on screen widths less than 640px.
-    *   **Why it's important:** Ensures optimal viewing and usability on very narrow screens where a multi-column layout would be too cramped.
-    *   **How it works:** Applies Tailwind classes to ensure images stack vertically, each taking the available container width while maintaining the standard aspect ratio.
-
-3.  **Consistent Image Aspect Ratio & Cropping**
-    *   **What it does:** Forces all images within the mobile/tablet views (`< lg`) to display using a fixed landscape aspect ratio (e.g., 16:9) and applies center-cropping.
-    *   **Why it's important:** Standardizes the visual presentation, allowing the grid layout to function correctly and providing a uniform look and feel. Prevents image distortion.
-    *   **How it works:** Applies Tailwind aspect ratio utilities (e.g., `aspect-video`) and object-fit utilities (e.g., `object-cover`, `object-center`) to the `Image` component or its container.
-
-4.  **Lightbox Integration**
-    *   **What it does:** Retains the ability for users to tap or click on any image in the gallery (regardless of screen size or layout) to open it in the existing `ProjectLightbox` component.
-    *   **Why it's important:** Maintains the core functionality for users to view high-resolution images and details.
-    *   **How it works:** Ensures the `button` element wrapping the `ProjectImage` (or `IndividualProjectImage`) component correctly triggers the state change to open the `ProjectLightbox` with the appropriate `initialSlide` index.
-
-5.  **Consistent Spacing**
-    *   **What it does:** Applies uniform gaps (e.g., 16px) between images, both horizontally and vertically in the grid layout, and vertically in the single-column layout.
-    *   **Why it's important:** Creates visual breathing room and reinforces the grid structure for better readability.
-    *   **How it works:** Uses Tailwind gap utilities (e.g., `gap-4`) on the grid container and/or margin/space utilities (e.g., `space-y-4`) for single-column layouts.
+-   **Inquiry Trigger:**
+    -   Displays introductory text: "If you have a new project, please complete our new project form below."
+    -   Provides a link-style button labeled "New Project Inquiry" using `src/components/ui/button.tsx`.
+    -   Clicking the button opens a dialog (`src/components/ui/dialog.tsx`).
+    -   Replaces the *entire* existing form section on `app/contact/page.tsx`.
+-   **Inquiry Form Dialog:**
+    -   Presents a form within the dialog.
+    -   Contains fields for: First Name, Last Name, Contact Email, Phone Number, Project Address, Referral Source, Project Type, Project Description, Ongoing Project (Checkbox), Project Details, Project State (Radio Group), Budget (Select/Dropdown), Project Scope Details.
+    -   Uses appropriate input components (`Input`, `Textarea`, `Checkbox`, `RadioGroup`, `Select` from `src/components/ui/`).
+    -   Marks required fields clearly.
+    -   Includes options for 'Project State' (Construction commenced, DA / Town Planning Approval, Pre DA / Town Planning and Approvals, Not yet started, initial inquiries and research) and 'Budget' (No budget as yet, seeking guidance, Less than $500K, $500K - $1.5M, $1.5 - 2.5M, $2.5M+, Other).
+    -   Provides a submit button.
+    -   Is dismissible via an 'X' button or clicking outside the dialog.
+-   **Data Submission & Storage:**
+    -   Uses a Next.js server action (adapted from `src/actions/add-email-to-sheet.ts`).
+    -   Performs client-side and server-side validation using Zod.
+    -   On successful validation, appends data to the specified Google Sheet (`Website Leads` tab, ID: `1uBawMgtpx7h0AEL1dlnHq221T5wDR5QirHQR7ZnxLeI`).
+    -   Maps form fields to Google Sheet columns A-M using human-readable headers (e.g., "First Name").
+    -   Uses Google Service Account credentials (`src/lib/siredesign-4227867bd281.json`).
+-   **User Feedback:**
+    -   Provides clear success messages upon successful submission (following common UX patterns).
+    -   Displays clear, beige-colored error messages near relevant fields upon validation failure (client or server-side), consistent with `subscribe-input.tsx`.
+    -   Shows an error message if the server action fails to write to the Google Sheet.
+    -   Preserves form data on submission errors.
 
 # User Experience
-
-*   **User Personas:**
-    *   *Mobile Browser:* A user visiting the portfolio site on their smartphone (e.g., iPhone, Android phone). They expect a smooth, visually appealing experience optimized for touch interaction and vertical scrolling.
-    *   *Tablet Browser:* A user visiting the site on a tablet (e.g., iPad). They expect a slightly more spacious layout than mobile but still optimized for touch and potentially varying orientations.
-*   **Key User Flows:**
-    1.  **Browsing Project Images (Mobile/Tablet):** User navigates to an individual project page -> User scrolls down the page -> User encounters the image gallery section -> Images are presented in a 2-column (sm/md) or 1-column (<sm) grid with consistent aspect ratios -> User scrolls smoothly through the images.
-    2.  **Viewing Image Detail (Mobile/Tablet):** User is browsing the image gallery -> User finds an image of interest -> User taps the image -> The `ProjectLightbox` opens, displaying the tapped image at a larger size -> User interacts with the lightbox (swipes, closes).
-*   **UI/UX Considerations:**
-    *   **Smooth Scrolling:** The layout implementation should prioritize smooth scrolling performance, especially on less powerful mobile devices.
-    *   **Touch Targets:** Ensure images/buttons are easily tappable, meeting accessibility guidelines for target size.
-    *   **Visual Consistency:** The transition between single-column and two-column layouts as the viewport resizes should be seamless.
-    *   **Loading States:** Maintain existing placeholder/blur effects while images load to prevent layout shifts (CLS).
-    *   **Responsiveness:** Layout must strictly adhere to the specified breakpoints (`<sm`, `sm`, `md`, `lg+`).
+-   **User Personas:** Potential clients visiting the website seeking design or related services.
+-   **Key User Flow:**
+    1.  User navigates to the Contact page (`app/contact/page.tsx`).
+    2.  User sees the introductory text and the "New Project Inquiry" button below the "Get In Touch" header.
+    3.  User clicks the "New Project Inquiry" button.
+    4.  A dialog containing the inquiry form opens.
+    5.  User fills out the form fields, selecting options for 'Project State' and 'Budget'.
+    6.  User clicks the submit button.
+    7.  **(Success Path):** Form validates successfully. Data is sent via server action to Google Sheets. A success message appears in the dialog. The dialog may close automatically or offer a close button.
+    8.  **(Validation Error Path):** Form fails validation. Beige error messages appear near invalid fields. Submission is blocked. User corrects errors and resubmits.
+    9.  **(Server Error Path):** Form validates, but the server action fails (e.g., cannot write to sheet). An error message appears in the dialog. Form data remains. User may try again later.
+    10. **(Dismissal Path):** User clicks the 'X' button or outside the dialog area at any point before successful submission. The dialog closes without submitting.
+-   **UI/UX Considerations:**
+    -   All components (button, dialog, form elements) must adhere to the site's existing visual style (Shadcn UI).
+    -   The form must be responsive and usable on desktop, tablet, and mobile devices.
+    -   WCAG AA accessibility standards must be met (keyboard navigation, screen reader compatibility, labeling).
+    -   Interaction feedback (dialog opening, submission status) should be prompt and clear.
+    -   Error messages must be user-friendly and informative, styled consistently in beige.
 
 # Technical Architecture
-
-*   **System Components:**
-    *   **Frontend Application:** Next.js/React application.
-    *   **Image Component:** `src/components/individual-project/individual-project-image.tsx` (or potentially `src/components/project/project-image-with-lightbox.tsx` if used on project pages). This component will need modification to handle the new aspect ratio and potentially conditional rendering/styling based on props or context.
-    *   **Gallery Container Component:** The parent component rendering the list of images (e.g., potentially within `project-detail-client.tsx` or a dedicated `projects-gallery` component if it exists). This container will need the grid and gap CSS applied conditionally based on breakpoints.
-    *   **Styling:** Tailwind CSS for utility classes (grid, aspect-ratio, object-fit, gap, responsive modifiers).
-    *   **Lightbox Component:** `src/components/project/project-lightbox.tsx` (Usage remains the same, no internal changes needed).
-*   **Data Models:**
-    *   `Project` type (as defined in `src/lib/projects` or inferred from component props): Contains an array of image URLs (`photos` or `allImages`). No changes required to the data model itself.
-*   **APIs and Integrations:** None directly impacted. This is a frontend presentation layer change.
-*   **Infrastructure Requirements:** None. Uses existing hosting infrastructure.
+-   **Frontend:**
+    -   Framework: Next.js / React
+    -   UI Components: Shadcn UI components (`Button`, `Dialog`, `Input`, `Textarea`, `Checkbox`, `RadioGroup`, `Select`) from `src/components/ui/`.
+    -   Validation Library: Zod
+    -   State Management: React `useState` / potentially `react-hook-form`.
+    -   Primary File Modification: `app/contact/page.tsx`.
+    -   New Component Recommendation: `src/components/project-inquiry-form.tsx`.
+-   **Backend:**
+    -   Technology: Next.js Server Actions
+    -   Validation: Zod (server-side validation mirroring client-side).
+    -   API Integration: Google Sheets API v4.
+    -   Authentication: Google Service Account via JSON key (`src/lib/siredesign-4227867bd281.json`).
+    -   Dependencies: `googleapis`, `zod`.
+-   **Data Model:**
+    -   Interface `ProjectForm` defines the structure.
+    -   Google Sheet `1uBawMgtpx7h0AEL1dlnHq221T5wDR5QirHQR7ZnxLeI`, tab `Website Leads`, columns A-M with headers matching form labels.
 
 # Development Roadmap
-
-*   **Phase 1: MVP (Core Mobile/Tablet Grid)**
-    1.  **Breakpoint Logic:** Implement the core logic (likely via Tailwind responsive modifiers like `sm:`, `md:`, `lg:`) in the gallery container component to switch between single-column (< sm) and two-column (`sm` and `md`) grid layouts.
-    2.  **Aspect Ratio & Cropping:** Modify the `IndividualProjectImage` component to enforce the 16:9 aspect ratio (`aspect-video`) and center cropping (`object-cover`, `object-center`) for all images when displayed within the mobile/tablet context. This might involve passing a prop or using CSS overrides within the gallery container.
-    3.  **Staggered Layout Styling:** Apply necessary Tailwind classes (`grid`, `grid-cols-1`, `sm:grid-cols-2`, `lg:grid-cols-none` - *adjust lg as needed to revert* , `gap-4`) to the container component. Note: True CSS Masonry is complex; a simple staggered effect might rely on CSS Grid's natural flow or require a minimal JS helper/library if pure CSS isn't sufficient for staggering *within* the fixed aspect ratio constraint. Initially, target the two-column structure.
-    4.  **Lightbox Trigger:** Verify that tapping images in the new grid layout correctly opens the `ProjectLightbox` with the correct initial image.
-    5.  **Revert for Large Screens:** Ensure the layout reverts to the *original* state for `lg` breakpoints and larger (effectively removing the grid styling applied for smaller screens).
-
-*   **Phase 2: Future Enhancements (Post-MVP)**
-    1.  **Performance Optimization:** Analyze scrolling performance on various devices and optimize if needed (e.g., image loading strategies, virtualization if many images were present - though limited to 18 currently).
-    2.  **Refined Staggering:** If the initial CSS grid approach doesn't provide sufficient staggering, investigate lightweight Masonry JS libraries or more advanced CSS techniques.
-    3.  **Animation:** Consider subtle entrance animations for images loading into the grid (leveraging `framer-motion` if already in use).
-    4.  **Accessibility Audit:** Perform a thorough accessibility check for keyboard navigation and screen reader compatibility specifically for the new grid layouts.
+-   **MVP (Minimum Viable Product):**
+    1.  Implement the introductory text and "New Project Inquiry" button on `app/contact/page.tsx`, replacing the old form section.
+    2.  Create the basic dialog structure (`src/components/ui/dialog.tsx`).
+    3.  Build the core form component (`src/components/project-inquiry-form.tsx`) with all specified fields using Shadcn UI components (`Input`, `Textarea`, `Checkbox`, `RadioGroup`, `Select`).
+    4.  Implement client-side validation using Zod for required fields and email format. Display basic validation errors (beige text).
+    5.  Create the Next.js server action.
+    6.  Implement server-side Zod validation within the action.
+    7.  Integrate Google Sheets API using `googleapis` and the service account key to append data to the specified sheet and tab.
+    8.  Connect the form submission to the server action.
+    9.  Implement basic success and server error feedback messages in the dialog.
+    10. Ensure dialog dismissal works (X button, click outside).
+    11. Basic responsiveness for desktop and mobile.
+-   **Future Enhancements (Out of Scope for MVP):**
+    -   More sophisticated validation rules (e.g., phone number format).
+    -   Loading indicators during submission.
+    -   Saving partially filled form state (e.g., to local storage).
+    -   Email notifications on submission.
+    -   Admin interface for viewing submissions.
 
 # Logical Dependency Chain
-
-1.  **Container Styling (`sm`, `md`):** Define the two-column grid container and apply gaps using Tailwind responsive modifiers (`sm:grid-cols-2`, `md:grid-cols-2`, `gap-4`). This sets up the basic structure.
-2.  **Container Styling (`<sm`):** Define the single-column layout (`grid-cols-1`, `gap-4` or `space-y-4`).
-3.  **Image Component Styling:** Modify `IndividualProjectImage` to accept/apply the fixed 16:9 aspect ratio and center-cropping. This ensures images have uniform dimensions *before* being placed in the grid.
-4.  **Container Styling (`lg+`):** Explicitly define the styles for the `lg` breakpoint and larger to *undo* or override the grid styles, ensuring it reverts to the original layout. This might involve `lg:block` or resetting grid properties.
-5.  **Integration & Testing:** Render the modified image components within the styled container, test across breakpoints (<sm, sm, md, lg), verify scrolling, and ensure lightbox functionality remains intact.
-
-*Rationale:* Build the container structure first, then ensure the items fit that structure uniformly, then verify the revert logic, and finally test the integrated whole. This prioritizes getting the visual structure in place for the target devices quickly.
+1.  **UI Foundation:** Update `app/contact/page.tsx` to remove the old form and add the new text/button trigger.
+2.  **Dialog Shell:** Implement the basic `Dialog` component structure that opens on button click.
+3.  **Form Component:** Create the `ProjectInquiryForm` component with all input fields (Layout and basic state).
+4.  **Client-Side Validation:** Integrate Zod for client-side validation and display error messages.
+5.  **Server Action (Core Logic):** Create the Next.js server action, including server-side Zod validation.
+6.  **Google Sheets Integration:** Implement the `googleapis` logic within the server action to write data to the sheet using the service account. Test this independently if possible.
+7.  **End-to-End Connection:** Connect the form's onSubmit handler to the server action.
+8.  **Feedback Implementation:** Add success and specific server error handling/messaging.
+9.  **Styling & Refinement:** Ensure consistent styling, accessibility, and responsiveness.
 
 # Risks and Mitigations
-
-*   **Risk: Visual Inconsistency:** Achieving a visually pleasing *staggered* look with fixed aspect ratios in pure CSS Grid can be tricky. Images might align too uniformly.
-    *   **Mitigation:** Accept a basic two-column grid as MVP. If more staggering is essential post-MVP, evaluate lightweight JS Masonry libraries (e.g., `macy.js`) or refined CSS techniques, assessing performance impact.
-*   **Risk: Performance Degradation:** Applying new styles and potentially layout calculations could impact mobile performance.
-    *   **Mitigation:** Rely heavily on Tailwind's optimized utility classes. Test performance on target devices early and often. Ensure image lazy-loading and placeholders are effective.
-*   **Risk: CSS Specificity/Overrides:** Existing styles might interfere with the new responsive grid styles. Ensuring the `lg+` revert works correctly is crucial.
-    *   **Mitigation:** Use Tailwind's responsive modifiers correctly. Use browser developer tools extensively to inspect applied styles and specificity. Test the `lg` breakpoint transition thoroughly.
-*   **Risk: Scope Creep:** Desire to tweak the layout for `lg+` screens or add more complex animations.
-    *   **Mitigation:** Strictly adhere to the defined scope. Defer non-essential visual tweaks or features to Phase 2 (Future Enhancements).
+-   **Technical Challenge (Google Sheets API):** Potential issues with authentication, permissions, or API quotas.
+    -   **Mitigation:** Thoroughly test the Google Sheets integration early using the provided credentials. Implement robust error handling and logging for API calls. Ensure service account has correct permissions for the target sheet.
+-   **Validation Complexity:** Ensuring consistent validation logic between client and server using Zod. Handling edge cases in user input.
+    -   **Mitigation:** Define a single Zod schema used by both client and server. Test validation logic thoroughly with various inputs (valid, invalid, edge cases). Use a form library like `react-hook-form` to simplify integration.
+-   **UI Consistency:** Ensuring the new form elements match the existing site design perfectly.
+    -   **Mitigation:** Strictly use components from `src/components/ui/`. Refer to existing forms/components (`subscribe-input.tsx`) for styling cues, especially error message styling. Test across browsers and devices.
+-   **Scope Creep:** Adding features beyond the defined MVP during development.
+    -   **Mitigation:** Strictly adhere to the requirements outlined in this PRD for the initial implementation. Log any new feature requests for consideration in future iterations (see Future Enhancements).
 
 # Appendix
-
-*   **Tailwind Breakpoints Reference:**
-    *   `sm`: min-width: 640px
-    *   `md`: min-width: 768px
-    *   `lg`: min-width: 1024px
-*   **Target Aspect Ratio:** 16:9 (`aspect-video`)
-*   **Target Spacing:** 16px (`gap-4`)
-*   **Inspirational Layout Concept:** (Reference to the provided image - visually similar to Pinterest/Instagram feed layout, but using landscape images and no text overlays).
-*   **Key Files Potentially Involved:**
-    *   `src/components/individual-project/individual-project-image.tsx`
-    *   `src/components/project/project-lightbox.tsx` (usage only)
-    *   Parent component rendering the image list (e.g., `project-detail-client.tsx`, `projects-gallery` TBC)
-    *   `tailwind.config.js` (for reference, no changes needed)
+-   **Google Sheet ID:** `1uBawMgtpx7h0AEL1dlnHq221T5wDR5QirHQR7ZnxLeI`
+-   **Google Sheet Tab Name:** `Website Leads`
+-   **Service Account Key:** `src/lib/siredesign-4227867bd281.json`
+-   **Referenced UI Components:**
+    -   `src/components/ui/button.tsx`
+    -   `src/components/ui/dialog.tsx`
+    -   `src/components/ui/input.tsx`
+    -   `src/components/ui/textarea.tsx`
+    -   `src/components/ui/checkbox.tsx`
+    -   `src/components/ui/radio-group.tsx`
+    -   `src/components/ui/select.tsx`
+-   **Reference Action:** `src/actions/add-email-to-sheet.ts`
+-   **Reference Styling:** `src/components/subscribe-input.tsx` (for error message styling)
+-   **Data Column Mapping:** Form fields map sequentially to columns A-M in the `Website Leads` tab, using human-readable headers matching form labels. 
