@@ -14,7 +14,7 @@ export async function generateMetadata(
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
   // Await params before accessing its properties
-  const params = await props.params;
+  const params = props.params;
   const slug = params.slug;
   const project: Project | undefined = getProjectById(slug);
 
