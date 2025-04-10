@@ -470,9 +470,21 @@ function Header({ defaultLogo = false }: HeaderProps) {
   };
 
   const socialLinks = [
-    { id: "instagram", name: "INSTAGRAM", href: "https://instagram.com" },
-    { id: "facebook", name: "FACEBOOK", href: "https://facebook.com" },
-    { id: "tiktok", name: "TIKTOK", href: "https://tiktok.com" },
+    {
+      id: "instagram",
+      name: "INSTAGRAM",
+      href: "https://www.instagram.com/siredesign/",
+    },
+    {
+      id: "facebook",
+      name: "FACEBOOK",
+      href: "https://www.facebook.com/sireinteriordesign/",
+    },
+    {
+      id: "tiktok",
+      name: "TIKTOK",
+      href: "https://www.tiktok.com/@eilynjimenez__",
+    },
   ];
 
   // Determine the header background class based on state
