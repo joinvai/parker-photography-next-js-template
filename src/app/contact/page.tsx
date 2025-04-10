@@ -96,11 +96,11 @@ export default function ContactPage() {
                   Studio Location
                 </h3>
                 <p className="text-neutral-600">
-                  123 Creative Avenue
+                  7500 NE 4TH COURT, #103
                   <br />
-                  Design District
+                  MIAMI FL 33138
                   <br />
-                  Inspiration City, IC 12345
+                  VIEW MAP
                 </p>
               </div>
             </div>
@@ -108,8 +108,8 @@ export default function ContactPage() {
             <div className="space-y-4">
               <h3 className="text-xl font-geist-mono">Connect</h3>
               <div className="space-y-2 text-neutral-600">
-                <p>hello@studio.com</p>
-                <p>+1 (555) 123-4567</p>
+                <p>info@siredesign.com</p>
+                <p>305-402-4202</p>
               </div>
             </div>
           </motion.div>
