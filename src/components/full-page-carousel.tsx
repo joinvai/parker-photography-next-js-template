@@ -44,53 +44,35 @@ const getAltTextFromPath = (imagePath: string): string => {
 };
 
 interface FullPageCarouselProps {
-  /**
-   * Array of image paths relative to the 'public' directory.
-   * Example: ['/projects/No. 491-2023/bedroom.jpg', '/projects/No. 217-2023/image-15.jpg']
-   */
   imagePaths: string[];
-
-  /**
-   * Time in milliseconds between automatic slide transitions.
-   * Set to 0 or a negative number to disable auto-advance.
-   * Defaults to 5000 (5 seconds).
-   */
   autoPlayInterval?: number | null;
+  initialIndex?: number; // Add this prop
 }
 
 // Use the imported FC type
 const FullPageCarousel: FC<FullPageCarouselProps> = ({
   imagePaths,
   autoPlayInterval = 5000, // Default to 5 seconds
+  initialIndex = 0, // Default to 0 if not provided
 }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(initialIndex);
 
-  // Auto-advance logic using setInterval
   useEffect(() => {
-    // Only run the interval if autoPlayInterval is a positive number
-    // and there are multiple images
     if (
       !autoPlayInterval ||
       autoPlayInterval <= 0 ||
       !imagePaths ||
       imagePaths.length <= 1
     ) {
-      return; // No slideshow needed for 0 or 1 image or if interval is disabled
+      return;
     }
 
-    // Set up the interval to advance the slide
     const timer = setInterval(() => {
-      setCurrentIndex(
-        (prevIndex) =>
-          // Calculate the next index, looping back to 0 if at the end
-          (prevIndex + 1) % imagePaths.length,
-      );
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % imagePaths.length);
     }, autoPlayInterval);
 
-    // Cleanup function: Clear the interval when the component unmounts
-    // or when the dependencies (imagePaths, autoPlayInterval) change.
     return () => clearInterval(timer);
-  }, [imagePaths, autoPlayInterval]); // Use imagePaths directly as dependency
+  }, [imagePaths, autoPlayInterval]);
 
   // Handle cases where images are not yet loaded or the array is empty
   if (!imagePaths || imagePaths.length === 0) {
