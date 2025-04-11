@@ -1,5 +1,98 @@
-our build bundle is too big for vercel because of our huge images... we need to use cloudflare as a cdn but i have no clue how to do it help 
+# Overview
+This document outlines the requirements for implementing a custom cursor feature on the website. The initial goal (MVP) is to enhance user experience by applying a specific custom cursor (`Cursor1Icon`) for normal interaction and a different custom cursor (`Click1Icon`) when hovering over interactive elements **on desktop devices only**. This feature aims to provide an element of visual distinction and test the technical feasibility before implementing full user customization. Implementation will leverage Tailwind CSS configuration and global styles. User selection and persistence are out of scope for this MVP.
 
-our images are used literally in everything
+# Core Features
+*   **Default Custom Cursor:** Apply `Cursor1Icon` as the default cursor on desktop.
+*   **Hover Custom Cursor:** Apply `Click1Icon` as the hover cursor on interactive elements on desktop.
+*   **Desktop-Only:** Ensure custom cursors only appear on desktop screen sizes.
+*   **Standard Behavior:** Cursors should follow standard sizing and hotspot behavior unless explicitly defined otherwise.
 
-and its all the proejcts inside of public/projects
+# User Experience
+*   **User Personas:** Desktop users interacting with the website. Mobile/tablet users (who should *not* see the custom cursors).
+*   **Key User Flows:**
+    *   Desktop user moves mouse over non-interactive page elements -> Sees `Cursor1Icon`.
+    *   Desktop user moves mouse over interactive elements (links, buttons) -> Sees `Click1Icon`.
+    *   Mobile/tablet user interacts with the site -> Sees standard system cursors.
+*   **UI/UX Considerations:**
+    *   The transition between cursors should feel natural.
+    *   Cursors must be clearly visible against different background colors used on the site.
+    *   Hotspots for the cursors need to be defined correctly for intuitive interaction (e.g., the tip of the pointer).
+
+# Technical Architecture
+*   **System Components:**
+    *   `src/components/icons.tsx`: Source of SVG icons (`Cursor1Icon`, `Click1Icon`).
+    *   `tailwind.config.ts`: Configuration file for extending Tailwind's theme.
+    *   `src/app/globals.css`: Global stylesheet for applying cursor styles.
+*   **Functional Requirements:**
+    *   **FR-001 (Revised): Default Custom Cursor:** The `Cursor1Icon` component shall be used as the default mouse cursor across the website body on desktop screens.
+    *   **FR-002 (Revised): Hover Custom Cursor:** The `Click1Icon` component shall be used as the mouse cursor when hovering over elements that typically use `cursor-pointer` (e.g., links, buttons) on desktop screens.
+    *   **FR-003 (Revised): Implementation Method:** Custom cursors shall be defined by extending the Tailwind theme in `tailwind.config.ts`, referencing the SVG data (potentially inline) for `Cursor1Icon` and `Click1Icon`. Global CSS rules in `src/app/globals.css` shall apply these custom Tailwind cursor utilities (e.g., `cursor-custom-default`, `cursor-custom-hover`) to the appropriate elements (`body` for default, interactive elements for hover). (Reference: [Tailwind Cursor Docs](https://tailwindcss.com/docs/cursor))
+    *   **FR-004 (Revised): Responsiveness:** The custom cursor styles shall only apply on desktop breakpoints as defined in `tailwind.config.ts`. Standard system cursors must be used on smaller screens.
+*   **Non-Functional Requirements:**
+    *   **NFR-001: Performance:** The custom cursor implementation must not introduce noticeable lag or performance degradation. SVG icons should be optimized.
+    *   **NFR-002: Compatibility:** The feature must function correctly on the latest versions of major desktop browsers (Chrome, Firefox, Safari, Edge).
+    *   **NFR-003: Fallback:** Standard system cursors must display correctly on non-desktop breakpoints and in case of any loading errors for the custom cursors.
+*   **Design Considerations:**
+    *   **Cursor Icons:** Use `Cursor1Icon` (default) and `Click1Icon` (hover) from `src/components/icons.tsx`.
+    *   **Tailwind Configuration:** Modify `tailwind.config.ts` under `theme.extend.cursor` to define new utilities (e.g., `custom-default`, `custom-hover`) using the `url()` syntax with SVG data (inline or file path) and appropriate hotspot coordinates.
+    *   **CSS Application:** In `src/app/globals.css`, apply the custom utilities to `body` (for default) and interactive elements (for hover), scoped to desktop breakpoints using Tailwind's responsive prefixes (e.g., `md:`).
+*   **Technical Implementation Notes:**
+    *   **SVG Integration:** SVG data for `Cursor1Icon` and `Click1Icon` needs to be accessible within `tailwind.config.ts`. This can be achieved by exporting SVGs as strings, saving them as separate files, or using inline SVG definitions directly in the config. Inline SVG is feasible: `cursor: { 'custom-default': 'url("data:image/svg+xml;utf8,<svg>...</svg>") x y, default' }`.
+    *   **Hotspot Definition:** The `x` and `y` coordinates for the cursor hotspot must be defined within the `url()` value in `tailwind.config.ts` (e.g., `0 0` for top-left, or other values depending on the icon's design).
+    *   **Tailwind Theme Extension:**
+        ```javascript
+        // tailwind.config.ts (example structure with inline SVG placeholder)
+        module.exports = {
+          theme: {
+            extend: {
+              cursor: {
+                // Exact SVG data and hotspot coordinates (x y) TBD
+                'custom-default': 'url("data:image/svg+xml;utf8,<svg>/* Cursor1Icon SVG data */</svg>") x y, default',
+                'custom-hover':   'url("data:image/svg+xml;utf8,<svg>/* Click1Icon SVG data */</svg>") x y, pointer',
+              }
+            }
+          }
+          // ... rest of config
+        }
+        ```
+    *   **Global CSS Application:**
+        ```css
+        /* src/app/globals.css (example structure) */
+        @layer base {
+          body {
+            @apply md:cursor-custom-default; /* Apply default on medium screens and up */
+          }
+          a, button, [role="button"], input[type="submit"] /* Add other interactive selectors as needed */ {
+            @apply md:cursor-custom-hover; /* Apply hover on medium screens and up */
+          }
+        }
+        ```
+
+# Development Roadmap
+*   **MVP Requirements:**
+    *   Implement `Cursor1Icon` as the default desktop cursor.
+    *   Implement `Click1Icon` as the hover cursor for interactive elements on desktop.
+    *   Configure Tailwind theme and apply styles globally.
+    *   Ensure functionality across major desktop browsers and proper fallback on non-desktop screens.
+*   **Future Enhancements:**
+    *   Adding a "Customize Cursor" trigger.
+    *   Implementing a selection dialog using Shadcn UI components.
+    *   Offering a library of multiple cursor styles (e.g., 10 options).
+    *   Providing visual previews in the selection interface.
+    *   Persisting user choices via local storage or user accounts.
+
+# Logical Dependency Chain
+1.  **Define/Export SVGs:** Ensure `Cursor1Icon` and `Click1Icon` SVG data is accessible (as strings or files).
+2.  **Determine Hotspots:** Identify the correct x, y coordinates for the cursor hotspots.
+3.  **Configure Tailwind:** Extend the `cursor` theme in `tailwind.config.ts` with the new utilities, SVG data, and hotspots.
+4.  **Apply Global CSS:** Add rules in `src/app/globals.css` to apply the new Tailwind cursor classes to `body` and interactive elements, scoped to desktop breakpoints.
+5.  **Test:** Verify cursor behavior across different elements, browsers (desktop), and screen sizes (including non-desktop fallbacks).
+
+# Risks and Mitigations
+*   **Technical Challenge (SVG in CSS):** Ensuring SVGs render correctly as cursors across browsers. Mitigation: Test thoroughly, consider using optimized SVG files referenced by path if inline data causes issues. Use browser developer tools to inspect applied cursor styles.
+*   **Technical Challenge (Hotspot Accuracy):** Defining the correct hotspot coordinates for intuitive interaction. Mitigation: Test clicking small targets precisely. Adjust coordinates iteratively based on testing feedback.
+*   **Scope Creep:** Temptation to add user selection in MVP. Mitigation: Strictly adhere to the MVP definition (two hardcoded cursors). Defer customization features to future iterations as outlined.
+
+# Appendix
+*   [Tailwind CSS Cursor Documentation](https://tailwindcss.com/docs/cursor)
+*   Icon source: `src/components/icons.tsx` (`Cursor1Icon`, `Click1Icon`)
