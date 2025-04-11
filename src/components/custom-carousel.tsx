@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 import type React from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
@@ -37,6 +38,27 @@ const transitionProps = {
   opacity: { duration: 0.2 },
 };
 
+// Helper function to generate blur data URL
+const shimmer = (w: number, h: number) => `
+  <svg width="${w}" height="${h}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+      <linearGradient id="g">
+        <stop stop-color="#f6f7f8" offset="0%" />
+        <stop stop-color="#edeef1" offset="20%" />
+        <stop stop-color="#f6f7f8" offset="40%" />
+        <stop stop-color="#f6f7f8" offset="70%" />
+      </linearGradient>
+    </defs>
+    <rect width="${w}" height="${h}" fill="#f6f7f8" />
+    <rect id="r" width="${w}" height="${h}" fill="url(#g)" />
+    <animate xlink:href="#r" attributeName="x" from="-${w}" to="${w}" dur="1s" repeatCount="indefinite"  />
+  </svg>`;
+
+const toBase64 = (str: string) =>
+  typeof window === "undefined"
+    ? Buffer.from(str).toString("base64")
+    : window.btoa(str);
+
 export function CustomCarousel({ projects, className }: CustomCarouselProps) {
   // Use a tuple [page, direction] for state
   const [[page, direction], setPage] = useState([0, 0]);
@@ -47,6 +69,7 @@ export function CustomCarousel({ projects, className }: CustomCarouselProps) {
   const [mousePosition, setMousePosition] = useState<{
     [key: number]: { x: number; y: number };
   }>({});
+  const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     const handleResize = () => {
@@ -62,6 +85,21 @@ export function CustomCarousel({ projects, className }: CustomCarouselProps) {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  // Preload images
+  useEffect(() => {
+    // Create an array of all image URLs we want to preload
+    const imagesToPreload = projects.map((project) => project.mainImage);
+
+    // Preload images using for...of
+    for (const imageUrl of imagesToPreload) {
+      const img = new window.Image();
+      img.src = imageUrl;
+      img.onload = () => {
+        setLoadedImages((prev) => new Set([...prev, imageUrl]));
+      };
+    }
+  }, [projects]);
 
   // Wrap the index calculation
   const projectIndex = useMemo(() => {
@@ -115,21 +153,24 @@ export function CustomCarousel({ projects, className }: CustomCarouselProps) {
     return itemsToShow;
   }, [projectIndex, projects, itemsPerView]);
 
+  // Generate blur placeholder
+  const blurDataURL = useMemo(() => {
+    return `data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`;
+  }, []);
+
   return (
     <motion.div
-      // Add explicit height and relative positioning to the main container
       className={cn(
         "relative w-full overflow-hidden",
-        // Make carousel much taller
-        "h-[75vh]", // Adjust as needed
+        "h-[75vh]",
+        // Add padding on small devices
+        "px-4 sm:px-6 lg:px-0",
         className,
       )}
     >
-      {/* AnimatePresence now wraps the sliding container */}
       <AnimatePresence initial={false} custom={direction} mode="popLayout">
-        {/* This inner div handles the sliding animation */}
         <motion.div
-          key={page} // Animate when page changes
+          key={page}
           custom={direction}
           variants={variants}
           initial="enter"
@@ -137,7 +178,7 @@ export function CustomCarousel({ projects, className }: CustomCarouselProps) {
           exit="exit"
           transition={transitionProps}
           className={cn(
-            "absolute inset-0 grid justify-center gap-4", // Use absolute positioning for sliding
+            "absolute inset-0 grid justify-center gap-4",
             "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3",
           )}
           // Prevent dragging interfering with clicks
@@ -160,25 +201,20 @@ export function CustomCarousel({ projects, className }: CustomCarouselProps) {
             const isNextTrigger =
               originalIndex === itemsPerView - 1 && isLargeScreen;
             const isNavTrigger = isPrevTrigger || isNextTrigger;
+            const isLoaded = loadedImages.has(project.mainImage);
 
             return (
-              // Add a wrapping div for image + name
               <div key={project.id} className="flex flex-col">
                 <motion.div
-                  // key={project.id} // Key is now on the parent div
                   className={cn(
-                    // Use the new larger height
-                    "relative overflow-hidden h-[70vh]", // Slightly reduce image height to make space for text
+                    "relative overflow-hidden h-[70vh]",
                     "rounded-none",
-                    // Apply cursor-none only when the text should appear
                     isNavTrigger && "lg:cursor-none",
                   )}
-                  // Use state for hover effects
                   onMouseEnter={() =>
                     isNavTrigger && setHoveredIndex(originalIndex)
                   }
                   onMouseLeave={() => isNavTrigger && setHoveredIndex(null)}
-                  // Add mouse move handler
                   onMouseMove={(e) =>
                     isNavTrigger && handleMouseMove(e, originalIndex)
                   }
@@ -192,44 +228,55 @@ export function CustomCarousel({ projects, className }: CustomCarouselProps) {
                 >
                   <Image
                     fill
-                    sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                    priority={originalIndex < itemsPerView}
+                    sizes="(min-width: 1024px) 80vw, (min-width: 640px) 90vw, 100vw"
+                    priority={true}
                     src={project.mainImage}
                     alt={project.name}
-                    className="object-cover w-full h-full"
+                    quality={100}
+                    className={cn(
+                      "object-cover w-full h-full transition-opacity duration-500",
+                      !isLoaded && "opacity-0",
+                      isLoaded && "opacity-100",
+                    )}
+                    placeholder="blur"
+                    blurDataURL={blurDataURL}
+                    onLoad={() =>
+                      setLoadedImages(
+                        (prev) => new Set([...prev, project.mainImage]),
+                      )
+                    }
                   />
-                  {/* Show text overlay based on hoveredIndex state and position based on mouse */}
                   {isNavTrigger &&
                     hoveredIndex === originalIndex &&
                     mousePosition[originalIndex] && (
                       <motion.div
-                        // Animate presence of text slightly
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.8 }}
                         transition={{ duration: 0.1 }}
                         className="absolute pointer-events-none z-20"
                         style={{
-                          // Position based on mouse coordinates
                           left: `${mousePosition[originalIndex].x}px`,
                           top: `${mousePosition[originalIndex].y}px`,
-                          transform: "translate(-50%, -50%)", // Center on cursor
+                          transform: "translate(-50%, -50%)",
                         }}
                       >
-                        {/* Change text color, add heading font, remove drop shadow */}
                         <span className="text-black font-heading text-2xl font-medium select-none">
                           {isPrevTrigger ? "Prev" : "Next"}
                         </span>
                       </motion.div>
                     )}
                 </motion.div>
-                {/* Project Name Below Image */}
+                {/* Project Name Below Image - Now as a Link */}
                 <div className="mt-3 text-left">
-                  <h3 className="font-heading text-black text-base md:text-lg lg:text-xl">
+                  <Link
+                    href={`/projects/${project.id}`}
+                    className="font-heading text-black text-base md:text-lg lg:text-xl block hover:italic"
+                  >
                     {project.name}
-                  </h3>
+                  </Link>
                 </div>
-              </div> // Close the wrapping div for image + name
+              </div>
             );
           })}
         </motion.div>
@@ -241,7 +288,7 @@ export function CustomCarousel({ projects, className }: CustomCarouselProps) {
           type="button"
           onClick={goToPrevious}
           // Add font-heading, remove rounded-full
-          className="px-4 py-2 bg-white/70 text-black font-heading shadow-md hover:bg-white transition-colors"
+          className="px-4 py-2 bg-#FAF9F5/70 text-black font-heading shadow-md hover:bg-#FAF9F5 transition-colors"
           aria-label="Previous project"
         >
           Prev
@@ -250,7 +297,7 @@ export function CustomCarousel({ projects, className }: CustomCarouselProps) {
           type="button"
           onClick={goToNext}
           // Add font-heading, remove rounded-full
-          className="px-4 py-2 bg-white/70 text-black font-heading shadow-md hover:bg-white transition-colors"
+          className="px-4 py-2 bg-#FAF9F5/70 text-black font-heading shadow-md hover:bg-#FAF9F5 transition-colors"
           aria-label="Next project"
         >
           Next

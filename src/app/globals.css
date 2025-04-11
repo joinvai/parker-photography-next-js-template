@@ -11,6 +11,15 @@
     @apply font-sans;
     background-color: #FAF9F4;
   }
+
+  /* Add global link styles */
+  a {
+    @apply transition-all duration-200;
+  }
+
+  a:hover {
+    @apply italic;
+  }
 }
 
 /* Define custom CSS variables for light and dark background colors */

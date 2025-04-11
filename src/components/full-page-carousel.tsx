@@ -87,9 +87,8 @@ const FullPageCarousel: FC<FullPageCarouselProps> = ({
         <Image
           src={defaultImage || "/placeholder.svg"}
           alt="Project image"
-          layout="fill"
-          objectFit="cover"
-          objectPosition="center"
+          fill
+          className="object-cover object-center"
           priority={true}
           quality={100}
           onLoad={() => setIsLoaded(true)}
@@ -151,9 +150,8 @@ const FullPageCarousel: FC<FullPageCarouselProps> = ({
           <Image
             src={currentImage || "/placeholder.svg"}
             alt={altText}
-            layout="fill"
-            objectFit="cover"
-            objectPosition="center"
+            fill
+            className="object-cover object-center"
             priority={currentIndex === 0}
             quality={100}
             onLoad={() => setIsLoaded(true)}

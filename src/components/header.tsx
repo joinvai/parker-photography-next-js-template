@@ -856,7 +856,7 @@ function Header({ defaultLogo = false }: HeaderProps) {
               className={`block transition-all duration-300 ease-out 
 							h-0.5 w-5 sm:w-6 rounded-sm ${
                 isOpen
-                  ? "rotate-45 translate-y-[0.175rem] bg-white"
+                  ? "rotate-45 translate-y-[0.175rem] bg-#FAF9F5"
                   : "bg-black -translate-y-[0.175rem]"
               }`}
             />

@@ -44,7 +44,7 @@ export default function ContactPage() {
   };
 
   return (
-    <main className="min-h-screen bg-white text-neutral-800 p-8 md:p-16">
+    <main className="min-h-screen bg-#FAF9F5 text-neutral-800 p-8 md:p-16">
       <motion.div
         variants={containerVariants}
         initial="hidden"

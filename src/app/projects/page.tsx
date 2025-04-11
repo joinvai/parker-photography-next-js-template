@@ -36,7 +36,7 @@ export default async function ProjectsPage() {
   if (!projects || projects.length === 0) {
     return (
       <main
-        className="min-h-screen flex items-center justify-center bg-white text-black p-4 sm:p-6"
+        className="min-h-screen flex items-center justify-center bg-#FAF9F5 text-black p-4 sm:p-6"
         id="main-content"
         aria-labelledby="error-heading"
       >
@@ -67,7 +67,7 @@ export default async function ProjectsPage() {
   };
 
   return (
-    <main className="min-h-screen bg-white text-black" id="main-content">
+    <main className="min-h-screen bg-#FAF9F5 text-black" id="main-content">
       {/* Schema.org structured data for better SEO - using next/script to avoid dangerouslySetInnerHTML */}
       <Script id="schema-structured-data" type="application/ld+json">
         {JSON.stringify(structuredData)}
