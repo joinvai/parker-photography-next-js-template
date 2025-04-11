@@ -856,7 +856,7 @@ function Header({ defaultLogo = false }: HeaderProps) {
               className={`block transition-all duration-300 ease-out 
 							h-0.5 w-5 sm:w-6 rounded-sm ${
                 isOpen
-                  ? "rotate-45 translate-y-[0.175rem] bg-#FAF9F5"
+                  ? "rotate-45 translate-y-[0.175rem] bg-white"
                   : "bg-black -translate-y-[0.175rem]"
               }`}
             />
@@ -951,7 +951,7 @@ function Header({ defaultLogo = false }: HeaderProps) {
             }}
           >
             <span className="hidden sm:inline">SOCIAL</span>
-            <span className="sm:hidden">SOC</span>
+            <span className="sm:hidden">SOCIAL</span>
           </button>
 
           {/* Mobile Touch Overlay - Only visible when menu is open on touch devices */}

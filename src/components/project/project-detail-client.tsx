@@ -18,13 +18,13 @@ export default function ProjectDetailClient({
 
   return (
     <main
-      className="relative min-h-screen text-black bg-transparent"
+      className="relative bg-#FAF9F5 min-h-screen text-black"
       aria-labelledby="project-title"
     >
       {project.mainImage && (
         <section
           aria-label="Project hero image"
-          className="fixed top-0 left-0 w-screen h-screen z-[9] overflow-hidden"
+          className="relative w-screen h-screen overflow-hidden"
         >
           <motion.div
             className={cn(
@@ -56,10 +56,10 @@ export default function ProjectDetailClient({
         </section>
       )}
 
-      <div className="relative z-10 mt-[100vh] bg-#FAF9F5 px-4 sm:px-6 md:px-8 pt-16 sm:pt-20 md:pt-24 pb-12 sm:pb-16">
+      <div className="relative z-10 bg-#FAF9F5 px-4 sm:px-6 md:px-8 pt-16 md:pt-24 pb-12 sm:pb-16">
         <h1
           id="project-title"
-          className="max-w-7xl text-center mx-auto text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold mb-6 sm:mb-8 md:mb-12 tracking-tight transition-all duration-300"
+          className="max-w-7xl text-center mx-auto text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-thin mb-6 sm:mb-8 md:mb-12 tracking-tight transition-all duration-300"
         >
           {project.name}
         </h1>

@@ -100,8 +100,8 @@ export default function RootLayout({
   // Determine padding top based on device and page
   const getTopPadding = useCallback(() => {
     if (isHomePage) return "";
-    if (isMobile) return "pt-20 sm:pt-24";
-    return "pt-28 md:pt-32";
+    if (isMobile) return "pt-0 sm:pt-0";
+    return "pt-0 sm:pt-0";
   }, [isHomePage, isMobile]);
 
   // Focus management for keyboard navigation

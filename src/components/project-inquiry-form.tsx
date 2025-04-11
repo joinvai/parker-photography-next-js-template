@@ -361,7 +361,7 @@ export function ProjectInquiryForm() {
               <FormLabel>Estimated Budget</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
-                  <SelectTrigger>
+                  <SelectTrigger className="min-w-[200px]">
                     <SelectValue placeholder="Select budget range" />
                   </SelectTrigger>
                 </FormControl>

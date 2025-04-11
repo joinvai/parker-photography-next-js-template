@@ -44,7 +44,7 @@ export default function ContactPage() {
   };
 
   return (
-    <main className="min-h-screen bg-#FAF9F5 text-neutral-800 p-8 md:p-16">
+    <main className="min-h-screen bg-#FAF9F5 text-neutral-800 p-8 pt-24 md:p-16">
       <motion.div
         variants={containerVariants}
         initial="hidden"
@@ -53,7 +53,7 @@ export default function ContactPage() {
       >
         <motion.h1
           variants={itemVariants}
-          className="font-geist-mono text-6xl md:text-8xl mb-12 tracking-tighter"
+          className="font-geist-mono text-5xl md:text-5xl mb-12 pt-24 tracking-tighter"
         >
           Let's Create
           <br />
@@ -80,7 +80,10 @@ export default function ContactPage() {
                   form below.
                 </p>
                 <DialogTrigger asChild>
-                  <Button variant="link" className="p-0 h-auto text-base">
+                  <Button
+                    variant="link"
+                    className="p-0 h-auto text-base text-neutral-800 hover:text-neutral-600"
+                  >
                     New Project Inquiry
                   </Button>
                 </DialogTrigger>
@@ -97,7 +100,7 @@ export default function ContactPage() {
 
           <motion.div variants={itemVariants} className="space-y-8">
             <div>
-              <h3 className="text-xl font-geist-mono mb-4">Studio Location</h3>
+              <h3 className="font-geist-mono text-2xl mb-4">Studio Location</h3>
               <p className="text-neutral-600">
                 7500 NE 4TH COURT, #103
                 <br />
@@ -107,7 +110,7 @@ export default function ContactPage() {
             </div>
 
             <div className="space-y-4">
-              <h3 className="text-xl font-geist-mono">Connect</h3>
+              <h3 className="font-geist-mono text-2xl mb-4">Connect</h3>
               <div className="space-y-2 text-neutral-600">
                 <p>info@siredesign.com</p>
                 <p>305-402-4202</p>
@@ -118,18 +121,20 @@ export default function ContactPage() {
 
         {/* NEW CAREERS SECTION START */}
         <motion.div variants={itemVariants} className="mt-16">
-          <h2 className="text-2xl font-geist-mono mb-6">CAREERS</h2>
+          <h2 className="text-2xl font-geist-mono mb-6">Careers</h2>
           <Sheet open={isCareersSheetOpen} onOpenChange={setIsCareersSheetOpen}>
             <Button
               variant="link"
-              className="p-0 h-auto text-base"
+              className="p-0 h-auto text-base text-neutral-800 hover:text-neutral-600"
               onClick={() => setIsCareersSheetOpen(true)}
             >
               View Job Availabilities
             </Button>
             <SheetContent>
               <SheetHeader>
-                <SheetTitle>Current Openings</SheetTitle>
+                <SheetTitle className="text-2xl font-geist-mono font-thin">
+                  Current Openings
+                </SheetTitle>
                 <SheetDescription>
                   We don't currently have any roles available to fill within our
                   studio, however we are always on the lookout for talented
