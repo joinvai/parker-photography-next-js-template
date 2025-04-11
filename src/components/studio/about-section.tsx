@@ -59,7 +59,7 @@ export default function AboutSection() {
       {/* Heading (Can also be animated if desired) */}
       <motion.h1
         id="about-sire-heading"
-        className="text-4xl md:text-6xl font-geist-mono tracking-tighter mb-8 md:mb-12 text-center"
+        className="text-4xl md:text-5xl font-geist-mono tracking-tighter mb-8 md:mb-12 text-center"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.5 }}

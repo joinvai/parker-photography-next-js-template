@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { pressItems } from '@/data/press';
-import type { Press } from '@/types/press';
+import { pressItems } from "@/data/press";
+import type { Press } from "@/types/press";
+import { useState } from "react";
 
 export default function PressPage() {
   const [hoveredItem, setHoveredItem] = useState<Press | null>(null);
@@ -13,14 +13,17 @@ export default function PressPage() {
   };
 
   return (
-    <main className="min-h-screen p-8 md:p-24"> {/* Restore original padding */}
-      <h1 className="text-4xl mb-12 font-light tracking-tighter">Press</h1>
-      
+    <main className="min-h-screen p-8 md:p-24">
+      {" "}
+      {/* Restore original padding */}
+      <h1 className="text-4xl mb-12 font-light pt-24 tracking-tighter">
+        Press
+      </h1>
       <div className="w-full cursor-none">
         <table className="w-full border-collapse">
           <tbody>
             {pressItems.map((item) => (
-              <tr 
+              <tr
                 key={`${item.name}-${item.publicationDate}`}
                 className="group border-t border-neutral-300"
                 onMouseEnter={() => setHoveredItem(item)}
@@ -28,14 +31,23 @@ export default function PressPage() {
                 onMouseMove={handleMouseMove}
               >
                 <td className="py-4 pr-8 relative w-full">
-                  <a 
-                    href={item.url}
-                    className="font-heading text-[36px] leading-tight group-hover:italic transition-all cursor-none"
-                  >
-                    {item.name}
-                  </a>
+                  <div className="flex flex-col md:block">
+                    {" "}
+                    {/* Stack elements vertically by default, revert on md+ */}
+                    <a
+                      href={item.url}
+                      className="font-heading text-xl md:text-[36px] leading-tight group-hover:italic transition-all cursor-none"
+                    >
+                      {item.name}
+                    </a>
+                    {/* Date shown below name only on small screens */}
+                    <span className="text-sm text-neutral-600 mt-1 md:hidden">
+                      {item.publicationDate}
+                    </span>
+                  </div>
                 </td>
-                <td className="py-4 pl-8 text-right whitespace-nowrap text-neutral-900 cursor-none text-[16px]">
+                {/* Original date cell, hidden on small screens, shown as table-cell on md+ */}
+                <td className="hidden md:table-cell py-4 pl-8 text-right whitespace-nowrap text-neutral-900 cursor-none text-sm md:text-[16px]">
                   {item.publicationDate}
                 </td>
               </tr>
@@ -43,18 +55,17 @@ export default function PressPage() {
           </tbody>
         </table>
       </div>
-
       {hoveredItem && (
-        <div 
+        <div
           className="fixed pointer-events-none z-50 transform -translate-x-1/2 -translate-y-1/2 transition-opacity duration-200"
-          style={{ 
-            left: `${mousePosition.x}px`, 
+          style={{
+            left: `${mousePosition.x}px`,
             top: `${mousePosition.y}px`,
-            opacity: hoveredItem ? 1 : 0
+            opacity: hoveredItem ? 1 : 0,
           }}
         >
-          <img 
-            src={hoveredItem.logo} 
+          <img
+            src={hoveredItem.logo}
             alt={`${hoveredItem.name} logo`}
             className="w-48 h-auto opacity-80"
           />

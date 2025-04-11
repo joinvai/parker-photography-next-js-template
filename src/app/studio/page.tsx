@@ -26,7 +26,7 @@ export const metadata: Metadata = {
 
 export default function StudioPage() {
   return (
-    <main className="min-h-screen text-black">
+    <main className="min-h-screen text-black pt-24">
       <StudioQuote />
       <AboutSection />
       <div className="p-8 md:p-16">

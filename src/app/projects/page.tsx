@@ -67,7 +67,10 @@ export default async function ProjectsPage() {
   };
 
   return (
-    <main className="min-h-screen bg-#FAF9F5 text-black" id="main-content">
+    <main
+      className="min-h-screen bg-#FAF9F5 text-black pt-24"
+      id="main-content"
+    >
       {/* Schema.org structured data for better SEO - using next/script to avoid dangerouslySetInnerHTML */}
       <Script id="schema-structured-data" type="application/ld+json">
         {JSON.stringify(structuredData)}

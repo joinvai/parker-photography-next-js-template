@@ -38,7 +38,7 @@ export default function StudioQuote() {
         {!quoteLoaded && <div className="sr-only">Loading studio quote</div>}
 
         <blockquote
-          className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-light italic max-w-4xl mx-auto text-gray-800 transition-opacity duration-300"
+          className="text-lg sm:text-2xl md:text-3xl lg:text-4xl font-light italic max-w-4xl mx-auto text-gray-800 transition-opacity duration-300"
           style={{ opacity: quoteLoaded ? 1 : 0 }}
           onLoad={() => setQuoteLoaded(true)}
         >
