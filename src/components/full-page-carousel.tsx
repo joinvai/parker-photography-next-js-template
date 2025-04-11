@@ -1,13 +1,13 @@
-"use client"; // Mark this as a Client Component due to useState, useEffect, Framer Motion
+"use client";
 
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
-import { useEffect, useState } from "react"; // Keep runtime imports here
-import type { FC } from "react"; // Import FC type separately
+import { useEffect, useState } from "react";
+import type { FC } from "react";
 
 // Helper function to generate descriptive alt text from image path
 const getAltTextFromPath = (imagePath: string): string => {
-  if (!imagePath) return "Image"; // Default text if path is empty
+  if (!imagePath) return "Image";
 
   try {
     // Remove leading slash if present
@@ -30,7 +30,6 @@ const getAltTextFromPath = (imagePath: string): string => {
       return `${projectName} - ${formattedImageName}`;
     }
     // Fallback if structure is different
-    // Browser-compatible way to remove extension:
     const fallbackFileName = parts[parts.length - 1];
     const fallbackName =
       fallbackFileName.substring(0, fallbackFileName.lastIndexOf(".")) ||
@@ -39,23 +38,23 @@ const getAltTextFromPath = (imagePath: string): string => {
     return formattedFallbackName || "Project image";
   } catch (error) {
     console.error("Error parsing image path for alt text:", error);
-    return "Project image"; // Fallback on error
+    return "Project image";
   }
 };
 
 interface FullPageCarouselProps {
   imagePaths: string[];
   autoPlayInterval?: number | null;
-  initialIndex?: number; // Add this prop
+  initialIndex?: number;
 }
 
-// Use the imported FC type
 const FullPageCarousel: FC<FullPageCarouselProps> = ({
   imagePaths,
-  autoPlayInterval = 5000, // Default to 5 seconds
-  initialIndex = 0, // Default to 0 if not provided
+  autoPlayInterval = 5000,
+  initialIndex = 0,
 }) => {
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     if (
@@ -74,50 +73,62 @@ const FullPageCarousel: FC<FullPageCarouselProps> = ({
     return () => clearInterval(timer);
   }, [imagePaths, autoPlayInterval]);
 
-  // Handle cases where images are not yet loaded or the array is empty
+  // Important: Use a default image if imagePaths is empty
+  // This prevents the loading state from showing
+  const defaultImage = "/projects/No.4605-2021/main.jpg"; // Replace with a real image path
+
+  // If no images are available, use the default image
   if (!imagePaths || imagePaths.length === 0) {
     return (
-      <div className="w-screen h-screen bg-gray-100 flex items-center justify-center text-gray-500">
-        {/* Placeholder indicating loading or no images */}
-        <p>Loading Carousel...</p>
-      </div>
+      <section
+        className="relative w-screen h-screen overflow-hidden bg-black"
+        aria-label="Project image"
+      >
+        <Image
+          src={defaultImage || "/placeholder.svg"}
+          alt="Project image"
+          layout="fill"
+          objectFit="cover"
+          objectPosition="center"
+          priority={true}
+          quality={100}
+          onLoad={() => setIsLoaded(true)}
+        />
+      </section>
     );
   }
 
-  // Animation variants for the cross-fade effect using Framer Motion
+  // Animation variants for the cross-fade effect
   const variants = {
     enter: {
-      // State for the incoming slide
       opacity: 0,
-      // Optionally add a slight scale or slide effect
-      // scale: 1.05,
-      // x: 20,
+      scale: 1.05,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut",
+      },
     },
     center: {
-      // State for the slide when it's visible
       opacity: 1,
-      // scale: 1,
-      // x: 0,
+      scale: 1,
       transition: {
-        duration: 0.8, // Duration of the fade-in animation
-        ease: "easeInOut", // Type of easing function
+        duration: 0.8,
+        ease: [0.4, 0, 0.2, 1], // Custom cubic-bezier for smooth motion
       },
     },
     exit: {
-      // State for the outgoing slide
       opacity: 0,
-      // scale: 0.95,
-      // x: -20,
+      scale: 0.98,
       transition: {
-        duration: 0.5, // Duration of the fade-out animation
-        ease: "easeOut",
+        duration: 0.5,
+        ease: "easeIn",
       },
     },
   };
 
   // Get the source URL for the current image
-  const currentImage = imagePaths[currentIndex];
-  const altText = getAltTextFromPath(currentImage); // Generate alt text
+  const currentImage = imagePaths[currentIndex] || defaultImage;
+  const altText = getAltTextFromPath(currentImage);
 
   return (
     <section
@@ -125,8 +136,6 @@ const FullPageCarousel: FC<FullPageCarouselProps> = ({
       aria-roledescription="carousel"
       aria-label="Project image slideshow"
     >
-      {/* AnimatePresence handles the animation of components when they mount and unmount */}
-      {/* 'mode="wait"' ensures the exiting slide finishes animating out before the new one animates in */}
       <AnimatePresence initial={false} mode="wait">
         <motion.fieldset
           style={{ border: "none", margin: 0, padding: 0 }}
@@ -140,13 +149,14 @@ const FullPageCarousel: FC<FullPageCarouselProps> = ({
           aria-label={`Slide ${currentIndex + 1} of ${imagePaths.length}: ${altText}`}
         >
           <Image
-            src={currentImage}
+            src={currentImage || "/placeholder.svg"}
             alt={altText}
             layout="fill"
             objectFit="cover"
             objectPosition="center"
             priority={currentIndex === 0}
             quality={100}
+            onLoad={() => setIsLoaded(true)}
           />
         </motion.fieldset>
       </AnimatePresence>

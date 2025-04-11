@@ -17,6 +17,18 @@ const nextConfig: NextConfig = {
       "public/**/*",
     ],
   },
+  // Add this to ensure Sharp works properly
+  images: {
+    domains: ["vercel.com"], // Add any domains you need
+    formats: ["image/avif", "image/webp"],
+    // This is important for Sharp to work correctly
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**",
+      },
+    ],
+  },
 };
 
 export default withBundleAnalyzer(nextConfig);
