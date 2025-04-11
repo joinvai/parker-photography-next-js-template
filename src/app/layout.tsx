@@ -132,7 +132,7 @@ export default function RootLayout({
       lang="en"
       className={`${dmSans.variable} ${editorialNew.variable} antialiased`}
     >
-      <body className="bg-white text-black transition-colors duration-300">
+      <body className="bg-#FAF9F5 text-black transition-colors duration-300">
         {/* Skip to content link for keyboard users */}
         <a
           href="#main-content"

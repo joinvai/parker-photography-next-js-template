@@ -82,7 +82,7 @@ export default function TeamPageClient({ teamData }: TeamPageClientProps) {
             />
           </div>
           <div className="w-full">
-            <h3 className="font-sans text-sm uppercase text-[#1a1b1f] tracking-widest mb-2">
+            <h3 className="font-sans text-sm uppercase text-gray-400 tracking-[0.2em] mb-2">
               {member.role}
             </h3>
             <h2 className="text-3xl font-geist-mono mb-4">{member.fullName}</h2>
@@ -91,7 +91,9 @@ export default function TeamPageClient({ teamData }: TeamPageClientProps) {
                 <AccordionItem value="item-1">
                   <AccordionTrigger className="py-1 mb-6 mx-auto" />
                   <AccordionContent>
-                    <p className="text-gray-700">{member.bio}</p>
+                    <p className="prose prose-sm prose-gray text-gray-700">
+                      {member.bio}
+                    </p>
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>
