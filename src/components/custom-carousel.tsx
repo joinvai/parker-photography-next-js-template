@@ -262,7 +262,7 @@ export function CustomCarousel({ projects, className }: CustomCarouselProps) {
                         }}
                       >
                         <span className="text-black font-heading text-2xl font-medium select-none">
-                          {isPrevTrigger ? "Prev" : "Next"}
+                          {isPrevTrigger ? "PREV" : "NEXT"}
                         </span>
                       </motion.div>
                     )}
@@ -291,7 +291,7 @@ export function CustomCarousel({ projects, className }: CustomCarouselProps) {
           className="px-4 py-2 bg-#FAF9F5/70 text-black font-heading shadow-md hover:bg-#FAF9F5 transition-colors"
           aria-label="Previous project"
         >
-          Prev
+          PREV
         </button>
         <button
           type="button"
@@ -300,7 +300,7 @@ export function CustomCarousel({ projects, className }: CustomCarouselProps) {
           className="px-4 py-2 bg-#FAF9F5/70 text-black font-heading shadow-md hover:bg-#FAF9F5 transition-colors"
           aria-label="Next project"
         >
-          Next
+          NEXT
         </button>
       </div>
     </motion.div>
