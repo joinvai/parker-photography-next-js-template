@@ -81,7 +81,7 @@ const FullPageCarousel: FC<FullPageCarouselProps> = ({
   if (!imagePaths || imagePaths.length === 0) {
     return (
       <section
-        className="relative w-screen h-screen overflow-hidden bg-black"
+        className="relative w-screen h-screen overflow-hidden"
         aria-label="Project image"
       >
         <Image
@@ -97,30 +97,27 @@ const FullPageCarousel: FC<FullPageCarouselProps> = ({
     );
   }
 
-  // Animation variants for the cross-fade effect
+  // Animation variants for the smooth cross-fade effect
   const variants = {
     enter: {
       opacity: 0,
-      scale: 1.05,
       transition: {
-        duration: 0.5,
-        ease: "easeOut",
+        duration: 1.2,
+        ease: "easeInOut",
       },
     },
     center: {
       opacity: 1,
-      scale: 1,
       transition: {
-        duration: 0.8,
-        ease: [0.4, 0, 0.2, 1], // Custom cubic-bezier for smooth motion
+        duration: 1.2,
+        ease: "easeInOut",
       },
     },
     exit: {
       opacity: 0,
-      scale: 0.98,
       transition: {
-        duration: 0.5,
-        ease: "easeIn",
+        duration: 1.2,
+        ease: "easeInOut",
       },
     },
   };
@@ -131,15 +128,14 @@ const FullPageCarousel: FC<FullPageCarouselProps> = ({
 
   return (
     <section
-      className="relative w-screen h-screen overflow-hidden bg-black"
+      className="relative w-screen h-screen overflow-hidden"
       aria-roledescription="carousel"
       aria-label="Project image slideshow"
     >
-      <AnimatePresence initial={false} mode="wait">
-        <motion.fieldset
-          style={{ border: "none", margin: 0, padding: 0 }}
+      <AnimatePresence mode="sync" initial={false}>
+        <motion.div
           key={currentIndex}
-          className="absolute inset-0"
+          className="absolute inset-0 w-full h-full"
           variants={variants}
           initial="enter"
           animate="center"
@@ -151,12 +147,13 @@ const FullPageCarousel: FC<FullPageCarouselProps> = ({
             src={currentImage || "/placeholder.svg"}
             alt={altText}
             fill
+            sizes="100vw"
             className="object-cover object-center"
             priority={currentIndex === 0}
             quality={100}
             onLoad={() => setIsLoaded(true)}
           />
-        </motion.fieldset>
+        </motion.div>
       </AnimatePresence>
     </section>
   );

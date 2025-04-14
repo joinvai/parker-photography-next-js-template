@@ -106,6 +106,5 @@
     "ts-jest": "^29.3.1",
     "typescript": "^5.8.2"
   },
-  "type": "module",
-  "packageManager": "pnpm@9.14.2"
+  "type": "module"
 }
