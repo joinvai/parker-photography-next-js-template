@@ -1,5 +1,3 @@
-import { promises as fs } from "node:fs";
-import path from "node:path";
 import About from "@/components/about";
 import { CustomCarousel } from "@/components/custom-carousel";
 import FullPageCarousel from "@/components/full-page-carousel";
