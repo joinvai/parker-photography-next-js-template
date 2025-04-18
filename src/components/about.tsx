@@ -4,8 +4,8 @@ import React from "react";
 export default function About() {
   return (
     <div className="flex flex-col items-center justify-center py-20 px-4 text-center">
-      <h1 className="text-2xl mb-2">THIS IS</h1>
-      <h2 className="text-6xl mb-8 font-heading">SIRE DESIGN</h2>
+      <h1 className="text-2xl mb-2 font-header">THIS IS</h1>
+      <h2 className="text-6xl mb-8 font-header">SIRE DESIGN</h2>
 
       <p className="max-w-3xl mb-8 text-lg">
         Sire Design's projects are based on strong design concepts and great
@@ -17,7 +17,7 @@ export default function About() {
       <Link href="/studio">
         <button
           type="button"
-          className="border border-black px-8 py-3 font-heading transition-all hover:italic"
+          className="bg-green text-eggshell px-8 py-3 transition-colors hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-green focus:ring-offset-2 focus:ring-offset-eggshell rounded-sm"
         >
           READ ABOUT US
         </button>

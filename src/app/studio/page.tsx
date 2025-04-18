@@ -26,11 +26,11 @@ export const metadata: Metadata = {
 
 export default function StudioPage() {
   return (
-    <main className="min-h-screen text-black pt-24">
+    <main className="min-h-screen bg-eggshell text-black pt-24">
       <StudioQuote />
       <AboutSection />
       <div className="p-8 md:p-16">
-        <h1 className="text-4xl md:text-6xl font-geist-mono tracking-tighter mb-12 text-center">
+        <h1 className="text-4xl md:text-6xl font-header tracking-tighter mb-12 text-center">
           Our Team
         </h1>
         <TeamPageClient teamData={teamData} />

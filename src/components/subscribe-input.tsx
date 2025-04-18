@@ -79,7 +79,7 @@ const SubscribeInput: FC = () => {
       >
         <label
           htmlFor="email-subscribe"
-          className="text-sm font-medium uppercase mr-2 whitespace-nowrap font-heading"
+          className="text-sm font-medium uppercase mr-2 whitespace-nowrap"
         >
           SUBSCRIBE TO NEWSLETTER
         </label>
@@ -94,9 +94,9 @@ const SubscribeInput: FC = () => {
           disabled={isPending}
           className={`
             flex-grow // Allow input to take remaining space
-            border-b border-gray-500 dark:border-gray-400
+            border-b border-black // Use black border
             bg-transparent
-            focus:outline-none focus:border-black dark:focus:border-white
+            focus:outline-none focus:border-black // Keep focus border black
             text-sm leading-none py-1 // Adjusted padding/leading for minimal look
             ${isPending ? "opacity-50 cursor-not-allowed" : ""}
             ${error ? "border-red-500" : ""} 
@@ -108,7 +108,7 @@ const SubscribeInput: FC = () => {
         // Position error below the form container
         <p
           id="email-error"
-          className={`mt-1 text-xs ${beigeTextColor} absolute left-0`}
+          className="mt-1 text-xs text-red-600 absolute left-0" // Use red for error text
         >
           {error}
         </p>

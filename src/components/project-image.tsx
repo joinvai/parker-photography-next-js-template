@@ -238,10 +238,10 @@ export function ProjectImage({
             className="flex justify-between items-center mt-2 sm:mt-3 px-0 sm:px-1 transition-all duration-300"
             aria-hidden="true"
           >
-            <h3 className="text-base sm:text-lg font-light uppercase transition-all duration-300">
+            <h3 className="text-base sm:text-lg font-header uppercase transition-all duration-300 text-black">
               {project.name}
             </h3>
-            <span className="text-xs sm:text-sm text-gray-600 transition-all duration-300">
+            <span className="text-xs sm:text-sm text-neutral-700 transition-all duration-300">
               {project.year}
             </span>
           </div>

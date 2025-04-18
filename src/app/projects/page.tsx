@@ -36,20 +36,18 @@ export default async function ProjectsPage() {
   if (!projects || projects.length === 0) {
     return (
       <main
-        className="min-h-screen flex items-center justify-center bg-#FAF9F5 text-black p-4 sm:p-6"
+        className="min-h-screen flex items-center justify-center bg-eggshell text-black p-4 sm:p-6"
         id="main-content"
         aria-labelledby="error-heading"
       >
         <div className="text-center" role="alert">
           <h1
             id="error-heading"
-            className="text-xl sm:text-2xl font-medium mb-2"
+            className="text-xl sm:text-2xl font-header mb-2"
           >
             No Projects Available
           </h1>
-          <p className="text-gray-600">
-            Please check back later for our project showcase.
-          </p>
+          <p>Please check back later for our project showcase.</p>
         </div>
       </main>
     );
@@ -68,7 +66,7 @@ export default async function ProjectsPage() {
 
   return (
     <main
-      className="min-h-screen bg-#FAF9F5 text-black pt-24"
+      className="min-h-screen bg-eggshell text-black pt-24"
       id="main-content"
     >
       {/* Schema.org structured data for better SEO - using next/script to avoid dangerouslySetInnerHTML */}

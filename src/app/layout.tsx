@@ -1,35 +1,28 @@
 "use client"; // Add this directive
 
 import type { Metadata } from "next"; // Keep Metadata for potential future use
+import { Open_Sans } from "next/font/google"; // Import Open_Sans
 import localFont from "next/font/local";
 import { usePathname } from "next/navigation"; // Correctly import usePathname
-import { editorialNew } from "./fonts"; // Assuming this is correctly imported from a file named fonts.ts or fonts/index.ts
 import "./globals.css";
 import Footer from "@/components/footer"; // Import the Footer component
 import Header from "@/components/header"; // Import the Header component
 import { useCallback, useEffect, useState } from "react";
 import { Toaster } from "sonner"; // Import Toaster
 
-// Define dmSans font configuration
-const dmSans = localFont({
-  src: [
-    {
-      path: "../../public/fonts/DM Sans/DMSans-Regular.ttf",
-      weight: "400",
-      style: "normal",
-    },
-    {
-      path: "../../public/fonts/DM Sans/DMSans-Medium.ttf",
-      weight: "500",
-      style: "normal",
-    },
-    {
-      path: "../../public/fonts/DM Sans/DMSans-Bold.ttf",
-      weight: "700",
-      style: "normal",
-    },
-  ],
-  variable: "--font-dm-sans", // Define CSS variable name for DM Sans
+// Define Beaufort font configuration
+const beaufort = localFont({
+  src: "../../public/fonts/Beaufort W01 Light.woff2",
+  variable: "--font-beaufort",
+  display: "swap",
+});
+
+// Configure Open Sans font
+const openSans = Open_Sans({
+  subsets: ["latin"],
+  weight: ["400"],
+  display: "swap",
+  variable: "--font-open-sans", // Add variable for consistency if needed
 });
 
 // Metadata definition should ideally be moved to layout.tsx in the parent directory (app/layout.tsx) if possible
@@ -130,9 +123,11 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${dmSans.variable} ${editorialNew.variable} antialiased`}
+      className={`${openSans.variable} ${beaufort.variable} antialiased`}
     >
-      <body className="bg-#FAF9F5 text-black transition-colors duration-300">
+      <body
+        className={`${openSans.className} bg-eggshell text-black transition-colors duration-300`}
+      >
         {/* Skip to content link for keyboard users */}
         <a
           href="#main-content"

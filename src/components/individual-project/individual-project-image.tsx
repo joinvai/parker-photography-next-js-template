@@ -204,8 +204,8 @@ export default function IndividualProjectImage({
           className="flex justify-between items-center mt-2 sm:mt-3 px-0 sm:px-1 transition-all duration-300"
           aria-hidden="true"
         >
-          <span className="text-sm text-gray-700">Image {imageIndex + 1}</span>
-          <span className="text-xs text-gray-500">{projectName}</span>
+          <span className="text-sm text-black">Image {imageIndex + 1}</span>
+          <span className="text-xs text-neutral-700">{projectName}</span>
         </div>
       )}
     </div>

@@ -26,9 +26,9 @@ export const metadata: Metadata = {
 // Server component - simpler structure
 export default function WatchPage() {
   return (
-    <main className="min-h-screen text-black p-8 md:p-16">
+    <main className="min-h-screen bg-eggshell text-black p-8 md:p-16">
       {/* Title can remain here or be moved to client component if it needs animation */}
-      <h1 className="text-4xl md:text-6xl font-geist-mono tracking-tighter mb-12 text-center">
+      <h1 className="text-4xl md:text-6xl font-header tracking-tighter mb-12 text-center">
         Watch Our Shows
       </h1>
       {/* Render the client component, passing the data */}

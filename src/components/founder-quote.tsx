@@ -38,7 +38,7 @@ export default function FounderQuote() {
         {!quoteLoaded && <div className="sr-only">Loading founder's quote</div>}
 
         <blockquote
-          className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-light italic max-w-4xl mx-auto text-gray-800 transition-opacity duration-300"
+          className="text-xl sm:text-2xl md:text-3xl lg:text-4xl italic max-w-4xl mx-auto text-black transition-opacity duration-300"
           style={{ opacity: quoteLoaded ? 1 : 0 }}
           onLoad={() => setQuoteLoaded(true)}
         >

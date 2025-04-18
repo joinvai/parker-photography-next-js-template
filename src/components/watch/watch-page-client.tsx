@@ -75,16 +75,16 @@ export default function WatchPageClient({ showData }: WatchPageClientProps) {
             />
           </div>
           <div className="w-full">
-            <h2 className="text-sm uppercase tracking-widest text-gray-500 mb-2">
+            <h2 className="text-sm uppercase tracking-widest text-neutral-700 mb-2">
               {show.tvNetwork}
             </h2>
-            <h3 className="text-3xl font-geist-mono mb-4">{show.showName}</h3>
-            <p className="mb-6 text-gray-700">{show.showDescription}</p>
+            <h3 className="text-3xl font-header mb-4">{show.showName}</h3>
+            <p className="mb-6">{show.showDescription}</p>
             <a
               href={show.watchUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block bg-white text-black border border-black px-6 py-3 hover:bg-gray-200 transition-colors font-semibold"
+              className="inline-block bg-green text-eggshell px-6 py-3 hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-green focus:ring-offset-2 focus:ring-offset-eggshell transition-colors font-semibold rounded-sm"
             >
               {show.buttonText}
             </a>

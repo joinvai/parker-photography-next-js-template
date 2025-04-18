@@ -13,10 +13,10 @@ export default function PressPage() {
   };
 
   return (
-    <main className="min-h-screen p-8 md:p-24">
+    <main className="min-h-screen bg-eggshell text-black p-8 md:p-24">
       {" "}
       {/* Restore original padding */}
-      <h1 className="text-4xl mb-12 font-light pt-24 tracking-tighter">
+      <h1 className="text-4xl mb-12 font-header pt-24 tracking-tighter">
         Press
       </h1>
       <div className="w-full cursor-none">
@@ -25,7 +25,7 @@ export default function PressPage() {
             {pressItems.map((item) => (
               <tr
                 key={`${item.name}-${item.publicationDate}`}
-                className="group border-t border-neutral-300"
+                className="group border-t border-black"
                 onMouseEnter={() => setHoveredItem(item)}
                 onMouseLeave={() => setHoveredItem(null)}
                 onMouseMove={handleMouseMove}
@@ -36,18 +36,18 @@ export default function PressPage() {
                     {/* Stack elements vertically by default, revert on md+ */}
                     <a
                       href={item.url}
-                      className="font-heading text-xl md:text-[36px] leading-tight group-hover:italic transition-all cursor-none"
+                      className="font-header text-xl md:text-[36px] leading-tight group-hover:italic transition-all cursor-none"
                     >
                       {item.name}
                     </a>
                     {/* Date shown below name only on small screens */}
-                    <span className="text-sm text-neutral-600 mt-1 md:hidden">
+                    <span className="text-sm mt-1 md:hidden">
                       {item.publicationDate}
                     </span>
                   </div>
                 </td>
                 {/* Original date cell, hidden on small screens, shown as table-cell on md+ */}
-                <td className="hidden md:table-cell py-4 pl-8 text-right whitespace-nowrap text-neutral-900 cursor-none text-sm md:text-[16px]">
+                <td className="hidden md:table-cell py-4 pl-8 text-right whitespace-nowrap cursor-none text-sm md:text-[16px]">
                   {item.publicationDate}
                 </td>
               </tr>

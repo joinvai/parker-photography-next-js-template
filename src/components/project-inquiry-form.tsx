@@ -101,8 +101,8 @@ export function ProjectInquiryForm() {
   if (isSuccess) {
     return (
       <div className="p-6 text-center space-y-4">
-        <h3 className="text-xl font-semibold">Inquiry Submitted!</h3>
-        <p className="text-muted-foreground">
+        <h3 className="text-xl font-header">Inquiry Submitted!</h3>
+        <p>
           Thank you for reaching out. We have received your project inquiry and
           will be in touch soon to discuss the next steps.
         </p>
@@ -397,7 +397,11 @@ export function ProjectInquiryForm() {
           )}
         />
 
-        <Button type="submit" className="w-full" disabled={isSubmitting}>
+        <Button
+          type="submit"
+          className="w-full bg-green text-eggshell hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-green focus:ring-offset-2 focus:ring-offset-white rounded-sm"
+          disabled={isSubmitting}
+        >
           {isSubmitting ? "Submitting..." : "Submit Inquiry"}
         </Button>
       </form>

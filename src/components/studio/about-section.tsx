@@ -59,7 +59,7 @@ export default function AboutSection() {
       {/* Heading (Can also be animated if desired) */}
       <motion.h1
         id="about-sire-heading"
-        className="text-4xl md:text-5xl font-geist-mono tracking-tighter mb-8 md:mb-12 text-center"
+        className="text-4xl md:text-5xl font-header tracking-tighter mb-8 md:mb-12 text-center"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.5 }}
@@ -101,14 +101,14 @@ export default function AboutSection() {
           variants={itemVariants}
         >
           {/* Actual Content Added */}
-          <p className="mb-4 text-gray-700 leading-relaxed">
+          <p className="mb-4 leading-relaxed">
             Sire Design's projects are based on strong design concepts and great
             attention to detail. With a design approach rooted in modernist
             principles of design and architecture, Sire Design takes an
             analytical approach to interiors while having an open-minded view of
             innovation.
           </p>
-          <p className="mb-4 text-gray-700 leading-relaxed">
+          <p className="mb-4 leading-relaxed">
             Each of the firm's designs are made stylistically and functionally
             everlasting with the use of premium materials and unparalleled
             craftsmanship. The extraordinary spaces they design are highly
@@ -117,7 +117,7 @@ export default function AboutSection() {
             transform and re-purpose each space - breathing new life into every
             project.
           </p>
-          <p className="text-gray-700 leading-relaxed">
+          <p className="leading-relaxed">
             Specializing in residential, development, and commercial interior
             design, they have completed projects in over three countries and a
             dozen cities nationally.

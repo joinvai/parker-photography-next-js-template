@@ -14,6 +14,8 @@ interface CustomCarouselProps {
   className?: string;
 }
 
+// TODO: Change Hover Fotn to Beaufort and make bigger
+
 // Define slide animation variants
 const variants = {
   enter: (direction: number) => ({
@@ -261,7 +263,7 @@ export function CustomCarousel({ projects, className }: CustomCarouselProps) {
                           transform: "translate(-50%, -50%)",
                         }}
                       >
-                        <span className="text-black font-heading text-2xl font-medium select-none">
+                        <span className="text-black text-2xl font-medium select-none">
                           {isPrevTrigger ? "PREV" : "NEXT"}
                         </span>
                       </motion.div>
@@ -271,10 +273,14 @@ export function CustomCarousel({ projects, className }: CustomCarouselProps) {
                 <div className="mt-3 text-left">
                   <Link
                     href={`/projects/${project.id}`}
-                    className="font-heading text-black text-base md:text-lg lg:text-xl block hover:italic"
+                    className="font-header text-black text-base md:text-lg lg:text-xl block hover:italic"
                   >
                     {project.name}
                   </Link>
+                  {/* Add year below name */}
+                  <p className="text-sm text-neutral-700 mt-1">
+                    {project.year}
+                  </p>
                 </div>
               </div>
             );

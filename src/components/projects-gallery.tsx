@@ -44,9 +44,7 @@ export function ProjectsGallery() {
         className="min-h-[300px] flex items-center justify-center"
         aria-live="polite"
       >
-        <p className="text-lg text-gray-600">
-          No projects available at this time.
-        </p>
+        <p className="text-lg">No projects available at this time.</p>
       </div>
     );
   }
@@ -88,7 +86,7 @@ export function ProjectsGallery() {
             behavior="navigate"
             aspectRatio="aspect-[4/3]"
           />
-          <p className="mt-4 text-left font-heading text-2xl text-black">
+          <p className="mt-4 text-left font-header text-2xl text-black">
             {project.name}
           </p>
         </div>

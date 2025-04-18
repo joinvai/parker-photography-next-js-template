@@ -44,7 +44,7 @@ export default function ContactPage() {
   };
 
   return (
-    <main className="min-h-screen bg-#FAF9F5 text-neutral-800 p-8 pt-24 md:p-16">
+    <main className="min-h-screen bg-eggshell text-black p-8 pt-24 md:p-16">
       <motion.div
         variants={containerVariants}
         initial="hidden"
@@ -53,7 +53,7 @@ export default function ContactPage() {
       >
         <motion.h1
           variants={itemVariants}
-          className="font-geist-mono text-5xl md:text-5xl mb-12 pt-24 tracking-tighter"
+          className="font-header text-5xl md:text-5xl mb-12 pt-24 tracking-tighter"
         >
           Let's Create
           <br />
@@ -67,7 +67,7 @@ export default function ContactPage() {
           className="grid grid-cols-1 md:grid-cols-2 gap-16 mt-16"
         >
           <div>
-            <h2 className="text-2xl font-geist-mono mb-6">Get in Touch</h2>
+            <h2 className="text-2xl font-header mb-6">Get in Touch</h2>
             <Dialog>
               <motion.div
                 initial={{ opacity: 0 }}
@@ -75,14 +75,14 @@ export default function ContactPage() {
                 transition={{ delay: 0.5 }}
                 className="space-y-4"
               >
-                <p className="text-neutral-600">
+                <p>
                   If you have a new project, please complete our new project
                   form below.
                 </p>
                 <DialogTrigger asChild>
                   <Button
                     variant="link"
-                    className="p-0 h-auto text-base text-neutral-800 hover:text-neutral-600"
+                    className="p-0 h-auto text-base hover:text-black"
                   >
                     New Project Inquiry
                   </Button>
@@ -100,8 +100,8 @@ export default function ContactPage() {
 
           <motion.div variants={itemVariants} className="space-y-8">
             <div>
-              <h3 className="font-geist-mono text-2xl mb-4">Studio Location</h3>
-              <p className="text-neutral-600">
+              <h3 className="font-header text-2xl mb-4">Studio Location</h3>
+              <p>
                 7500 NE 4TH COURT, #103
                 <br />
                 MIAMI FL 33138
@@ -110,8 +110,8 @@ export default function ContactPage() {
             </div>
 
             <div className="space-y-4">
-              <h3 className="font-geist-mono text-2xl mb-4">Connect</h3>
-              <div className="space-y-2 text-neutral-600">
+              <h3 className="font-header text-2xl mb-4">Connect</h3>
+              <div className="space-y-2">
                 <p>info@siredesign.com</p>
                 <p>305-402-4202</p>
               </div>
@@ -121,18 +121,18 @@ export default function ContactPage() {
 
         {/* NEW CAREERS SECTION START */}
         <motion.div variants={itemVariants} className="mt-16">
-          <h2 className="text-2xl font-geist-mono mb-6">Careers</h2>
+          <h2 className="text-2xl font-header mb-6">Careers</h2>
           <Sheet open={isCareersSheetOpen} onOpenChange={setIsCareersSheetOpen}>
             <Button
               variant="link"
-              className="p-0 h-auto text-base text-neutral-800 hover:text-neutral-600"
+              className="p-0 h-auto text-base hover:text-black"
               onClick={() => setIsCareersSheetOpen(true)}
             >
               View Job Availabilities
             </Button>
             <SheetContent>
               <SheetHeader>
-                <SheetTitle className="text-2xl font-geist-mono font-thin">
+                <SheetTitle className="text-2xl font-header font-thin">
                   Current Openings
                 </SheetTitle>
                 <SheetDescription>
@@ -144,7 +144,7 @@ export default function ContactPage() {
                   Please send through your resume and portfolio to{" "}
                   <a
                     href="mailto:info@siredesign.com"
-                    className="underline hover:text-neutral-800 transition-colors"
+                    className="underline transition-colors"
                   >
                     info@siredesign.com
                   </a>

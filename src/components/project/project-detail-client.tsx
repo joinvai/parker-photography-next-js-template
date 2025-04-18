@@ -18,7 +18,7 @@ export default function ProjectDetailClient({
 
   return (
     <main
-      className="relative bg-#FAF9F5 min-h-screen text-black"
+      className="relative bg-eggshell min-h-screen text-black"
       aria-labelledby="project-title"
     >
       {project.mainImage && (
@@ -56,10 +56,10 @@ export default function ProjectDetailClient({
         </section>
       )}
 
-      <div className="relative z-10 bg-#FAF9F5 px-4 sm:px-6 md:px-8 pt-16 md:pt-24 pb-12 sm:pb-16">
+      <div className="relative z-10 bg-eggshell px-4 sm:px-6 md:px-8 pt-16 md:pt-24 pb-12 sm:pb-16">
         <h1
           id="project-title"
-          className="max-w-7xl text-center mx-auto text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-thin mb-6 sm:mb-8 md:mb-12 tracking-tight transition-all duration-300"
+          className="max-w-7xl text-center mx-auto text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-header mb-6 sm:mb-8 md:mb-12 tracking-tight transition-all duration-300"
         >
           {project.name}
         </h1>
@@ -119,7 +119,7 @@ export default function ProjectDetailClient({
             className="max-w-7xl mx-auto text-center py-8 sm:py-12"
             aria-live="polite"
           >
-            <p className="text-gray-600">
+            <p className="text-black">
               This project does not have additional photos.
             </p>
           </div>
@@ -127,10 +127,10 @@ export default function ProjectDetailClient({
 
         {project.description && (
           <section
-            className="max-w-7xl mx-auto mt-8 sm:mt-10 md:mt-12 prose sm:prose-lg md:prose-xl text-gray-700 transition-all duration-300"
+            className="max-w-7xl mx-auto mt-8 sm:mt-10 md:mt-12 prose sm:prose-lg md:prose-xl text-black transition-all duration-300"
             aria-label="Project description"
           >
-            <h2 className="text-xl sm:text-2xl font-medium mb-4">
+            <h2 className="text-xl sm:text-2xl font-header mb-4">
               About This Project
             </h2>
             <p>{project.description}</p>
@@ -140,7 +140,7 @@ export default function ProjectDetailClient({
         <div className="max-w-7xl mx-auto mt-12 sm:mt-16">
           <a
             href="/projects"
-            className="inline-flex items-center text-black p-2 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black transition-colors duration-200 underline underline-offset-2 rounded-md"
+            className="inline-flex items-center text-black p-2 hover:text-neutral-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black transition-colors duration-200 underline underline-offset-2 rounded-md"
             aria-label="Back to all projects"
           >
             <svg
