@@ -852,45 +852,28 @@ function Header({ defaultLogo = false }: HeaderProps) {
             aria-controls="main-menu"
             style={getBrowserStyleFixes()}
           >
+            {/* Hamburger Lines */}
             <span
-              className={`block transition-all duration-300 ease-out 
-							h-0.5 w-5 sm:w-6 rounded-sm ${
-                isOpen
-                  ? "rotate-45 translate-y-[0.175rem] bg-white"
-                  : "bg-black -translate-y-[0.175rem]"
-              }`}
+              className={`block transition-all duration-300 ease-out
+							h-[1.2px] w-5 sm:w-6 rounded-sm ${isOpen ? "rotate-45 translate-y-[0.175rem]" : "-translate-y-[0.2rem]"} bg-white`}
             />
             <span
-              className={`block transition-all duration-300 ease-out 
-							h-0.5 w-5 sm:w-6 rounded-sm ${
-                isOpen
-                  ? "-rotate-45 -translate-y-[0rem] bg-white"
-                  : "bg-black translate-y-[0.175rem]"
-              }`}
+              className={`block transition-all duration-300 ease-out
+							h-[1.2px] w-5 sm:w-6 rounded-sm ${isOpen ? "-rotate-45 -translate-y-[0rem]" : "translate-y-[0.2rem]"} bg-white`}
             />
           </button>
+          {/* Changed back to button for accessibility */}
           <button
             onClick={toggleMenu}
             type="button"
-            className={`font-heading font-light text-xs sm:text-sm tracking-wider hover:[font-style:italic] ${getFocusRingClasses(false)} rounded-sm ${
-              isOpen ? "text-white focus-visible:ring-white" : "text-black"
-            }`}
-            aria-label={
-              isOpen ? "Close navigation menu" : "Open navigation menu"
-            }
-            aria-controls="main-menu"
-            aria-expanded={isOpen}
-            style={{
-              WebkitTransition: "color 0.3s ease",
-              MozTransition: "color 0.3s ease",
-              msTransition: "color 0.3s ease",
-            }}
+            className="text-[22px] text-white hover:[font-style:italic] transition-all duration-200 cursor-pointer bg-transparent border-none p-0"
+            style={{ fontFamily: 'var(--font-beaufort-light)' }}
           >
             {isOpen ? "CLOSE" : "MENU"}
           </button>
         </div>
 
-        {/* Centered Logo */}
+        {/* Centered Logo - Kept white logo as requested */}
         <div
           className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 py-4 sm:py-5 md:py-6 z-[60]"
           style={{
@@ -905,7 +888,7 @@ function Header({ defaultLogo = false }: HeaderProps) {
             aria-label="Home page"
           >
             <Image
-              src={`/logos/${isOpen ? "white" : isScrolled && !defaultLogo ? "black" : defaultLogo ? "white" : "black"}-logo.svg`}
+              src={`/logos/white-logo.svg`}
               alt="Logo"
               width={logoSize.width}
               height={logoSize.height}
@@ -925,7 +908,7 @@ function Header({ defaultLogo = false }: HeaderProps) {
           {/* Social Button */}
           <button
             type="button"
-            className={`flex items-center font-heading font-light text-xs sm:text-sm cursor-pointer mr-3 sm:mr-6 p-2 hover:[font-style:italic] tracking-wider min-h-[44px] min-w-[44px] justify-center ${getFocusRingClasses(true)} rounded-sm`}
+            className={`flex items-center text-[22px] cursor-pointer mr-3 sm:mr-6 p-2 hover:[font-style:italic] tracking-wider min-h-[44px] min-w-[44px] justify-center ${getFocusRingClasses(true)} rounded-sm text-white focus-visible:ring-white`}
             aria-expanded={isSocialMenuOpen}
             aria-haspopup="true"
             aria-controls="social-menu"
@@ -944,14 +927,12 @@ function Header({ defaultLogo = false }: HeaderProps) {
               }
             }}
             style={{
-              WebkitTransition: "all 0s", // Make instant - no transition
-              MozTransition: "all 0s",
-              msTransition: "all 0s",
+              // Ensure no unwanted transition styles linger
+              fontFamily: 'var(--font-beaufort-light)', // Apply font family
               ...getBrowserStyleFixes(),
             }}
           >
-            <span className="hidden sm:inline">SOCIAL</span>
-            <span className="sm:hidden">SOCIAL</span>
+            <span>SOCIAL</span> {/* Ensure text is inside a span if needed, but button remains button */}
           </button>
 
           {/* Mobile Touch Overlay - Only visible when menu is open on touch devices */}
@@ -1022,7 +1003,7 @@ function Header({ defaultLogo = false }: HeaderProps) {
                     >
                       <Link
                         href={link.href}
-                        className={`flex items-center px-3 sm:px-4 py-3 sm:py-4 font-heading text-xs sm:text-sm tracking-wider text-gray-800 hover:bg-gray-50 hover:[font-style:italic] hover:text-black hover:scale-[1.02] rounded-sm w-full text-left min-h-[44px] ${getFocusRingClasses(true)}`}
+                        className={`flex items-center px-3 sm:px-4 py-3 sm:py-4 text-xs sm:text-sm tracking-wider text-gray-800 hover:bg-gray-50 hover:[font-style:italic] hover:text-black hover:scale-[1.02] rounded-sm w-full text-left min-h-[44px] ${getFocusRingClasses(true)}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={() => setIsSocialMenuOpen(false)}
@@ -1052,7 +1033,7 @@ function Header({ defaultLogo = false }: HeaderProps) {
                                   e.currentTarget as HTMLElement
                                 ).style.backgroundColor = "#f9fafb";
                                 (e.currentTarget as HTMLElement).style.color =
-                                  "black";
+                                  "white";
                                 (
                                   e.currentTarget as HTMLElement
                                 ).style.fontStyle = "italic";
@@ -1143,11 +1124,12 @@ function Header({ defaultLogo = false }: HeaderProps) {
                       alignItems: "center", // Standard property
                     }}
                   >
-                    {/* Number indicator */}
+                    {/* Number indicator - Apply font family */}
                     <span
-                      className="font-heading text-xs sm:text-sm tracking-wider opacity-60 mb-2 sm:mb-3"
+                      className="font-header text-xs sm:text-sm tracking-wider opacity-60 mb-2 sm:mb-3"
                       id={`nav-number-${link.id}`}
                       style={{
+                        fontFamily: 'var(--font-beaufort-light)', // Apply font family
                         // IE fallback for opacity
                         ...(browserInfo.isIE
                           ? { filter: "alpha(opacity=60)" }
@@ -1156,14 +1138,16 @@ function Header({ defaultLogo = false }: HeaderProps) {
                     >
                       {link.id}
                     </span>
-                    {/* Link text */}
+                    {/* Link text - Removed hover:opacity-80 */}
                     <Link
                       href={link.href}
-                      className={`font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl tracking-wider hover:[font-style:italic] [transition:opacity_0.3s_ease] hover:opacity-80 ${getFocusRingClasses(true)} rounded-sm`}
+                      className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl tracking-wider hover:[font-style:italic] [transition:opacity_0.3s_ease] ${getFocusRingClasses(true)} rounded-sm`}
                       onClick={() => setIsOpen(false)}
                       aria-describedby={`nav-number-${link.id}`}
                       ref={(el) => setMenuLinkRef(el, index)}
                       style={{
+                        fontFamily: 'var(--font-beaufort-light)', // Apply font family
+                        // Keep existing transition if desired, but opacity hover removed from class
                         WebkitTransition: "opacity 0.3s ease",
                         MozTransition: "opacity 0.3s ease",
                         msTransition: "opacity 0.3s ease",

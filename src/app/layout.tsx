@@ -2,20 +2,21 @@
 
 import type { Metadata } from "next"; // Keep Metadata for potential future use
 import { Open_Sans } from "next/font/google"; // Import Open_Sans
-import localFont from "next/font/local";
+// import localFont from "next/font/local"; // Remove this, will be imported from fonts.ts
 import { usePathname } from "next/navigation"; // Correctly import usePathname
 import "./globals.css";
+import { editorialNew, beaufortLight } from "./fonts"; // Import fonts
 import Footer from "@/components/footer"; // Import the Footer component
 import Header from "@/components/header"; // Import the Header component
 import { useCallback, useEffect, useState } from "react";
 import { Toaster } from "sonner"; // Import Toaster
 
-// Define Beaufort font configuration
-const beaufort = localFont({
-  src: "../../public/fonts/Beaufort W01 Light.woff2",
-  variable: "--font-beaufort",
-  display: "swap",
-});
+// Define Beaufort font configuration - REMOVED
+// const beaufort = localFont({
+//   src: "../../public/fonts/Beaufort W01 Light.woff2",
+//   variable: "--font-beaufort",
+//   display: "swap",
+// });
 
 // Configure Open Sans font
 const openSans = Open_Sans({
@@ -123,7 +124,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${openSans.variable} ${beaufort.variable} antialiased`}
+      className={`${openSans.variable} ${beaufortLight.variable} ${editorialNew.variable} antialiased`}
     >
       <body
         className={`${openSans.className} bg-eggshell text-black transition-colors duration-300`}

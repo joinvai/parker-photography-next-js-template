@@ -3,8 +3,13 @@
 @tailwind utilities;
 
 @layer base {
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-header;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-beaufort-light), serif;
   }
 
   body {
@@ -23,7 +28,7 @@
 
 /* Define custom CSS variables for light and dark background colors */
 :root {
-  --background-light: #FAF9F4;
+  --background-light: #faf9f4;
   --background-dark: #1f2937;
   --selected-day-bg: #f3f4f6;
   --selected-day-color: #111827;
@@ -386,9 +391,7 @@ table {
 .dragging-event {
   opacity: 0.7;
   transform: scale(1.05);
-  transition:
-    opacity 0.2s ease,
-    transform 0.2s ease;
+  transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
 @layer base {
@@ -410,7 +413,8 @@ table {
 }
 
 @keyframes float {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0);
   }
   50% {

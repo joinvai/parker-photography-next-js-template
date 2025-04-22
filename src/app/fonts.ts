@@ -35,3 +35,19 @@ export const editorialNew = localFont({
   ],
   variable: "--font-editorial-new",
 });
+
+export const beaufortLight = localFont({
+  src: [
+    {
+      path: "../../public/fonts/Beaufort W01 Light.woff2",
+      weight: "300",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/Beaufort W01 Light Italic.woff2",
+      weight: "300",
+      style: "italic",
+    },
+  ],
+  variable: "--font-beaufort-light",
+});

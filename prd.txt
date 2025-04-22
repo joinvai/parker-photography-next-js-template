@@ -1,0 +1,61 @@
+<context>
+# Overview
+This document outlines the requirements for refining the Sire Design Studio website. The primary goal is to update the existing site to closely match the design, aesthetics, interactions, and animations specified in the reference Webflow project. This involves updates across various pages and components, focusing on UI consistency, typography, and implementing smooth animations using Framer Motion.
+
+# Core Features
+The refinement work focuses on the following key areas/features of the website:
+- **Home Page:** Implement specific UI elements like a scroll indicator, update link styling, adjust header font (Beaufort) and logo color (white).
+- **Projects Page:** Refine typography to match the design and implement specified hover animations for project descriptions.
+- **Studio Page (Team):** Update the UI/layout of the 'About' section, create a distinct section for Eilyn above the main team grid, and ensure font/spacing consistency.
+- **Contact Page:** Modify heading content ("Get in Touch", add "SIRE DESIGN STUDIO").
+- **Watch Component:** Adjust sizing and UI elements, update fonts, and implement Framer Motion hover interactions (e.g., max button).
+- **General Updates:** Audit and update photo selections across the site, implement consistent Framer Motion animations for the menu, photo hovers, and footer elements.
+
+# User Experience
+The user experience should closely mirror the reference Webflow site:
+- **Visual Consistency:** Match fonts (specifically Beaufort for headers), colors, spacing, and layout precisely.
+- **Interaction Design:** Implement specific hover effects and transitions using Framer Motion as seen in the reference (e.g., project descriptions, Watch component button, menu, photo hovers, footer).
+- **Navigation:** Ensure intuitive navigation, potentially enhanced by menu animations.
+- **Responsiveness:** All updates must maintain or improve responsiveness across different screen sizes.
+- **Performance:** Animations and image loading should be optimized to ensure a smooth and fast user experience.
+</context>
+<PRD>
+# Technical Architecture
+- **Frontend Focus:** This project is primarily frontend development.
+- **Key Technologies:** Framer Motion will be used extensively for animations and interactions. Standard HTML, CSS (potentially with a preprocessor or CSS-in-JS solution depending on the existing stack), and JavaScript are expected.
+- **Framework:** (Assuming a modern framework like Next.js/React is used, based on file structure references like `/projects/[slug]`) The implementation should leverage the existing component structure.
+- **Styling:** Requires precise CSS to match Webflow design specifications for layout, typography, and styling.
+- **Assets:** Image optimization is required for updated photos. Font files (Beaufort) need to be correctly integrated.
+
+# Development Roadmap
+The development process focuses on implementing the required refinements as a single phase (MVP matching the todo list).
+- **MVP Requirements:** Complete all tasks outlined in the `docs/todo.md` file. This includes:
+    - Home Page: Scroll indicator, link italics, header font/logo changes.
+    - Projects Page: Font updates, description hover animations.
+    - Studio Page: About section UI, Eilyn's dedicated section, font/spacing fixes.
+    - Contact Page: Heading text updates.
+    - Watch Component: Sizing, UI, font, Framer hover effect adjustments.
+    - General: Photo selection updates, menu/photo/footer Framer animations.
+- **Future Enhancements:** (Beyond current scope) Further performance tuning, adding more sophisticated animations, content updates.
+
+# Logical Dependency Chain
+- **Foundation:** Set up or confirm global styles, including the Beaufort font integration. Ensure Framer Motion is configured correctly. Update header/footer components early as they affect all pages.
+- **Parallel Work:** Page-specific updates (Home, Projects, Studio, Contact) can potentially be worked on in parallel after foundational elements are in place.
+- **Component Focus:** Address the Watch component's specific requirements.
+- **General Pass:** Implement general photo and animation updates (menu, photos, footer) which might span multiple components/pages.
+- **Goal:** Achieve a visually complete and functional frontend matching the reference design.
+
+# Risks and Mitigations
+- **Risk:** Difficulty in precisely replicating Webflow's native interactions and animations using Framer Motion.
+  - **Mitigation:** Careful analysis of the reference animations, leveraging Framer Motion's capabilities, iterative refinement and testing. Break down complex animations.
+- **Risk:** Performance degradation due to numerous animations or unoptimized images.
+  - **Mitigation:** Implement performant animation techniques, optimize image assets (formats, sizes), code splitting if applicable, conduct performance testing.
+- **Risk:** Ensuring consistent styling, spacing, and responsiveness across all updated components and pages.
+  - **Mitigation:** Develop a robust and consistent styling approach, possibly using utility classes or a design system. Thorough testing across multiple browsers and devices.
+- **Risk:** Accurately implementing conditional logic for specific layouts (e.g., Eilyn's section on the Studio page).
+  - **Mitigation:** Referencing existing patterns (`/projects/[slug]`), clear component structure, unit/integration testing if applicable.
+
+# Appendix
+- **Primary Reference:** The Sire Design Webflow project serves as the definitive source for design specifications, animations, and interactions.
+- **Font:** Beaufort font is required for headers.
+</PRD>

@@ -1,6 +1,7 @@
 import About from "@/components/about";
 import { CustomCarousel } from "@/components/custom-carousel";
 import FullPageCarousel from "@/components/full-page-carousel";
+import ScrollIndicator from "@/components/ScrollIndicator";
 import { knownLandscapeImages } from "@/lib/landscape-images";
 import { getAllProjects } from "@/lib/projects";
 
@@ -41,12 +42,17 @@ export default async function HomePage() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-start">
-      {/* Render the Full Page Carousel with shuffled images */}
-      <FullPageCarousel
-        imagePaths={shuffledImages}
-        key={timestamp}
-        initialIndex={initialIndex}
-      />
+      {/* Wrap Carousel and Indicator in a relative container */}
+      <div className="relative w-full">
+        {/* Render the Full Page Carousel with shuffled images */}
+        <FullPageCarousel
+          imagePaths={shuffledImages}
+          key={timestamp}
+          initialIndex={initialIndex}
+        />
+        {/* Add the Scroll Indicator */}
+        <ScrollIndicator />
+      </div>
 
       {/* Container for About section */}
       <div className="z-10 relative p-8 w-full max-w-7xl mx-auto mt-16">
