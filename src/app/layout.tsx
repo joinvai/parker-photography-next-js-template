@@ -40,6 +40,7 @@ export default function RootLayout({
 }) {
   const pathname = usePathname(); // Get the current route path
   const isHomePage = pathname === "/"; // Check if it's the homepage
+  const isStudioPage = pathname === "/studio"; // Check if it's the studio page
   const [windowWidth, setWindowWidth] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const [isRouteChanging, setIsRouteChanging] = useState(false);
@@ -78,6 +79,9 @@ export default function RootLayout({
     }
     return pathname.split("/").pop()?.replace(/-/g, " ") || "Page";
   }, [pathname]);
+
+  // Determine header variant based on page
+  const headerVariant = isStudioPage ? 'dark' : 'light';
 
   // Route change detection for accessibility announcements
   useEffect(() => {
@@ -142,7 +146,7 @@ export default function RootLayout({
             Navigating to {getPageTitle()} page
           </div>
         )}
-        <Header /> {/* Render the Header component */}
+        <Header variant={headerVariant} /> {/* Render the Header component with variant */}
         {/* Apply padding-top dynamically based on the route and device */}
         <main
           id="main-content"

@@ -53,62 +53,68 @@ export default function AboutSection() {
 
   return (
     <section
-      className="py-12 md:py-16 lg:py-24 px-4 sm:px-6 md:px-8 lg:px-12 max-w-screen-xl mx-auto overflow-hidden"
+      // Reduce top padding while keeping the sides consistent
+      className="flex flex-col items-center gap-[25px] px-[50px] pt-6 sm:pt-8 md:pt-10 pb-[30px] max-[479px]:px-[35px] max-[479px]:pt-4 max-[479px]:pb-[20px] max-w-screen-xl mx-auto overflow-hidden"
       aria-labelledby="about-sire-heading"
     >
-      {/* Heading (Can also be animated if desired) */}
-      <motion.h1
-        id="about-sire-heading"
-        className="text-4xl md:text-5xl font-header tracking-tighter mb-8 md:mb-12 text-center"
+      {/* Image at the top */}
+      <motion.div
+        // Make image container square
+        className="w-full aspect-square relative overflow-hidden mb-6 md:mb-8"
+        variants={itemVariants}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, amount: 0.5 }}
-        variants={itemVariants} // Use item variant for heading animation
+        viewport={{ once: true, amount: 0.2 }}
       >
-        About Sire Design
-      </motion.h1>
+        <Image
+          src="/team/studio.jpg"
+          alt="Sire Design studio or representative project image"
+          fill // Use fill to properly cover the square container
+          // Apply image styles from .image-12
+          className="w-full h-full object-cover object-center"
+          loading="lazy"
+          placeholder="blur"
+          blurDataURL={`data:image/svg+xml;base64,${toBase64(
+            shimmer(1000, 1000), // Square dimensions for shimmer
+          )}`}
+          sizes="(max-width: 768px) 100vw, 80vw"
+        />
+      </motion.div>
 
-      {/* Content Area with Animation Container */}
+      {/* Text Content Below Image */}
       <motion.div
-        className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center"
+        // Set a constrained max-width that matches the square image's width
+        className="w-full max-w-[min(100%,_calc(100vh_-_200px))] mx-auto px-0"
         variants={containerVariants}
         initial="hidden"
-        whileInView="visible" // Trigger animation when in view
-        viewport={{ once: true, amount: 0.2 }} // Trigger sooner
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
       >
-        {/* Image Column with Animation Item */}
-        <motion.div
-          className="w-full aspect-[3/4] overflow-hidden relative"
+        <motion.h1
+          id="about-sire-heading"
+          // Apply styles from .main-name-heading - add text-transform: none
+          className="mt-0 mb-0 text-[44px] leading-[50px] text-center normal-case max-[767px]:leading-[125%] max-[479px]:text-[34px] max-[479px]:leading-[40px] font-header tracking-tighter"
           variants={itemVariants}
         >
-          <Image
-            src="/team/studio.jpg"
-            alt="Sire Design studio or representative project image"
-            width={imageWidth}
-            height={imageHeight}
-            className="w-full h-full object-cover object-center"
-            loading="lazy"
-            placeholder="blur"
-            blurDataURL={`data:image/svg+xml;base64,${toBase64(
-              shimmer(imageWidth, imageHeight),
-            )}`}
-          />
-        </motion.div>
+          About Sire Design
+        </motion.h1>
 
-        {/* Text Column with Animation Item */}
-        <motion.div
-          className="flex flex-col justify-center"
-          variants={itemVariants}
-        >
-          {/* Actual Content Added */}
-          <p className="mb-4 leading-relaxed">
+        {/* Paragraphs with Animation Item */}
+        <motion.div variants={itemVariants}>
+          <p
+            // Increase paragraph spacing from mb-5 (20px) to mb-8 (32px)
+            className="mb-8 text-justify min-[1920px]:text-[15px] min-[1920px]:leading-[32px] leading-relaxed"
+          >
             Sire Design's projects are based on strong design concepts and great
             attention to detail. With a design approach rooted in modernist
             principles of design and architecture, Sire Design takes an
             analytical approach to interiors while having an open-minded view of
             innovation.
           </p>
-          <p className="mb-4 leading-relaxed">
+          <p
+            // Increase paragraph spacing from mb-5 (20px) to mb-8 (32px)
+            className="mb-8 text-justify min-[1920px]:text-[15px] min-[1920px]:leading-[32px] leading-relaxed"
+          >
             Each of the firm's designs are made stylistically and functionally
             everlasting with the use of premium materials and unparalleled
             craftsmanship. The extraordinary spaces they design are highly
@@ -117,7 +123,10 @@ export default function AboutSection() {
             transform and re-purpose each space - breathing new life into every
             project.
           </p>
-          <p className="leading-relaxed">
+          <p
+            // Last paragraph still doesn't need bottom margin
+            className="text-justify min-[1920px]:text-[15px] min-[1920px]:leading-[32px] leading-relaxed"
+          >
             Specializing in residential, development, and commercial interior
             design, they have completed projects in over three countries and a
             dozen cities nationally.

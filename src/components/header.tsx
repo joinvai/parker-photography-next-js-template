@@ -27,6 +27,7 @@ const browserInfo = {
 
 interface HeaderProps {
   defaultLogo?: boolean;
+  variant?: 'light' | 'dark'; // Add variant prop
 }
 
 // Custom hook for responsive breakpoint detection
@@ -60,7 +61,7 @@ interface EventListenerOptionsWithPassive extends EventListenerOptions {
   passive?: boolean;
 }
 
-function Header({ defaultLogo = false }: HeaderProps) {
+function Header({ defaultLogo = false, variant = 'light' }: HeaderProps) {
   // Responsive breakpoints
   const isMobile = useMediaQuery("(max-width: 639px)");
   const isTablet = useMediaQuery("(min-width: 640px) and (max-width: 1023px)");
@@ -529,6 +530,7 @@ function Header({ defaultLogo = false }: HeaderProps) {
 
   // Logo dimensions
   const logoSize = getLogoSize();
+  const logoSrc = variant === 'dark' ? "/logos/black-logo.svg" : "/logos/white-logo.svg"; // Conditional logo source
 
   // Handle keydown events for menu navigation
   const handleSocialMenuKeyDown = (e: React.KeyboardEvent) => {
@@ -747,7 +749,7 @@ function Header({ defaultLogo = false }: HeaderProps) {
   };
 
   // Enhanced focus ring polyfill for cross-browser support
-  const getFocusRingClasses = (isActive: boolean) => {
+  const getFocusRingClasses = (isActive: boolean, variant: 'light' | 'dark') => {
     // Use focus-visible when available, with fallback for older browsers
     return browserCompatMode === "legacy"
       ? `${isActive ? "focus:ring-2 focus:ring-offset-2 focus:ring-black" : ""}`
@@ -822,7 +824,7 @@ function Header({ defaultLogo = false }: HeaderProps) {
       ref={headerRef}
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-colors duration-300 mt-2",
-        isOpen ? "text-white" : "text-black", // Text color changes immediately
+        isOpen ? "text-white" : (variant === 'dark' ? "text-black" : "text-white"), // Adjusted text color based on variant AND isOpen
         getHeaderHeightClass(),
       )}
       style={{
@@ -846,7 +848,10 @@ function Header({ defaultLogo = false }: HeaderProps) {
           <button
             onClick={toggleMenu}
             type="button"
-            className={`relative w-10 h-10 sm:w-11 sm:h-11 flex flex-col justify-center items-center ${getFocusRingClasses(true)} rounded-sm`}
+            className={cn(
+              `relative w-10 h-10 sm:w-11 sm:h-11 flex flex-col justify-center items-center rounded-sm`,
+              getFocusRingClasses(true, variant)
+            )}
             aria-label={isOpen ? "Close menu" : "Open menu"}
             aria-expanded={isOpen}
             aria-controls="main-menu"
@@ -854,19 +859,28 @@ function Header({ defaultLogo = false }: HeaderProps) {
           >
             {/* Hamburger Lines */}
             <span
-              className={`block transition-all duration-300 ease-out
-							h-[1.2px] w-5 sm:w-6 rounded-sm ${isOpen ? "rotate-45 translate-y-[0.175rem]" : "-translate-y-[0.2rem]"} bg-white`}
+              className={cn(
+                `block transition-all duration-300 ease-out h-[1.2px] w-5 sm:w-6 rounded-sm`,
+                isOpen ? "rotate-45 translate-y-[0.175rem] bg-white" : "-translate-y-[0.2rem]",
+                !isOpen && (variant === 'dark' ? "bg-black" : "bg-white") // Conditional background when closed
+              )}
             />
             <span
-              className={`block transition-all duration-300 ease-out
-							h-[1.2px] w-5 sm:w-6 rounded-sm ${isOpen ? "-rotate-45 -translate-y-[0rem]" : "translate-y-[0.2rem]"} bg-white`}
+              className={cn(
+                `block transition-all duration-300 ease-out h-[1.2px] w-5 sm:w-6 rounded-sm`,
+                isOpen ? "-rotate-45 -translate-y-[0rem] bg-white" : "translate-y-[0.2rem]",
+                !isOpen && (variant === 'dark' ? "bg-black" : "bg-white") // Conditional background when closed
+              )}
             />
           </button>
           {/* Changed back to button for accessibility */}
           <button
             onClick={toggleMenu}
             type="button"
-            className="text-[22px] text-white hover:[font-style:italic] transition-all duration-200 cursor-pointer bg-transparent border-none p-0"
+            className={cn(
+              "text-[22px] hover:[font-style:italic] transition-all duration-200 cursor-pointer bg-transparent border-none p-0",
+              isOpen ? "text-white" : (variant === 'dark' ? "text-black" : "text-white") // Conditional text color
+            )}
             style={{ fontFamily: 'var(--font-beaufort-light)' }}
           >
             {isOpen ? "CLOSE" : "MENU"}
@@ -884,11 +898,11 @@ function Header({ defaultLogo = false }: HeaderProps) {
         >
           <Link
             href="/"
-            className={`${getFocusRingClasses(true)} rounded-sm inline-block`}
+            className={`${getFocusRingClasses(true, variant)} rounded-sm inline-block`}
             aria-label="Home page"
           >
             <Image
-              src={`/logos/white-logo.svg`}
+              src={logoSrc}
               alt="Logo"
               width={logoSize.width}
               height={logoSize.height}
@@ -908,7 +922,11 @@ function Header({ defaultLogo = false }: HeaderProps) {
           {/* Social Button */}
           <button
             type="button"
-            className={`flex items-center text-[22px] cursor-pointer mr-3 sm:mr-6 p-2 hover:[font-style:italic] tracking-wider min-h-[44px] min-w-[44px] justify-center ${getFocusRingClasses(true)} rounded-sm text-white focus-visible:ring-white`}
+            className={cn(
+              `flex items-center text-[22px] cursor-pointer mr-3 sm:mr-6 p-2 hover:[font-style:italic] tracking-wider min-h-[44px] min-w-[44px] justify-center rounded-sm`,
+              getFocusRingClasses(true, variant),
+              isOpen ? "text-white" : (variant === 'dark' ? "text-black" : "text-white") // Conditional text color
+            )}
             aria-expanded={isSocialMenuOpen}
             aria-haspopup="true"
             aria-controls="social-menu"
@@ -1003,7 +1021,7 @@ function Header({ defaultLogo = false }: HeaderProps) {
                     >
                       <Link
                         href={link.href}
-                        className={`flex items-center px-3 sm:px-4 py-3 sm:py-4 text-xs sm:text-sm tracking-wider text-gray-800 hover:bg-gray-50 hover:[font-style:italic] hover:text-black hover:scale-[1.02] rounded-sm w-full text-left min-h-[44px] ${getFocusRingClasses(true)}`}
+                        className={`flex items-center px-3 sm:px-4 py-3 sm:py-4 text-xs sm:text-sm tracking-wider text-gray-800 hover:bg-gray-50 hover:[font-style:italic] hover:text-black hover:scale-[1.02] rounded-sm w-full text-left min-h-[44px] ${getFocusRingClasses(true, variant)}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={() => setIsSocialMenuOpen(false)}
@@ -1126,10 +1144,12 @@ function Header({ defaultLogo = false }: HeaderProps) {
                   >
                     {/* Number indicator - Apply font family */}
                     <span
-                      className="font-header text-xs sm:text-sm tracking-wider opacity-60 mb-2 sm:mb-3"
+                      className={`font-header text-xs sm:text-sm tracking-wider opacity-60 mb-2 sm:mb-3`}
                       id={`nav-number-${link.id}`}
                       style={{
                         fontFamily: 'var(--font-beaufort-light)', // Apply font family
+                        // Ensure text remains white even if parent color changes
+                        color: 'rgba(255, 255, 255, 0.6)',
                         // IE fallback for opacity
                         ...(browserInfo.isIE
                           ? { filter: "alpha(opacity=60)" }
@@ -1138,10 +1158,13 @@ function Header({ defaultLogo = false }: HeaderProps) {
                     >
                       {link.id}
                     </span>
-                    {/* Link text - Removed hover:opacity-80 */}
+                    {/* Link text - Ensure text remains white */}
                     <Link
                       href={link.href}
-                      className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl tracking-wider hover:[font-style:italic] [transition:opacity_0.3s_ease] ${getFocusRingClasses(true)} rounded-sm`}
+                      className={cn(
+                        `text-3xl sm:text-4xl md:text-5xl lg:text-6xl tracking-wider hover:[font-style:italic] [transition:opacity_0.3s_ease] rounded-sm`,
+                        getFocusRingClasses(true, 'light') // Focus ring should likely remain light on dark background
+                      )}
                       onClick={() => setIsOpen(false)}
                       aria-describedby={`nav-number-${link.id}`}
                       ref={(el) => setMenuLinkRef(el, index)}

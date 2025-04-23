@@ -21,7 +21,7 @@ export default function StudioQuote() {
 
   return (
     <section
-      className="py-12 sm:py-16 md:py-24 px-4 sm:px-6 md:px-8 lg:px-12 max-w-screen-xl mx-auto transition-all duration-300 text-center"
+      className="flex flex-col items-center text-center p-0 max-[479px]:max-w-[300px] max-[479px]:w-full max-[479px]:mx-auto pt-12 sm:pt-16 md:pt-24 pb-6 sm:pb-8 md:pb-10 px-4 sm:px-6 md:px-8 lg:px-12 max-w-screen-xl mx-auto transition-all duration-300"
       aria-labelledby="studio-quote-title"
     >
       {/* Hidden heading for screen readers */}
@@ -38,17 +38,15 @@ export default function StudioQuote() {
         {!quoteLoaded && <div className="sr-only">Loading studio quote</div>}
 
         <blockquote
-          className="text-lg sm:text-2xl md:text-3xl lg:text-4xl italic max-w-4xl mx-auto text-black transition-opacity duration-300"
+          className="overflow-visible p-0 not-italic whitespace-normal break-normal font-header text-[18px] leading-[24px] text-center tracking-[-0.25px] min-[1920px]:text-[24px] min-[1920px]:leading-[36px] max-[479px]:text-[16px] max-[479px]:leading-[24px] max-w-4xl mx-auto text-black transition-opacity duration-300"
           style={{ opacity: quoteLoaded ? 1 : 0 }}
           onLoad={() => setQuoteLoaded(true)}
         >
-          <span className="block mb-2 text-4xl sm:text-5xl md:text-6xl lg:text-7xl">
-            "
-          </span>
           <p>
-            Interior design is the art of crafting spaces that harmonize
-            functionality with aesthetic appeal, transforming houses into homes
-            that reflect the soul of their inhabitants.
+            "Interior design is the art of crafting spaces that harmonize
+            functionality with aesthetic appeal, <br />
+            transforming houses into homes that reflect the soul of their
+            inhabitants."
           </p>
         </blockquote>
       </div>
