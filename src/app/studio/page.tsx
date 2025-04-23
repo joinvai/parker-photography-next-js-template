@@ -48,7 +48,7 @@ export default function StudioPage() {
             />
           </motion.div>
           <div className="flex max-w-[min(100%,_calc(100vh_-_200px))] py-5 flex-col gap-[5px] mx-auto lg:mx-auto md:py-[37px] md:justify-center md:items-center md:w-auto md:px-0 max-[479px]:w-auto max-[479px]:px-0 max-[479px]:text-left">
-            <h2 className="mt-0 mb-0 text-[44px] leading-[50px] text-center normal-case font-header max-[767px]:leading-[125%] max-[479px]:text-[34px] max-[479px]:leading-[40px]">Eilyn Jimenez</h2>
+            <h2 className="mt-0 mb-2 text-[24px] leading-[24px] text-center normal-case font-header hover:italic min-[1920px]:text-[28px] min-[1920px]:leading-[32px] max-[991px]:text-center">Eilyn Jimenez</h2>
             <h3 className="mb-5 text-center tracking-[2px] uppercase hover:italic font-sans text-[13px] min-[1920px]:text-[15px] min-[1920px]:leading-[32px]">
               Founder & Creative Director
             </h3>
