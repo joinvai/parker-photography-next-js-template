@@ -1,9 +1,12 @@
 import About from "@/components/about";
-import { CustomCarousel } from "@/components/custom-carousel";
 import FullPageCarousel from "@/components/full-page-carousel";
 import ScrollIndicator from "@/components/ScrollIndicator";
 import { knownLandscapeImages } from "@/lib/landscape-images";
 import { getAllProjects } from "@/lib/projects";
+import Image from "next/image";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
+import { ProjectListItem } from "@/components/project-list-item";
 
 // Force dynamic rendering to ensure shuffling happens on each request
 export const dynamic = "force-dynamic";
@@ -40,6 +43,10 @@ export default async function HomePage() {
   // Pick a random index for the initial image
   const initialIndex = Math.floor(Math.random() * shuffledImages.length);
 
+  // Split projects
+  const firstTwoProjects = projects.slice(0, 2);
+  const remainingProjects = projects.slice(2);
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-start">
       {/* Wrap Carousel and Indicator in a relative container */}
@@ -59,9 +66,35 @@ export default async function HomePage() {
         <About />
       </div>
 
-      {/* Section for the CustomCarousel */}
-      <section className="w-full mt-16 mb-16">
-        <CustomCarousel projects={projects} />
+      {/* Unified Project Grid Section - Modified for mixed layout */}
+      <section
+        className={cn(
+          "w-full",
+          "p-[43px] 2xl:py-[45px] 2xl:px-[52px]",
+          // Grid setup remains responsive
+          "grid grid-cols-1 gap-y-[43px]",
+          "lg:grid-cols-2 lg:gap-x-[43px]",
+          "2xl:gap-y-[45px] 2xl:gap-x-[52px]",
+        )}
+      >
+        {/* Render first two projects (will be side-by-side on lg+) */}
+        {firstTwoProjects.map((project) => (
+          <ProjectListItem
+            key={project.id}
+            project={project}
+            showDescription={false}
+          />
+        ))}
+
+        {/* Render remaining projects, spanning full width on lg+ */}
+        {remainingProjects.map((project) => (
+          // Add lg:col-span-2 to force single column on large screens
+          <ProjectListItem
+            key={project.id}
+            project={project}
+            className="lg:col-span-2"
+          />
+        ))}
       </section>
     </main>
   );

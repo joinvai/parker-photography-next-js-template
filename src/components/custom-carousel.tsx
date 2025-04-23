@@ -64,7 +64,7 @@ const toBase64 = (str: string) =>
 export function CustomCarousel({ projects, className }: CustomCarouselProps) {
   // Use a tuple [page, direction] for state
   const [[page, direction], setPage] = useState([0, 0]);
-  const [itemsPerView, setItemsPerView] = useState(3);
+  const [itemsPerView, setItemsPerView] = useState(2);
   // State to track hovered item index for Prev/Next text
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   // Re-introduce mousePosition state
@@ -77,10 +77,9 @@ export function CustomCarousel({ projects, className }: CustomCarouselProps) {
     const handleResize = () => {
       if (window.innerWidth < 640) {
         setItemsPerView(1);
-      } else if (window.innerWidth < 1024) {
-        setItemsPerView(2);
       } else {
-        setItemsPerView(3);
+        // Cap at 2 items for medium screens and up
+        setItemsPerView(2);
       }
     };
     handleResize();
@@ -164,9 +163,7 @@ export function CustomCarousel({ projects, className }: CustomCarouselProps) {
     <motion.div
       className={cn(
         "relative w-full overflow-hidden",
-        "h-[75vh]",
-        // Add padding on small devices
-        "px-4 sm:px-6 lg:px-0",
+        "mb-[25px] 2xl:mb-[10px] px-[10px] md:px-[40px] lg:px-[50px] 2xl:px-[102px]",
         className,
       )}
     >
@@ -180,8 +177,8 @@ export function CustomCarousel({ projects, className }: CustomCarouselProps) {
           exit="exit"
           transition={transitionProps}
           className={cn(
-            "absolute inset-0 grid justify-center gap-4",
-            "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3",
+            "grid justify-center",
+            "flex flex-col gap-[43px] lg:grid lg:grid-cols-2 lg:gap-[43px] 2xl:gap-y-[45px] 2xl:gap-x-[52px]",
           )}
           // Prevent dragging interfering with clicks
           drag="x"
@@ -198,7 +195,7 @@ export function CustomCarousel({ projects, className }: CustomCarouselProps) {
         >
           {visibleProjects.map((projectWithIndex) => {
             const { originalIndex, ...project } = projectWithIndex;
-            const isLargeScreen = itemsPerView === 3;
+            const isLargeScreen = itemsPerView === 2;
             const isPrevTrigger = originalIndex === 0 && isLargeScreen;
             const isNextTrigger =
               originalIndex === itemsPerView - 1 && isLargeScreen;
@@ -209,7 +206,8 @@ export function CustomCarousel({ projects, className }: CustomCarouselProps) {
               <div key={project.id} className="flex flex-col">
                 <motion.div
                   className={cn(
-                    "relative overflow-hidden h-[70vh]",
+                    "relative overflow-hidden",
+                    "h-[500px] md:h-[750px] 2xl:h-[800px]",
                     "rounded-none",
                     isNavTrigger && "lg:cursor-none",
                   )}
@@ -270,15 +268,15 @@ export function CustomCarousel({ projects, className }: CustomCarouselProps) {
                     )}
                 </motion.div>
                 {/* Project Name Below Image - Now as a Link */}
-                <div className="mt-3 text-left">
+                <div className="mt-3 flex justify-between items-start">
                   <Link
                     href={`/projects/${project.id}`}
-                    className="font-header text-black text-base md:text-lg lg:text-xl block hover:italic"
+                    className="font-header text-black text-base md:text-lg lg:text-xl hover:italic"
                   >
                     {project.name}
                   </Link>
                   {/* Add year below name */}
-                  <p className="text-sm text-neutral-700 mt-1">
+                  <p className="text-sm text-neutral-700">
                     {project.year}
                   </p>
                 </div>

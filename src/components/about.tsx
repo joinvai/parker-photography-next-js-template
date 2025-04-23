@@ -17,7 +17,7 @@ export default function About() {
       <Link href="/studio">
         <button
           type="button"
-          className="bg-green text-eggshell px-8 py-3 transition-colors hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-green focus:ring-offset-2 focus:ring-offset-eggshell rounded-sm"
+          className="mt-[13px] py-3 px-[25px] rounded-none border border-green bg-transparent text-green text-xs leading-5 tracking-[2px] uppercase transition-all duration-400 ease-linear hover:italic focus:outline-none focus:ring-2 focus:ring-green focus:ring-offset-2 focus:ring-offset-eggshell"
         >
           READ ABOUT US
         </button>

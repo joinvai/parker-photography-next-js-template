@@ -43,17 +43,17 @@ Breakdown:
 
 ## Home Page
 
-- [ ] Add scroll indicator component to hero section
+- [x] Add scroll indicator component to hero section
   - Position at bottom of viewport
   - Implement smooth animation
   - Match design from Webflow
-- [ ] Update link tag styles
+- [x] Update link tag styles
   - Add italics to all link tags
   - Verify consistency across pages
-- [ ] Typography updates
+- [x] Typography updates
   - Replace header font with Beaufort
   - Verify font weights and sizes
-- [ ] Header adjustments
+- [x] Header adjustments
   - Change logo color to white
   - Verify contrast and visibility
 

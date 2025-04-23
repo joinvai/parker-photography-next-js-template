@@ -27,6 +27,7 @@ const config: Config = {
       },
       fontFamily: {
         sans: ["Open Sans", "sans-serif"],
+        header: ["var(--font-beaufort-light)", "serif"],
         mono: ["var(--font-geist-mono)"],
         "roboto-mono": ["var(--font-roboto-mono)", "monospace"],
         "roboto-mono-bold": ["var(--font-roboto-mono-bold)", "monospace"],
