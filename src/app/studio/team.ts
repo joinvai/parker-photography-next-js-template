@@ -47,12 +47,6 @@ Eilyn's innovative designs and engaging personality have also led her to star in
     mainImage: "/team/yanin.jpg",
   },
   {
-    fullName: "Maria Karla Fernandez",
-    role: "Visual Illustrator",
-    bio: "",
-    mainImage: "/team/maria.jpg",
-  },
-  {
     fullName: "Thalia Castillo",
     role: "Junior Designer",
     bio: "",
@@ -63,5 +57,11 @@ Eilyn's innovative designs and engaging personality have also led her to star in
     role: "Director of Operations",
     bio: "",
     mainImage: "/team/jackie.jpg",
+  },
+  {
+    fullName: "Maria Karla Fernandez",
+    role: "Visual Illustrator",
+    bio: "",
+    mainImage: "/team/maria.jpg",
   },
 ];
