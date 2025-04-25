@@ -22,6 +22,7 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 
 export default function ContactPage() {
+  const [selectedInquiry, setSelectedInquiry] = useState('project'); // Default to 'project'
   const [isHovered, setIsHovered] = useState(false);
   const [isCareersSheetOpen, setIsCareersSheetOpen] = useState(false);
 
@@ -51,110 +52,101 @@ export default function ContactPage() {
         animate="visible"
         className="max-w-4xl mx-auto"
       >
-        <motion.h1
-          variants={itemVariants}
-          className="font-header text-5xl md:text-5xl mb-12 pt-24 tracking-tighter"
-        >
-          Let's Create
-          <br />
-          Something
-          <br />
-          Together
-        </motion.h1>
-
+        {/* New Wrapper for Heading Section - Adjusted Vertical Padding */}
         <motion.div
           variants={itemVariants}
-          className="grid grid-cols-1 md:grid-cols-2 gap-16 mt-16"
+          className="px-[50px] pt-[120px] pb-[50px] text-center max-[991px]:px-[38px] max-[991px]:pt-[80px] max-[991px]:pb-[25px] max-[767px]:px-0 max-[767px]:pt-[100px] max-[767px]:pb-[50px] max-[479px]:px-[10px]"
         >
-          <div>
-            <h2 className="text-2xl font-header mb-6">Get in Touch</h2>
-            <Dialog>
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5 }}
-                className="space-y-4"
-              >
-                <p>
-                  If you have a new project, please complete our new project
-                  form below.
-                </p>
-                <DialogTrigger asChild>
-                  <Button
-                    variant="link"
-                    className="p-0 h-auto text-base hover:text-black"
-                  >
-                    New Project Inquiry
-                  </Button>
-                </DialogTrigger>
-              </motion.div>
+          {/* Added text-center */}
+          <motion.p
+            variants={itemVariants}
+            className="font-sans text-[13px] leading-[26px] tracking-[2px] uppercase mb-4 text-center max-[991px]:text-left"
+          >
+            SIRE DESIGN STUDIO
+          </motion.p>
+          {/* Added text-center */}
+          <motion.h1
+            variants={itemVariants}
+            className="font-header text-5xl md:text-5xl tracking-medium text-center"
+          >
+            GET IN TOUCH
+          </motion.h1>
+        </motion.div>
 
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>New Project Inquiry</DialogTitle>
-                </DialogHeader>
-                <ProjectInquiryForm />
-              </DialogContent>
-            </Dialog>
+        {/* --- Rest of the page content starts here --- */}
+        {/* Updated Column Widths Layout */}
+        <motion.div
+          variants={itemVariants}
+          className="grid grid-cols-1 md:grid-cols-4 md:gap-x-[100px] gap-y-12 mt-12 md:mt-16 max-md:flex max-md:flex-col max-md:gap-8" // Changed to md:grid-cols-4
+        >
+          {/* Left Column: Inquiry Type Selection - Spanning 2 cols (50%) */}
+          <div className="space-y-2 md:col-span-2"> {/* Added md:col-span-2 */} 
+            <button 
+              onClick={() => setSelectedInquiry('project')}
+              className={`block w-full text-left py-3 border-b ${selectedInquiry === 'project' ? 'border-black' : 'border-gray-300'} hover:border-black transition-colors font-header text-2xl max-sm:py-2`}
+            >
+              New Project Inquiries
+            </button>
+            <button 
+              onClick={() => setSelectedInquiry('marketing')}
+              className={`block w-full text-left py-3 border-b ${selectedInquiry === 'marketing' ? 'border-black' : 'border-gray-300'} hover:border-black transition-colors font-header text-2xl max-sm:py-2`}
+            >
+              Marketing/Collabs
+            </button>
+            <button 
+              onClick={() => setSelectedInquiry('general')}
+              className={`block w-full text-left py-3 border-b ${selectedInquiry === 'general' ? 'border-black' : 'border-gray-300'} hover:border-black transition-colors font-header text-2xl max-sm:py-2`}
+            >
+              General Questions
+            </button>
           </div>
 
-          <motion.div variants={itemVariants} className="space-y-8">
+          {/* Middle Column: Phone & E-mail - 1 col (25%) */}
+          <div className="space-y-6">
             <div>
-              <h3 className="font-header text-2xl mb-4">Studio Location</h3>
-              <p>
-                7500 NE 4TH COURT, #103
-                <br />
-                MIAMI FL 33138
-                <br />
+              {/* Phone Heading: font-header, text-xl (20px) */}
+              <p className="font-header text-xl uppercase tracking-wider mb-1">
+                PHONE
+              </p>
+              {/* Phone Number: font-sans, text-xs (12px), uppercase */}
+              <p className="font-sans text-xs leading-5 uppercase">
+                305-402-4202
               </p>
             </div>
-
-            <div className="space-y-4">
-              <h3 className="font-header text-2xl mb-4">Connect</h3>
-              <div className="space-y-2">
-                <p>info@siredesign.com</p>
-                <p>305-402-4202</p>
-              </div>
+            <div>
+              {/* Email Heading: font-header, text-xl (20px) */}
+              <p className="font-header text-xl uppercase tracking-wider mb-1">
+                E-MAIL
+              </p>
+              {/* Email Link: font-sans, text-xs (12px), uppercase, hover:italic */}
+              <a href="mailto:info@siredesign.com" className="font-sans text-xs leading-5 uppercase hover:italic">
+                info@siredesign.com
+              </a>
             </div>
-          </motion.div>
+          </div>
+
+          {/* Right Column: Address - 1 col (25%) */}
+          <div> 
+            <div>
+              {/* Address Heading: font-header, text-xl (20px) */}
+              <p className="font-header text-xl uppercase tracking-wider mb-1">
+                ADDRESS
+              </p>
+              {/* Address Lines: font-sans, text-xs (12px), uppercase */}
+              <p className="font-sans text-xs leading-5 uppercase">7500 NE 4TH COURT, #103</p>
+              <p className="font-sans text-xs leading-5 uppercase">MIAMI FL 33138</p>
+              {/* View Map Link: font-sans, text-xs (12px), uppercase, hover:italic */}
+              <a href="#" target="_blank" rel="noopener noreferrer" className="font-sans text-xs leading-5 uppercase hover:italic block mt-1">
+                VIEW MAP
+              </a> 
+            </div>
+          </div>
         </motion.div>
 
-        {/* NEW CAREERS SECTION START */}
-        <motion.div variants={itemVariants} className="mt-16">
-          <h2 className="text-2xl font-header mb-6">Careers</h2>
-          <Sheet open={isCareersSheetOpen} onOpenChange={setIsCareersSheetOpen}>
-            <Button
-              variant="link"
-              className="p-0 h-auto text-base hover:text-black"
-              onClick={() => setIsCareersSheetOpen(true)}
-            >
-              View Job Availabilities
-            </Button>
-            <SheetContent>
-              <SheetHeader>
-                <SheetTitle className="text-2xl font-header font-thin">
-                  Current Openings
-                </SheetTitle>
-                <SheetDescription>
-                  We don't currently have any roles available to fill within our
-                  studio, however we are always on the lookout for talented
-                  designers to join our team.
-                  <br />
-                  <br />
-                  Please send through your resume and portfolio to{" "}
-                  <a
-                    href="mailto:info@siredesign.com"
-                    className="underline transition-colors"
-                  >
-                    info@siredesign.com
-                  </a>
-                  .
-                </SheetDescription>
-              </SheetHeader>
-            </SheetContent>
-          </Sheet>
-        </motion.div>
-        {/* NEW CAREERS SECTION END */}
+        {/* Forms will be conditionally rendered here based on selectedInquiry */}
+        {/* TODO: Implement forms */}
+
+        {/* REMOVED CAREERS SECTION */}
       </motion.div>
     </main>
   );

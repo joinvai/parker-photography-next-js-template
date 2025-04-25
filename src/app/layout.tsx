@@ -42,6 +42,7 @@ export default function RootLayout({
   const isHomePage = pathname === "/"; // Check if it's the homepage
   const isStudioPage = pathname === "/studio"; // Check if it's the studio page
   const isProjectsPage = pathname.startsWith("/projects"); // Check if it's the projects page or a sub-page
+  const isContactPage = pathname === "/contact"; // Check if it's the contact page
   const [windowWidth, setWindowWidth] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const [isRouteChanging, setIsRouteChanging] = useState(false);
@@ -82,7 +83,7 @@ export default function RootLayout({
   }, [pathname]);
 
   // Determine header variant based on page
-  const headerVariant = isStudioPage || isProjectsPage ? 'dark' : 'light'; // Dark for studio OR projects
+  const headerVariant = isStudioPage || isProjectsPage || isContactPage ? 'dark' : 'light'; // Dark for studio, projects OR contact
 
   // Route change detection for accessibility announcements
   useEffect(() => {
