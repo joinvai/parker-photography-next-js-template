@@ -51,7 +51,7 @@ export default function WatchPageClient({ showData }: WatchPageClientProps) {
   return (
     // Apply motion to the grid container
     <motion.div
-      className="mx-auto grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-16"
+      className="mx-auto grid grid-cols-1 gap-y-16"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
@@ -59,33 +59,28 @@ export default function WatchPageClient({ showData }: WatchPageClientProps) {
       {showData.map((show) => (
         <motion.div
           key={show.showName}
-          className="flex flex-col items-start"
+          className="tv-show-link flex flex-col items-start"
           variants={itemVariants}
         >
+          <h3 className="font-header show-heading">{show.tvNetwork}</h3>
           <div className="w-full mb-6 aspect-video overflow-hidden">
             <Image
               src={show.mainImage}
               alt={`${show.showName} on ${show.tvNetwork}`}
               width={800}
               height={450}
-              className="w-full h-full object-cover"
+              className="tv-image"
               loading="lazy"
               placeholder="blur"
               blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer(800, 450))}`}
             />
           </div>
-          <div className="w-full">
-            <h2 className="text-sm uppercase tracking-widest text-neutral-700 mb-2">
-              {show.tvNetwork}
+          <div className="tv-heading-holder">
+            <h2 className="tracking-widest text-neutral-700 tv-heading">
+              {show.showName}
             </h2>
-            <h3 className="text-3xl font-header mb-4">{show.showName}</h3>
-            <p className="mb-6">{show.showDescription}</p>
-            <a
-              href={show.watchUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block bg-green text-eggshell px-6 py-3 hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-green focus:ring-offset-2 focus:ring-offset-eggshell transition-colors font-semibold rounded-sm"
-            >
+            <p>{show.showDescription}</p>
+            <a href={show.watchUrl} target="_blank" rel="noopener noreferrer" className="button">
               {show.buttonText}
             </a>
           </div>

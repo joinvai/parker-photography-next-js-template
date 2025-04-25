@@ -9,7 +9,7 @@ export interface ShowAppearance {
 
 export const showData: ShowAppearance[] = [
   {
-    tvNetwork: "Designing Miami",
+    tvNetwork: "Divided by Design",
     mainImage: "/watch/tv-1.jpeg",
     showName: "Designing Miami",
     showDescription:
@@ -19,7 +19,7 @@ export const showData: ShowAppearance[] = [
       "https://www.max.com/shows/divided-by-design/e79f719c-8https://www.netflix.com/title/81425251", // Placeholder URL - Update with actual link
   },
   {
-    tvNetwork: "Netflix",
+    tvNetwork: "Designing Miami",
     mainImage: "/watch/tv-2.jpeg",
     showName: "Divided by Design",
     showDescription:

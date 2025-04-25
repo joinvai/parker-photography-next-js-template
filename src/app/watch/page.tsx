@@ -27,10 +27,11 @@ export const metadata: Metadata = {
 export default function WatchPage() {
   return (
     <main className="min-h-screen bg-eggshell text-black p-8 md:p-16">
-      {/* Title can remain here or be moved to client component if it needs animation */}
-      <h1 className="text-4xl md:text-6xl font-header tracking-tighter mb-12 text-center">
-        Watch Our Shows
-      </h1>
+      <div className="content-wrapper">
+        <div className="gigantic-quote-text">
+          Sire Design shines on TV, captivating audiences with Eilyn and Ray Jimenez's transformative creativity, showcased on HGTV's "Divided by Design" and Netflix's "Designing Miami".
+        </div>
+      </div>
       {/* Render the client component, passing the data */}
       <WatchPageClient showData={showData} />
     </main>
