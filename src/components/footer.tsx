@@ -6,9 +6,9 @@ const Footer: React.FC = () => {
   return (
     <footer className="mt-auto">
       {/* Match the studio page padding structure */}
-      <div className="p-8 md:p-16">
+      <div className="px-2 md:px-12 py-8 md:py-16">
         {/* Footer Wrapper - matches .footer-wrapper with studio page width constraints */}
-        <div className="flex flex-col justify-end items-center pt-[71px] pb-0 max-w-[min(100%,_calc(100vh_-_200px))] mx-auto">
+        <div className="flex flex-col justify-end items-center pt-[71px] pb-0">
           {/* Div Block - matches .div-block-19 */}
           <div className="flex w-full justify-between max-[767px]:flex-col max-[479px]:px-[10px] max-[479px]:flex-col max-[479px]:items-start max-[479px]:self-start max-[479px]:gap-[17px]">
             {/* Contact Link - matches .gigantic-words.caps */}

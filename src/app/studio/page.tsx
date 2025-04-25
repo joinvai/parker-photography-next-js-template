@@ -23,7 +23,7 @@ export default function StudioPage() {
     <main className="min-h-screen bg-eggshell text-black pt-24">
       <StudioQuote />
       <AboutSection />
-      <div className="p-8 md:p-16">
+      <div className="px-2 md:px-12 py-8 md:py-16">
 
         {/* Eilyn Jimenez Image - Centered above the grid */}
         <div className="max-w-screen-xl mx-auto mb-16">

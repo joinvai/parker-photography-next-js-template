@@ -38,17 +38,13 @@ export default function FounderQuote() {
         {!quoteLoaded && <div className="sr-only">Loading founder's quote</div>}
 
         <blockquote
-          className="text-xl sm:text-2xl md:text-3xl lg:text-4xl italic max-w-4xl mx-auto text-black transition-opacity duration-300"
+          className="max-w-4xl mx-auto text-black transition-opacity duration-300"
           style={{ opacity: quoteLoaded ? 1 : 0 }}
           onLoad={() => setQuoteLoaded(true)}
         >
-          <span className="block mb-2 text-4xl sm:text-5xl md:text-6xl lg:text-7xl">
-            "
-          </span>
-          <p>
-            We believe that luxury is about creating spaces that tell your
-            story. Each detail matters, each material chosen with purpose, and
-            each room designed to evoke an emotional response.
+          <p className="font-header font-light text-base leading-6 not-italic tracking-[-0.25px] text-black sm:text-lg 2xl:text-2xl 2xl:leading-9">
+            "Sire Design’s projects are based on strong design concepts and great attention to detail. With a design approach rooted in modernist principles of design and architecture, <br />
+            Sire Design takes an analytical approach to interiors while having an open-minded view of innovation."
           </p>
         </blockquote>
       </div>

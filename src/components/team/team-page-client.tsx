@@ -61,7 +61,7 @@ export default function TeamPageClient({ teamData }: TeamPageClientProps) {
 
   return (
     <motion.div
-      className="mx-auto max-w-[min(100%,_calc(100vh_-_200px))] pb-[50px] gap-[30px] grid grid-cols-1 one-column max-[991px]:px-[50px] max-[479px]:px-[35px] max-[479px]:py-[25px]"
+      className="pb-[50px] gap-[30px] grid grid-cols-1 one-column max-[991px]:px-[50px] max-[479px]:px-[35px] max-[479px]:py-[25px]"
       variants={containerVariants}
       initial="hidden"
       animate="visible"

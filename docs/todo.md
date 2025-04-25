@@ -1,4 +1,4 @@
-## Home Page
+## Home Page - done
 
 - scroll on main
 - link tags italicize
@@ -17,7 +17,7 @@
 - fonts
 - animations
 
-## /Studio Page (team)
+## /Studio Page (team) - done
 
 - about section ui
 - Separate Eilyn to own section above team grid with conditional - look at /projects/[slug] for reference
@@ -49,7 +49,7 @@ Breakdown:
   - Match design from Webflow
 - [x] Update link tag styles
   - Add italics to all link tags
-  - Verify consistency across pages
+  - Verify consistency acrojss pages
 - [x] Typography updates
   - Replace header font with Beaufort
   - Verify font weights and sizes
@@ -59,10 +59,10 @@ Breakdown:
 
 ## Projects Page
 
-- [ ] Typography audit and updates
+- [x] Typography audit and updates
   - Match Webflow font styles
   - Check responsive behavior
-- [ ] Implement hover interactions
+- [x] Implement hover interactions
   - Add animation to description sections under images
   - Match Webflow hover states
   - Implement Framer Motion transitions
@@ -75,7 +75,7 @@ Breakdown:
 - [x] Implement Eilyn section
   - Create separate component above team grid
   - Add conditional rendering (reference /projects/[slug] pattern)
-- [] Typography updates
+- [x] Typography updates
   - Match Webflow font styles
   - Verify hierarchy
 - [x] Layout adjustments

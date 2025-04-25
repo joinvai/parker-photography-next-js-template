@@ -41,6 +41,7 @@ export default function RootLayout({
   const pathname = usePathname(); // Get the current route path
   const isHomePage = pathname === "/"; // Check if it's the homepage
   const isStudioPage = pathname === "/studio"; // Check if it's the studio page
+  const isProjectsPage = pathname.startsWith("/projects"); // Check if it's the projects page or a sub-page
   const [windowWidth, setWindowWidth] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const [isRouteChanging, setIsRouteChanging] = useState(false);
@@ -81,7 +82,7 @@ export default function RootLayout({
   }, [pathname]);
 
   // Determine header variant based on page
-  const headerVariant = isStudioPage ? 'dark' : 'light';
+  const headerVariant = isStudioPage || isProjectsPage ? 'dark' : 'light'; // Dark for studio OR projects
 
   // Route change detection for accessibility announcements
   useEffect(() => {

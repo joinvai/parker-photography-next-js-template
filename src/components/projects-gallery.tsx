@@ -84,11 +84,17 @@ export function ProjectsGallery() {
             priority={index < 2}
             isAboveFold={index < 4}
             behavior="navigate"
-            aspectRatio="aspect-[4/3]"
+            aspectRatio="aspect-[3/4]"
           />
-          <p className="mt-4 text-left font-header text-2xl text-black">
-            {project.name}
-          </p>
+          {/* Project Content Holder */}
+          <div className="flex flex-col py-5 pr-0">
+            <p className="font-header text-black text-2xl uppercase leading-[30px] tracking-[-1.5px] hover:italic transition-all duration-200">
+              {project.name}
+            </p>
+            <p className="font-sans text-sm leading-6 font-normal text-black hover:italic transition-all duration-200">
+              {project.year || "N/A"}
+            </p>
+          </div>
         </div>
       ))}
 
