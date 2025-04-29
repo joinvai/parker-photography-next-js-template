@@ -80,7 +80,12 @@ export default function WatchPageClient({ showData }: WatchPageClientProps) {
               {show.showName}
             </h2>
             <p>{show.showDescription}</p>
-            <a href={show.watchUrl} target="_blank" rel="noopener noreferrer" className="button">
+            <a
+              href={show.watchUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="button"
+            >
               {show.buttonText}
             </a>
           </div>

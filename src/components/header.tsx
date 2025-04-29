@@ -27,7 +27,7 @@ const browserInfo = {
 
 interface HeaderProps {
   defaultLogo?: boolean;
-  variant?: 'light' | 'dark'; // Add variant prop
+  variant?: "light" | "dark"; // Add variant prop
 }
 
 // Custom hook for responsive breakpoint detection
@@ -61,7 +61,7 @@ interface EventListenerOptionsWithPassive extends EventListenerOptions {
   passive?: boolean;
 }
 
-function Header({ defaultLogo = false, variant = 'light' }: HeaderProps) {
+function Header({ defaultLogo = false, variant = "light" }: HeaderProps) {
   // Responsive breakpoints
   const isMobile = useMediaQuery("(max-width: 639px)");
   const isTablet = useMediaQuery("(min-width: 640px) and (max-width: 1023px)");
@@ -530,7 +530,12 @@ function Header({ defaultLogo = false, variant = 'light' }: HeaderProps) {
 
   // Logo dimensions
   const logoSize = getLogoSize();
-  const logoSrc = variant === 'dark' ? "/logos/black-logo.svg" : "/logos/white-logo.svg"; // Conditional logo source
+  // Determine logo source based on open state and variant
+  const logoSrc = isOpen
+    ? "/logos/white-logo.svg" // Always white when menu is open
+    : variant === "dark"
+      ? "/logos/black-logo.svg" // Black when closed on dark variant pages
+      : "/logos/white-logo.svg"; // White when closed on light variant pages (like home)
 
   // Handle keydown events for menu navigation
   const handleSocialMenuKeyDown = (e: React.KeyboardEvent) => {
@@ -749,7 +754,10 @@ function Header({ defaultLogo = false, variant = 'light' }: HeaderProps) {
   };
 
   // Enhanced focus ring polyfill for cross-browser support
-  const getFocusRingClasses = (isActive: boolean, variant: 'light' | 'dark') => {
+  const getFocusRingClasses = (
+    isActive: boolean,
+    variant: "light" | "dark",
+  ) => {
     // Use focus-visible when available, with fallback for older browsers
     return browserCompatMode === "legacy"
       ? `${isActive ? "focus:ring-2 focus:ring-offset-2 focus:ring-black" : ""}`
@@ -824,7 +832,11 @@ function Header({ defaultLogo = false, variant = 'light' }: HeaderProps) {
       ref={headerRef}
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-colors duration-300 mt-2",
-        isOpen ? "text-white" : (variant === 'dark' ? "text-black" : "text-white"), // Adjusted text color based on variant AND isOpen
+        isOpen
+          ? "text-white"
+          : variant === "dark"
+            ? "text-black"
+            : "text-white", // Adjusted text color based on variant AND isOpen
         getHeaderHeightClass(),
       )}
       style={{
@@ -849,8 +861,8 @@ function Header({ defaultLogo = false, variant = 'light' }: HeaderProps) {
             onClick={toggleMenu}
             type="button"
             className={cn(
-              `relative w-10 h-10 sm:w-11 sm:h-11 flex flex-col justify-center items-center rounded-sm`,
-              getFocusRingClasses(true, variant)
+              "relative w-10 h-10 sm:w-11 sm:h-11 flex flex-col justify-center items-center rounded-sm",
+              getFocusRingClasses(true, variant),
             )}
             aria-label={isOpen ? "Close menu" : "Open menu"}
             aria-expanded={isOpen}
@@ -860,16 +872,20 @@ function Header({ defaultLogo = false, variant = 'light' }: HeaderProps) {
             {/* Hamburger Lines */}
             <span
               className={cn(
-                `block transition-all duration-300 ease-out h-[1.2px] w-5 sm:w-6 rounded-sm`,
-                isOpen ? "rotate-45 translate-y-[0.175rem] bg-white" : "-translate-y-[0.2rem]",
-                !isOpen && (variant === 'dark' ? "bg-black" : "bg-white") // Conditional background when closed
+                "block transition-all duration-300 ease-out h-[1.2px] w-5 sm:w-6 rounded-sm",
+                isOpen
+                  ? "rotate-45 translate-y-[0.175rem] bg-white"
+                  : "-translate-y-[0.2rem]",
+                !isOpen && (variant === "dark" ? "bg-black" : "bg-white"), // Conditional background when closed
               )}
             />
             <span
               className={cn(
-                `block transition-all duration-300 ease-out h-[1.2px] w-5 sm:w-6 rounded-sm`,
-                isOpen ? "-rotate-45 -translate-y-[0rem] bg-white" : "translate-y-[0.2rem]",
-                !isOpen && (variant === 'dark' ? "bg-black" : "bg-white") // Conditional background when closed
+                "block transition-all duration-300 ease-out h-[1.2px] w-5 sm:w-6 rounded-sm",
+                isOpen
+                  ? "-rotate-45 -translate-y-[0rem] bg-white"
+                  : "translate-y-[0.2rem]",
+                !isOpen && (variant === "dark" ? "bg-black" : "bg-white"), // Conditional background when closed
               )}
             />
           </button>
@@ -879,9 +895,13 @@ function Header({ defaultLogo = false, variant = 'light' }: HeaderProps) {
             type="button"
             className={cn(
               "text-[22px] hover:[font-style:italic] transition-all duration-200 cursor-pointer bg-transparent border-none p-0",
-              isOpen ? "text-white" : (variant === 'dark' ? "text-black" : "text-white") // Conditional text color
+              isOpen
+                ? "text-white"
+                : variant === "dark"
+                  ? "text-black"
+                  : "text-white", // Conditional text color
             )}
-            style={{ fontFamily: 'var(--font-beaufort-light)' }}
+            style={{ fontFamily: "var(--font-beaufort-light)" }}
           >
             {isOpen ? "CLOSE" : "MENU"}
           </button>
@@ -923,9 +943,13 @@ function Header({ defaultLogo = false, variant = 'light' }: HeaderProps) {
           <button
             type="button"
             className={cn(
-              `flex items-center text-[22px] cursor-pointer mr-3 sm:mr-6 p-2 hover:[font-style:italic] tracking-wider min-h-[44px] min-w-[44px] justify-center rounded-sm`,
+              "flex items-center text-[22px] cursor-pointer mr-3 sm:mr-6 p-2 hover:[font-style:italic] tracking-wider min-h-[44px] min-w-[44px] justify-center rounded-sm",
               getFocusRingClasses(true, variant),
-              isOpen ? "text-white" : (variant === 'dark' ? "text-black" : "text-white") // Conditional text color
+              isOpen
+                ? "text-white"
+                : variant === "dark"
+                  ? "text-black"
+                  : "text-white", // Conditional text color
             )}
             aria-expanded={isSocialMenuOpen}
             aria-haspopup="true"
@@ -946,11 +970,12 @@ function Header({ defaultLogo = false, variant = 'light' }: HeaderProps) {
             }}
             style={{
               // Ensure no unwanted transition styles linger
-              fontFamily: 'var(--font-beaufort-light)', // Apply font family
+              fontFamily: "var(--font-beaufort-light)", // Apply font family
               ...getBrowserStyleFixes(),
             }}
           >
-            <span>SOCIAL</span> {/* Ensure text is inside a span if needed, but button remains button */}
+            <span>SOCIAL</span>{" "}
+            {/* Ensure text is inside a span if needed, but button remains button */}
           </button>
 
           {/* Mobile Touch Overlay - Only visible when menu is open on touch devices */}
@@ -1144,12 +1169,12 @@ function Header({ defaultLogo = false, variant = 'light' }: HeaderProps) {
                   >
                     {/* Number indicator - Apply font family */}
                     <span
-                      className={`font-header text-xs sm:text-sm tracking-wider opacity-60 mb-2 sm:mb-3`}
+                      className="font-header text-xs sm:text-sm tracking-wider opacity-60 mb-2 sm:mb-3"
                       id={`nav-number-${link.id}`}
                       style={{
-                        fontFamily: 'var(--font-beaufort-light)', // Apply font family
+                        fontFamily: "var(--font-beaufort-light)", // Apply font family
                         // Ensure text remains white even if parent color changes
-                        color: 'rgba(255, 255, 255, 0.6)',
+                        color: "rgba(255, 255, 255, 0.6)",
                         // IE fallback for opacity
                         ...(browserInfo.isIE
                           ? { filter: "alpha(opacity=60)" }
@@ -1162,14 +1187,14 @@ function Header({ defaultLogo = false, variant = 'light' }: HeaderProps) {
                     <Link
                       href={link.href}
                       className={cn(
-                        `text-3xl sm:text-4xl md:text-5xl lg:text-6xl tracking-wider hover:[font-style:italic] [transition:opacity_0.3s_ease] rounded-sm`,
-                        getFocusRingClasses(true, 'light') // Focus ring should likely remain light on dark background
+                        "text-3xl sm:text-4xl md:text-5xl lg:text-6xl tracking-wider hover:[font-style:italic] [transition:opacity_0.3s_ease] rounded-sm",
+                        getFocusRingClasses(true, "light"), // Focus ring should likely remain light on dark background
                       )}
                       onClick={() => setIsOpen(false)}
                       aria-describedby={`nav-number-${link.id}`}
                       ref={(el) => setMenuLinkRef(el, index)}
                       style={{
-                        fontFamily: 'var(--font-beaufort-light)', // Apply font family
+                        fontFamily: "var(--font-beaufort-light)", // Apply font family
                         // Keep existing transition if desired, but opacity hover removed from class
                         WebkitTransition: "opacity 0.3s ease",
                         MozTransition: "opacity 0.3s ease",

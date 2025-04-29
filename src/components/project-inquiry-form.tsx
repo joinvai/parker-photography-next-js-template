@@ -114,7 +114,7 @@ export function ProjectInquiryForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-6 max-h-[75vh] overflow-y-auto p-1 pr-3"
+        className="space-y-6 max-h-[75vh] overflow-y-auto p-1 pr-3 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100"
       >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <FormField

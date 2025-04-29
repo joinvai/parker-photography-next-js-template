@@ -1,9 +1,17 @@
-## Home Page - done
+# Remaining Work 
+From Hari: 
+- [ ] General
+- [ ] Contact page
+- [ ]  wire up the contact form to open the same one.
+- [ ] Studio page - do we want the bio's expanded or not
+- [ ] Logo shows up black on the contact page when the menu is expanded - should be white
+- [ ] Logo shows up black on the watch page when the menu is expanded - should be white
 
-- scroll on main
-- link tags italicize
-- header font should be the main one (beaufort)
-- logo should be white in header
+## Home Page - done
+- [x] scroll on main
+- [x] link tags italicize 
+- [x] header font should be the main one (beaufort)
+- [x] logo should be white in header
 
 ## General
 
@@ -18,18 +26,15 @@
 - animations
 
 ## /Studio Page (team) - done
-
-- about section ui
-- Separate Eilyn to own section above team grid with conditional - look at /projects/[slug] for reference
-- fonts
-- spacing
-- ui
+- [x] about section ui
+- [x] Separate Eilyn to own section above team grid with conditional - look at /projects/[slug] for reference
+- [x] fonts
+- [x] spacing
+- [x] ui
 
 ## Contact Page
-
-- Swap h1 for Get in Touch
-- put SIRE DESIGN STUDIO above get in touch
-
+- [ ] Swap h1 for Get in Touch
+- [ ] put SIRE DESIGN STUDIO above get in touch
 ## Watch
 
 - Sizing

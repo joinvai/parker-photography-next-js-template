@@ -22,7 +22,7 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 
 export default function ContactPage() {
-  const [selectedInquiry, setSelectedInquiry] = useState('project'); // Default to 'project'
+  const [selectedInquiry, setSelectedInquiry] = useState("project"); // Default to 'project'
   const [isHovered, setIsHovered] = useState(false);
   const [isCareersSheetOpen, setIsCareersSheetOpen] = useState(false);
 
@@ -43,6 +43,12 @@ export default function ContactPage() {
       opacity: 1,
     },
   };
+
+  const addressLine1 = "7500 NE 4TH COURT, #103";
+  const addressLine2 = "MIAMI FL 33138";
+  const fullAddress = `${addressLine1} ${addressLine2}`;
+  const encodedAddress = encodeURIComponent(fullAddress);
+  const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodedAddress}`;
 
   return (
     <main className="min-h-screen bg-eggshell text-black p-8 pt-24 md:p-16">
@@ -80,22 +86,45 @@ export default function ContactPage() {
           className="grid grid-cols-1 md:grid-cols-4 md:gap-x-[100px] gap-y-12 mt-12 md:mt-16 max-md:flex max-md:flex-col max-md:gap-8" // Changed to md:grid-cols-4
         >
           {/* Left Column: Inquiry Type Selection - Spanning 2 cols (50%) */}
-          <div className="space-y-2 md:col-span-2"> {/* Added md:col-span-2 */} 
-            <button 
-              onClick={() => setSelectedInquiry('project')}
-              className={`block w-full text-left py-3 border-b ${selectedInquiry === 'project' ? 'border-black' : 'border-gray-300'} hover:border-black transition-colors font-header text-2xl max-sm:py-2`}
-            >
-              New Project Inquiries
-            </button>
-            <button 
-              onClick={() => setSelectedInquiry('marketing')}
-              className={`block w-full text-left py-3 border-b ${selectedInquiry === 'marketing' ? 'border-black' : 'border-gray-300'} hover:border-black transition-colors font-header text-2xl max-sm:py-2`}
+          <div className="space-y-2 md:col-span-2">
+            {" "}
+            {/* Added md:col-span-2 */}
+            <Dialog>
+              {" "}
+              {/* Wrap the trigger and content */}
+              <DialogTrigger asChild>
+                <button
+                  type="button"
+                  // onClick={() => setSelectedInquiry('project')} // Keep this to update visual state if needed, or remove if dialog handles selection
+                  className={`block w-full text-left py-3 border-b ${selectedInquiry === "project" ? "border-black" : "border-gray-300"} hover:border-black transition-colors font-header text-2xl max-sm:py-2`}
+                >
+                  New Project Inquiries
+                </button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[600px]">
+                {" "}
+                {/* Adjust width as needed */}
+                <DialogHeader>
+                  <DialogTitle className="font-header">
+                    New Project Inquiry
+                  </DialogTitle>
+                  {/* Optional: Add a DialogDescription here if needed */}
+                </DialogHeader>
+                <ProjectInquiryForm /> {/* Render the form inside the dialog */}
+              </DialogContent>
+            </Dialog>
+            {/* Keep other buttons as they are for now */}
+            <button
+              type="button"
+              onClick={() => setSelectedInquiry("marketing")}
+              className={`block w-full text-left py-3 border-b ${selectedInquiry === "marketing" ? "border-black" : "border-gray-300"} hover:border-black transition-colors font-header text-2xl max-sm:py-2`}
             >
               Marketing/Collabs
             </button>
-            <button 
-              onClick={() => setSelectedInquiry('general')}
-              className={`block w-full text-left py-3 border-b ${selectedInquiry === 'general' ? 'border-black' : 'border-gray-300'} hover:border-black transition-colors font-header text-2xl max-sm:py-2`}
+            <button
+              type="button"
+              onClick={() => setSelectedInquiry("general")}
+              className={`block w-full text-left py-3 border-b ${selectedInquiry === "general" ? "border-black" : "border-gray-300"} hover:border-black transition-colors font-header text-2xl max-sm:py-2`}
             >
               General Questions
             </button>
@@ -119,32 +148,45 @@ export default function ContactPage() {
                 E-MAIL
               </p>
               {/* Email Link: font-sans, text-xs (12px), uppercase, hover:italic */}
-              <a href="mailto:info@siredesign.com" className="font-sans text-xs leading-5 uppercase hover:italic">
+              <a
+                href="mailto:info@siredesign.com"
+                className="font-sans text-xs leading-5 uppercase hover:italic"
+              >
                 info@siredesign.com
               </a>
             </div>
           </div>
 
           {/* Right Column: Address - 1 col (25%) */}
-          <div> 
+          <div>
             <div>
               {/* Address Heading: font-header, text-xl (20px) */}
               <p className="font-header text-xl uppercase tracking-wider mb-1">
                 ADDRESS
               </p>
               {/* Address Lines: font-sans, text-xs (12px), uppercase */}
-              <p className="font-sans text-xs leading-5 uppercase">7500 NE 4TH COURT, #103</p>
-              <p className="font-sans text-xs leading-5 uppercase">MIAMI FL 33138</p>
+              <p className="font-sans text-xs leading-5 uppercase">
+                {addressLine1}
+              </p>
+              <p className="font-sans text-xs leading-5 uppercase">
+                {addressLine2}
+              </p>
               {/* View Map Link: font-sans, text-xs (12px), uppercase, hover:italic */}
-              <a href="#" target="_blank" rel="noopener noreferrer" className="font-sans text-xs leading-5 uppercase hover:italic block mt-1">
+              <a
+                href={mapUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-sans text-xs leading-5 uppercase hover:italic block mt-1"
+              >
                 VIEW MAP
-              </a> 
+              </a>
             </div>
           </div>
         </motion.div>
 
         {/* Forms will be conditionally rendered here based on selectedInquiry */}
-        {/* TODO: Implement forms */}
+        {/* Project Inquiry form is now in a Dialog triggered above */}
+        {/* TODO: Implement forms/content for Marketing and General */}
 
         {/* REMOVED CAREERS SECTION */}
       </motion.div>
