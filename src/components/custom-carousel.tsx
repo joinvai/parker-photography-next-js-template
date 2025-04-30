@@ -207,7 +207,7 @@ export function CustomCarousel({ projects, className }: CustomCarouselProps) {
                 <motion.div
                   className={cn(
                     "relative overflow-hidden",
-                    "h-[500px] md:h-[750px] 2xl:h-[800px]",
+                    "aspect-[3/4]",
                     "rounded-none",
                     isNavTrigger && "lg:cursor-none",
                   )}
@@ -261,7 +261,7 @@ export function CustomCarousel({ projects, className }: CustomCarouselProps) {
                           transform: "translate(-50%, -50%)",
                         }}
                       >
-                        <span className="text-black text-2xl font-medium select-none">
+                        <span className="text-black text-4xl font-header select-none">
                           {isPrevTrigger ? "PREV" : "NEXT"}
                         </span>
                       </motion.div>
@@ -276,9 +276,7 @@ export function CustomCarousel({ projects, className }: CustomCarouselProps) {
                     {project.name}
                   </Link>
                   {/* Add year below name */}
-                  <p className="text-sm text-neutral-700">
-                    {project.year}
-                  </p>
+                  <p className="text-sm text-neutral-700">{project.year}</p>
                 </div>
               </div>
             );

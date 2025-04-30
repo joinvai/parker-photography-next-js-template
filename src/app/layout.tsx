@@ -5,11 +5,11 @@ import { Open_Sans } from "next/font/google"; // Import Open_Sans
 // import localFont from "next/font/local"; // Remove this, will be imported from fonts.ts
 import { usePathname } from "next/navigation"; // Correctly import usePathname
 import "./globals.css";
-import { editorialNew, beaufortLight } from "./fonts"; // Import fonts
 import Footer from "@/components/footer"; // Import the Footer component
 import Header from "@/components/header"; // Import the Header component
 import { useCallback, useEffect, useState } from "react";
 import { Toaster } from "sonner"; // Import Toaster
+import { beaufortLight, editorialNew } from "./fonts"; // Import fonts
 
 // Define Beaufort font configuration - REMOVED
 // const beaufort = localFont({
@@ -85,7 +85,14 @@ export default function RootLayout({
   }, [pathname]);
 
   // Determine header variant based on page
-  const headerVariant = isStudioPage || isProjectsPage || isContactPage || isWatchPage || isPressPage ? 'dark' : 'light'; // Dark for studio, projects, contact, watch OR press
+  const headerVariant =
+    isStudioPage ||
+    isProjectsPage ||
+    isContactPage ||
+    isWatchPage ||
+    isPressPage
+      ? "dark"
+      : "light"; // Dark for studio, projects, contact, watch OR press
 
   // Route change detection for accessibility announcements
   useEffect(() => {
@@ -150,7 +157,8 @@ export default function RootLayout({
             Navigating to {getPageTitle()} page
           </div>
         )}
-        <Header variant={headerVariant} /> {/* Render the Header component with variant */}
+        <Header variant={headerVariant} />{" "}
+        {/* Render the Header component with variant */}
         {/* Apply padding-top dynamically based on the route and device */}
         <main
           id="main-content"

@@ -80,21 +80,12 @@ export default async function HomePage() {
       >
         {/* Render first two projects (will be side-by-side on lg+) */}
         {firstTwoProjects.map((project) => (
-          <ProjectListItem
-            key={project.id}
-            project={project}
-            showDescription={false}
-          />
+          <ProjectListItem key={project.id} project={project} />
         ))}
 
         {/* Render remaining projects, spanning full width on lg+ */}
         {remainingProjects.map((project) => (
-          // Add lg:col-span-2 to force single column on large screens
-          <ProjectListItem
-            key={project.id}
-            project={project}
-            className="lg:col-span-2"
-          />
+          <ProjectListItem key={project.id} project={project} />
         ))}
       </section>
       <section className="w-full mt-16 mb-16">
