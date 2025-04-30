@@ -26,7 +26,7 @@ export const metadata: Metadata = {
 // Server component - simpler structure
 export default function WatchPage() {
   return (
-    <main className="min-h-screen bg-eggshell text-black p-8 md:p-16">
+    <main className="min-h-screen bg-eggshell text-black pt-24">
       <div
         className="relative mb-12 sm:mb-16 md:mb-24 px-4 sm:px-6 md:px-8 lg:px-12 max-w-screen-xl mx-auto"
         aria-labelledby="page-introduction"
@@ -34,18 +34,14 @@ export default function WatchPage() {
         <h1 id="page-introduction" className="sr-only">
           Sire Design TV Appearances
         </h1>
-        <section
-          className="py-12 sm:py-16 md:py-36 px-4 sm:px-6 md:px-8 lg:px-12 max-w-screen-xl mx-auto transition-all duration-300 text-center"
-          aria-labelledby="founder-quote-title"
-        >
-          <blockquote className="overflow-visible p-0 not-italic whitespace-normal break-normal font-header text-[18px] leading-[24px] text-center tracking-[-0.25px] min-[1920px]:text-[24px] min-[1920px]:leading-[36px] max-[479px]:text-[16px] max-[479px]:leading-[24px] max-w-4xl mx-auto text-black">
-            <p>
-              Sire Design shines on TV, captivating audiences with Eilyn and Ray
-              Jimenez's transformative creativity, showcased on HGTV's "Divided
-              by Design" and Netflix's "Designing Miami".
-            </p>
-          </blockquote>
-        </section>
+        <blockquote className="overflow-visible p-0 not-italic whitespace-normal break-normal font-header text-[18px] leading-[24px] text-center tracking-[-0.25px] min-[1920px]:text-[24px] min-[1920px]:leading-[36px] max-[479px]:text-[16px] max-[479px]:leading-[24px] max-w-4xl mx-auto text-black">
+          <p>
+            Sire Design shines on TV, captivating audiences with Eilyn and Ray
+            Jimenez's transformative creativity,{" "}
+            <br className="hidden sm:block" /> showcased on HGTV's "Divided by
+            Design" and Netflix's "Designing Miami".
+          </p>
+        </blockquote>
       </div>
       <WatchPageClient showData={showData} />
     </main>

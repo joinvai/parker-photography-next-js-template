@@ -2,10 +2,12 @@
 From Hari: 
 - [ ] General
 - [ ] Contact page
-- [ ]  wire up the contact form to open the same one.
+-  [x]  wire up the contact form to open the same one.
 - [ ] Studio page - do we want the bio's expanded or not
-- [ ] Logo shows up black on the contact page when the menu is expanded - should be white
-- [ ] Logo shows up black on the watch page when the menu is expanded - should be white
+- [x] Logo shows up black on the contact page when the menu is expanded - should be white
+- [x] Logo shows up black on the watch page when the menu is expanded - should be white
+- [ ] Add back custom carousel with prev/next buttons
+
 
 ## Home Page - done
 - [x] scroll on main

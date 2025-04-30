@@ -1,12 +1,13 @@
-import About from "@/components/about";
-import FullPageCarousel from "@/components/full-page-carousel";
 import ScrollIndicator from "@/components/ScrollIndicator";
+import About from "@/components/about";
+import { CustomCarousel } from "@/components/custom-carousel";
+import FullPageCarousel from "@/components/full-page-carousel";
+import { ProjectListItem } from "@/components/project-list-item";
 import { knownLandscapeImages } from "@/lib/landscape-images";
 import { getAllProjects } from "@/lib/projects";
+import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
-import { ProjectListItem } from "@/components/project-list-item";
 
 // Force dynamic rendering to ensure shuffling happens on each request
 export const dynamic = "force-dynamic";
@@ -95,6 +96,9 @@ export default async function HomePage() {
             className="lg:col-span-2"
           />
         ))}
+      </section>
+      <section className="w-full mt-16 mb-16">
+        <CustomCarousel projects={projects} />
       </section>
     </main>
   );

@@ -872,19 +872,19 @@ function Header({ defaultLogo = false, variant = "light" }: HeaderProps) {
             {/* Hamburger Lines */}
             <span
               className={cn(
-                "block transition-all duration-300 ease-out h-[1.2px] w-5 sm:w-6 rounded-sm",
+                "block transition-all duration-300 ease-out h-0.5 w-5 sm:w-6 rounded-sm",
                 isOpen
                   ? "rotate-45 translate-y-[0.175rem] bg-white"
-                  : "-translate-y-[0.2rem]",
+                  : "-translate-y-[0.175rem]",
                 !isOpen && (variant === "dark" ? "bg-black" : "bg-white"), // Conditional background when closed
               )}
             />
             <span
               className={cn(
-                "block transition-all duration-300 ease-out h-[1.2px] w-5 sm:w-6 rounded-sm",
+                "block transition-all duration-300 ease-out h-0.5 w-5 sm:w-6 rounded-sm",
                 isOpen
                   ? "-rotate-45 -translate-y-[0rem] bg-white"
-                  : "translate-y-[0.2rem]",
+                  : "translate-y-[0.175rem]",
                 !isOpen && (variant === "dark" ? "bg-black" : "bg-white"), // Conditional background when closed
               )}
             />
