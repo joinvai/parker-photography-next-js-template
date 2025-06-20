@@ -1,7 +1,7 @@
 export interface ShowAppearance {
-  tvNetwork: string; // e.g., "HGTV", "Netflix"
+  tvNetwork: string; // e.g., "Nature Documentary Network", "Photography Channel"
   mainImage: string; // e.g., "/watch/tv-1.jpeg" (path relative to public dir)
-  showName: string; // e.g., "Divided by Design", "Designing Miami"
+  showName: string; // e.g., "Through the Lens", "Masters of Nature Photography"
   showDescription: string; // Full description text
   buttonText: string; // e.g., "WATCH ON MAX", "WATCH ON NETFLIX"
   watchUrl: string; // The target URL for the button, e.g., "https://www.netflix.com/title/..."
@@ -9,23 +9,23 @@ export interface ShowAppearance {
 
 export const showData: ShowAppearance[] = [
   {
-    tvNetwork: "Divided by Design",
+    tvNetwork: "Nature Documentary Network",
     mainImage: "/watch/tv-1.jpeg",
-    showName: "Designing Miami",
+    showName: "Through the Lens",
     showDescription:
-      "Husband and wife designers Ray and Eilyn Jimenez run their separate design firms and battle against each other in the very competitive Miami market, but no matter who lands the bid, their client always comes out a winner.",
-    buttonText: "WATCH ON MAX",
+      "Follow our lead photographer as they venture into the wild to capture breathtaking nature photography, from majestic landscapes to intimate wildlife moments, showcasing the art and technique behind each stunning image.",
+    buttonText: "WATCH NOW",
     watchUrl:
-      "https://www.max.com/shows/divided-by-design/e79f719c-8https://www.netflix.com/title/81425251", // Placeholder URL - Update with actual link
+      "#", // Placeholder URL
   },
   {
-    tvNetwork: "Designing Miami",
+    tvNetwork: "Photography Channel",
     mainImage: "/watch/tv-2.jpeg",
-    showName: "Divided by Design",
+    showName: "Masters of Nature Photography",
     showDescription:
-      "For Ray and Eilyn Jimenez, marriage and business are a perfect match as their respective interior design firms remodel homes for high-end Miami clients.",
-    buttonText: "WATCH ON NETFLIX",
+      "Join our team of talented photographers as they explore remote locations, overcome challenging conditions, and use cutting-edge techniques to create award-winning nature photography that inspires conservation and appreciation for the natural world.",
+    buttonText: "STREAM EPISODES",
     watchUrl:
-      "https://www.max.com/shows/divided-by-design/e79f719c-8651-4b2e-b0f8-4f075f7760e5", // Placeholder URL - Update with actual link
+      "#", // Placeholder URL
   },
 ];

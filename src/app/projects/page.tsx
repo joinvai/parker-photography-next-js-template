@@ -7,19 +7,19 @@ import Script from "next/script";
 
 // Define metadata for SEO
 export const metadata: Metadata = {
-  title: "Our Projects | Sire Design",
+  title: "Our Projects | Photography Studio",
   description:
-    "Explore Sire Design's portfolio of luxury interior design projects showcasing our premium aesthetic and attention to detail.",
+    "Explore our portfolio of stunning nature photography projects showcasing our artistic vision and attention to detail.",
   openGraph: {
-    title: "Our Projects | Sire Design",
+    title: "Our Projects | Photography Studio",
     description:
-      "Explore Sire Design's portfolio of luxury interior design projects showcasing our premium aesthetic and attention to detail.",
+      "Explore our portfolio of stunning nature photography projects showcasing our artistic vision and attention to detail.",
     type: "website",
     url: "/projects",
   },
   // Add additional meta tags for better SEO
   keywords:
-    "interior design, luxury, projects, portfolio, Sire Design, high-end interiors",
+    "nature photography, landscape, projects, portfolio, photography studio, high-end photography",
   robots: "index, follow",
   viewport: "width=device-width, initial-scale=1",
   // Add canonical URL to prevent duplicate content issues
@@ -36,7 +36,7 @@ export default async function ProjectsPage() {
   if (!projects || projects.length === 0) {
     return (
       <main
-        className="min-h-screen flex items-center justify-center bg-eggshell text-black p-4 sm:p-6"
+        className="min-h-screen flex items-center justify-center bg-white text-black p-4 sm:p-6"
         id="main-content"
         aria-labelledby="error-heading"
       >
@@ -57,16 +57,16 @@ export default async function ProjectsPage() {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    name: "Interior Design Projects | Sire Design",
+    name: "Nature Photography Projects | Parker Photography",
     description:
-      "Explore Sire Design's portfolio of luxury interior design projects showcasing our premium aesthetic and attention to detail.",
+      "Explore Parker Photography's portfolio of stunning nature photography projects showcasing our artistic vision and attention to detail.",
     url: "https://siredesign.com/projects",
     numberOfItems: projects.length,
   };
 
   return (
     <main
-      className="min-h-screen bg-eggshell text-black pt-24"
+      className="min-h-screen bg-white text-black pt-24"
       id="main-content"
     >
       {/* Schema.org structured data for better SEO - using next/script to avoid dangerouslySetInnerHTML */}
@@ -83,7 +83,7 @@ export default async function ProjectsPage() {
         aria-labelledby="projects-section-heading"
       >
         <h1 id="projects-section-heading" className="sr-only">
-          Our Interior Design Projects
+          Our Nature Photography Projects
         </h1>
         {/* Add inner div with padding */}
         <div className="px-2 md:px-12">

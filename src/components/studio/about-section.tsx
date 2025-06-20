@@ -68,7 +68,7 @@ export default function AboutSection() {
       >
         <Image
           src="/team/studio.jpg"
-          alt="Sire Design studio or representative project image"
+          alt="Photography studio or representative nature photography"
           fill // Use fill to properly cover the square container
           // Apply image styles from .image-12
           className="w-full h-full object-cover object-center"
@@ -96,7 +96,7 @@ export default function AboutSection() {
           className="mt-0 mb-0 text-[44px] leading-[50px] text-center normal-case max-[767px]:leading-[125%] max-[479px]:text-[34px] max-[479px]:leading-[40px] font-header tracking-tighter"
           variants={itemVariants}
         >
-          About Sire Design
+          About Our Photography Studio
         </motion.h1>
 
         {/* Paragraphs with Animation Item */}
@@ -105,31 +105,31 @@ export default function AboutSection() {
             // Increase paragraph spacing from mb-5 (20px) to mb-8 (32px)
             className="mb-8 text-justify min-[1920px]:text-[15px] min-[1920px]:leading-[32px] leading-relaxed"
           >
-            Sire Design's projects are based on strong design concepts and great
-            attention to detail. With a design approach rooted in modernist
-            principles of design and architecture, Sire Design takes an
-            analytical approach to interiors while having an open-minded view of
+            Our photography projects are based on strong compositional concepts and great
+            attention to detail. With an approach rooted in capturing the raw beauty
+            of nature and landscapes, we take an
+            artistic approach to photography while having an open-minded view of
             innovation.
           </p>
           <p
             // Increase paragraph spacing from mb-5 (20px) to mb-8 (32px)
             className="mb-8 text-justify min-[1920px]:text-[15px] min-[1920px]:leading-[32px] leading-relaxed"
           >
-            Each of the firm's designs are made stylistically and functionally
-            everlasting with the use of premium materials and unparalleled
-            craftsmanship. The extraordinary spaces they design are highly
-            detail-oriented and are the sum of carefully curated ideas. Sire
-            Design believes that, as interior design creatives, their role is to
-            transform and re-purpose each space - breathing new life into every
-            project.
+            Each photograph is crafted to be artistically and emotionally
+            timeless through the use of premium equipment and unparalleled
+            technique. The extraordinary images captured are highly
+            detail-oriented and are the sum of carefully composed moments. Our studio
+            believes that, as nature photography artists, our role is to
+            reveal and celebrate the natural world - breathing new perspective into every
+            scene.
           </p>
           <p
             // Last paragraph still doesn't need bottom margin
             className="text-justify min-[1920px]:text-[15px] min-[1920px]:leading-[32px] leading-relaxed"
           >
-            Specializing in residential, development, and commercial interior
-            design, they have completed projects in over three countries and a
-            dozen cities nationally.
+            Specializing in landscape, wildlife, and adventure nature
+            photography, our team has captured images in over three countries and a
+            dozen national parks across diverse ecosystems.
           </p>
         </motion.div>
       </motion.div>

@@ -56,7 +56,7 @@ export default function ProjectLightbox({
     alt: `${project.name} - Image ${index + 1}`,
     title: `${project.name} - Image ${index + 1}`,
     description: index === 0 
-      ? `${project.description || 'Interior design project by Sire Design'}` 
+      ? `${project.description || 'Nature photography project by our photography studio'}` 
       : undefined,
   }));
 

@@ -18,7 +18,7 @@ export default function ProjectDetailClient({
 
   return (
     <main
-      className="relative bg-eggshell min-h-screen text-black"
+      className="relative bg-white min-h-screen text-black"
       aria-labelledby="project-title"
     >
       {project.mainImage && (
@@ -56,7 +56,7 @@ export default function ProjectDetailClient({
         </section>
       )}
 
-      <div className="relative z-10 bg-eggshell px-4 sm:px-6 md:px-8 pt-16 md:pt-24 pb-12 sm:pb-16">
+      <div className="relative z-10 bg-white px-4 sm:px-6 md:px-8 pt-16 md:pt-24 pb-12 sm:pb-16">
         <h1
           id="project-title"
           className="max-w-7xl text-center mx-auto text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-header mb-6 sm:mb-8 md:mb-12 tracking-tight transition-all duration-300"

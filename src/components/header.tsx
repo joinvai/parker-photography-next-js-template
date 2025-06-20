@@ -2,7 +2,6 @@
 
 import { cn } from "@/lib/utils"; // Assuming utils exists for cn function
 import { AnimatePresence, motion } from "framer-motion";
-import Image from "next/image";
 import Link from "next/link";
 import type { LinkProps } from "next/link";
 import type React from "react";
@@ -475,17 +474,17 @@ function Header({ defaultLogo = false, variant = "light" }: HeaderProps) {
     {
       id: "instagram",
       name: "INSTAGRAM",
-      href: "https://www.instagram.com/siredesign/",
+      href: "https://www.instagram.com/",
     },
     {
       id: "facebook",
       name: "FACEBOOK",
-      href: "https://www.facebook.com/sireinteriordesign/",
+      href: "https://www.facebook.com/",
     },
     {
       id: "tiktok",
       name: "TIKTOK",
-      href: "https://www.tiktok.com/@eilynjimenez__",
+      href: "https://www.tiktok.com/",
     },
   ];
 
@@ -521,21 +520,6 @@ function Header({ defaultLogo = false, variant = "light" }: HeaderProps) {
     return "px-6 py-0"; // Remove vertical padding on desktop as we're using fixed height
   };
 
-  // Determine logo size based on screen size
-  const getLogoSize = () => {
-    if (isMobile) return { width: 75, height: 75 }; // Adjusted for 115px header
-    if (isTablet) return { width: 90, height: 90 };
-    return { width: 110, height: 110 }; // Larger logo for desktop
-  };
-
-  // Logo dimensions
-  const logoSize = getLogoSize();
-  // Determine logo source based on open state and variant
-  const logoSrc = isOpen
-    ? "/logos/white-logo.svg" // Always white when menu is open
-    : variant === "dark"
-      ? "/logos/black-logo.svg" // Black when closed on dark variant pages
-      : "/logos/white-logo.svg"; // White when closed on light variant pages (like home)
 
   // Handle keydown events for menu navigation
   const handleSocialMenuKeyDown = (e: React.KeyboardEvent) => {
@@ -907,7 +891,7 @@ function Header({ defaultLogo = false, variant = "light" }: HeaderProps) {
           </button>
         </div>
 
-        {/* Centered Logo - Kept white logo as requested */}
+        {/* Centered Logo - Text-based branding */}
         <div
           className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 py-4 sm:py-5 md:py-6 z-[60]"
           style={{
@@ -921,14 +905,26 @@ function Header({ defaultLogo = false, variant = "light" }: HeaderProps) {
             className={`${getFocusRingClasses(true, variant)} rounded-sm inline-block`}
             aria-label="Home page"
           >
-            <Image
-              src={logoSrc}
-              alt="Logo"
-              width={logoSize.width}
-              height={logoSize.height}
-              className="transition-opacity duration-300"
-              priority
-            />
+            <div className="text-center">
+              <h1 
+                className={cn(
+                  "text-2xl sm:text-3xl md:text-4xl tracking-wider transition-colors duration-300",
+                  isOpen ? "text-white" : variant === "dark" ? "text-black" : "text-white"
+                )}
+                style={{ fontFamily: "var(--font-beaufort-light)" }}
+              >
+                PARKER
+              </h1>
+              <p 
+                className={cn(
+                  "text-xs sm:text-sm tracking-[0.2em] mt-1 transition-colors duration-300",
+                  isOpen ? "text-white" : variant === "dark" ? "text-black" : "text-white"
+                )}
+                style={{ fontFamily: "var(--font-beaufort-light)" }}
+              >
+                PHOTOGRAPHY
+              </p>
+            </div>
           </Link>
         </div>
 

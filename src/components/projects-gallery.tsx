@@ -56,7 +56,7 @@ export function ProjectsGallery() {
       aria-busy={loading}
     >
       {/* Hidden heading for screen readers */}
-      <h2 className="sr-only">Our Interior Design Projects</h2>
+      <h2 className="sr-only">Our Nature Photography Projects</h2>
 
       {/* Loading announcement for screen readers */}
       {loading && (

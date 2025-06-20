@@ -44,14 +44,14 @@ export default function ContactPage() {
     },
   };
 
-  const addressLine1 = "7500 NE 4TH COURT, #103";
-  const addressLine2 = "MIAMI FL 33138";
+  const addressLine1 = "123 MAIN STREET, SUITE 100";
+  const addressLine2 = "ANYTOWN, USA 12345";
   const fullAddress = `${addressLine1} ${addressLine2}`;
   const encodedAddress = encodeURIComponent(fullAddress);
   const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodedAddress}`;
 
   return (
-    <main className="min-h-screen bg-eggshell text-black p-8 pt-24 md:p-16">
+    <main className="min-h-screen bg-white text-black p-8 pt-24 md:p-16">
       <motion.div
         variants={containerVariants}
         initial="hidden"
@@ -68,7 +68,7 @@ export default function ContactPage() {
             variants={itemVariants}
             className="font-sans text-[13px] leading-[26px] tracking-[2px] uppercase mb-4 text-center max-[991px]:text-left"
           >
-            SIRE DESIGN STUDIO
+            PHOTOGRAPHY STUDIO
           </motion.p>
           {/* Added text-center */}
           <motion.h1
@@ -139,7 +139,7 @@ export default function ContactPage() {
               </p>
               {/* Phone Number: font-sans, text-xs (12px), uppercase */}
               <p className="font-sans text-xs leading-5 uppercase">
-                305-402-4202
+                555-123-4567
               </p>
             </div>
             <div>
@@ -149,10 +149,10 @@ export default function ContactPage() {
               </p>
               {/* Email Link: font-sans, text-xs (12px), uppercase, hover:italic */}
               <a
-                href="mailto:info@siredesign.com"
+                href="mailto:info@example.com"
                 className="font-sans text-xs leading-5 uppercase hover:italic"
               >
-                info@siredesign.com
+                info@example.com
               </a>
             </div>
           </div>

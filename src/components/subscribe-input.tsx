@@ -17,7 +17,7 @@ import { z } from "zod";
 // Assuming you have a header font defined in your Tailwind config or global CSS
 // Use the variable defined in layout.tsx (e.g., editorialNew.variable is --font-editorial-new)
 // const headerFontClass = "font-editorial"; // Use the CSS variable name directly
-const beigeTextColor = "text-beige-600"; // Define your beige color class - needs configuration in tailwind.config.js
+const beigeTextColor = "text-black"; // Use black instead of beige
 
 // Component to handle newsletter subscription input
 const SubscribeInput: FC = () => {

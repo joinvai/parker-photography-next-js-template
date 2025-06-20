@@ -1,4 +1,0 @@
-we need to update the following: 
-the PREV and NEXT text on src/components/custom-carousel.tsx is supposed to be our beaufort font
-
-

@@ -23,15 +23,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   return {
-    title: `${project.name} (${project.year}) | Sire Design`,
+    title: `${project.name} (${project.year}) | Photography Studio`,
     description:
       project.description ||
-      `View details and photos of the ${project.name} interior design project by Sire Design, completed in ${project.year}.`,
+      `View details and photos of the ${project.name} nature photography project by our photography studio, captured in ${project.year}.`,
     openGraph: {
-      title: `${project.name} (${project.year}) | Sire Design`,
+      title: `${project.name} (${project.year}) | Photography Studio`,
       description:
         project.description ||
-        `View details and photos of the ${project.name} interior design project by Sire Design, completed in ${project.year}.`,
+        `View details and photos of the ${project.name} nature photography project by our photography studio, captured in ${project.year}.`,
       type: "website",
       url: `/projects/${project.id}`,
     },

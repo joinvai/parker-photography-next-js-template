@@ -22,7 +22,7 @@ const Footer: React.FC = () => {
             {/* Links Container */}
             <div className="flex flex-col justify-center self-start gap-[16px] md:flex-row md:justify-start md:items-center md:self-auto md:gap-6">
               <a
-                href="mailto:info@siredesign.com"
+                href="mailto:info@example.com"
                 className="flex items-center font-sans text-xs leading-5 uppercase hover:italic"
               >
                 E-MAIL

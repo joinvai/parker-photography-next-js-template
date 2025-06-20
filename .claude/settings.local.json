@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find:*)",
+      "Bash(grep:*)",
+      "WebFetch(domain:unsplash.com)",
+      "Bash(rm:*)",
+      "Bash(ls:*)",
+      "Bash(rg:*)"
+    ],
+    "deny": []
+  }
+}

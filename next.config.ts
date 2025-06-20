@@ -19,7 +19,7 @@ const nextConfig: NextConfig = {
   },
   // Add this to ensure Sharp works properly
   images: {
-    domains: ["vercel.com"], // Add any domains you need
+    domains: ["vercel.com", "images.unsplash.com", "plus.unsplash.com"], // Add any domains you need
     formats: ["image/avif", "image/webp"],
     // This is important for Sharp to work correctly
     remotePatterns: [

@@ -248,7 +248,7 @@ export function ProjectInquiryForm() {
                   defaultValue={field.value}
                   className="flex flex-col space-y-1"
                 >
-                  {["Referral", "Instagram", "Google", "Netflix"].map(
+                  {["Referral", "Instagram", "Google", "Other"].map(
                     (source) => (
                       <FormItem
                         key={source}
@@ -399,7 +399,7 @@ export function ProjectInquiryForm() {
 
         <Button
           type="submit"
-          className="w-full bg-green text-eggshell hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-green focus:ring-offset-2 focus:ring-offset-white rounded-sm"
+          className="w-full bg-black text-white hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 focus:ring-offset-white rounded-sm"
           disabled={isSubmitting}
         >
           {isSubmitting ? "Submitting..." : "Submit Inquiry"}

@@ -1,13 +1,13 @@
 {
   "type": "service_account",
-  "project_id": "siredesign",
-  "private_key_id": "4227867bd2816e696816969fc3e82eeee43ce745",
-  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQChj0Dt+Hqm0HSR\n6dzLiVwpbde1y7joMIbq7QQFnLRNTw6ZOrpjKbBn7aMNXPTV8CQFAVsEUZAJCH+a\nPaskLnlEf9aZ4uj1J5Ktcb0o82fAELM2WhgpryFxk+FOF30/cF9qMxdSDxSuOqOq\nXWPJzBCpH7aKg8Ilcn8riSe/oMy5q70h5tertPGOEFWhjDdgCbfs5bpdQsJEjUkS\nidjbAKakCz4PHTC+YLzIAgOeaHwPXlaVcPlZ+XPM1jGHwjCR28FrYyF9BMc02gUD\n3NZNbuzGW2ry3nb9VhIkUIyUNrYX0ZP8pYLZl7sn4KwNhzKMyBp/mFWg95lLaQv7\nyq8o23TRAgMBAAECggEAAdrhfQrkGb37r40oIKreqGfXSPsnmpjIYHX4MfMibjvd\nzI724t/mA3LOdsnUUpAG2S6ykOEH6/GE96qWr3M8brCfd3ePqiqb6wxue9lRSHAC\nbafnMftxK+5/dI4hEom4LExkhIDBduFGgxu3X7LNZORlJQNdzhk9U/sLL/InVWSv\nyR/lmlnEao/nCmyKiRd4dUCFtSvKQnN/qqOYtmjbGUZ9QrZfwlBH4214YkuU+kLR\nwMWCKePE9KFhW0bSdrlDUJi0GRCTLNlSRJuBo6UUFOF8oObvYz9f/cbPg9z7w+zE\nWJ/7h6Iau3Z1EJPk+pw7FQTzXIV0YoGvSiac54p1eQKBgQDQUy/bs4LioquWLa9J\nKm7rVN6LrIQ4dBb7pr2LJQyqN/GVnQ7Ecb6Q3CwY+kFLFLccL9NnkXGefiEYKikR\nHwJS2NhUVDkKj64kps/rhRtguZZnPC7eQ73iuJ0vnTMgUnqrMWGsHs5On/j57rbj\no6ZVAXNOPWChhOlVdwBEeW9LOQKBgQDGiEvYlZDe4/On61eCEY9KeEXU60UVvH26\nXhrk8IQbhnz58ijMd2kE6TRfoP6BX3+wSPpGIH8duZtRm1dkDPYBa0GiMo0RH1gc\nUhIN7Z0NvlafwmHphx8h7SGW+hrNiMpxy+7L0V6aRTn21uXRAS/TFQAiLPM4Gzlm\n+drFNAa+WQKBgQCszxS4DuTX01C6txLcgpKYLEKfYnAb1FDsV5iLwCQNX3LLRQlm\n82O9DqaV4aIgAgMTIqkfFItHiiExxmdiiHKI/tAUw/i9RgqS5L09BaF8Tvbwk//c\n6Byv4ayiPqiWe1S+hawb90Hz/setq9OSacIkaZuYn1l1Iqfb+WcDZihoIQKBgQCu\nyeKUzaFdSy4CocVKY3FXbCp2+ae6Klg7E4z0EPkOTsqLN/NJiLvyMesFYnWPq2d8\n6dNGmGex4O5o264GDQ8tUqPXTFA8Se9GB8+TaaaDKheT0gxoEKmNMfwHsyyT1iH+\nLECSO0Ph6J7OvoZZC4VyfqO+cvqzY+yWx9UfF930CQKBgA6D0Gl3+JxJWWZLiJj4\nw5/srrCdKuB+/9vWuEpzUPp2v3QqXLVsvZ/TU4gY1C4dk9AHd2TjmEXnec3LyEuD\n+CmDIzITddFiTaj4HwJO7CmPy8lEB40nhQ0WAKATCgBYZG58iatzMTMtsV/DNUKL\naxZ6UhRpaKsxuw4LoQCpvhV2\n-----END PRIVATE KEY-----\n",
-  "client_email": "siredesignwebsite@siredesign.iam.gserviceaccount.com",
-  "client_id": "107158893622386143530",
+  "project_id": "your-project-id",
+  "private_key_id": "your-private-key-id",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nYOUR_PRIVATE_KEY_HERE\n-----END PRIVATE KEY-----\n",
+  "client_email": "your-service-account@your-project.iam.gserviceaccount.com",
+  "client_id": "000000000000000000000",
   "auth_uri": "https://accounts.google.com/o/oauth2/auth",
   "token_uri": "https://oauth2.googleapis.com/token",
   "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/siredesignwebsite%40siredesign.iam.gserviceaccount.com",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/your-service-account%40your-project.iam.gserviceaccount.com",
   "universe_domain": "googleapis.com"
 }

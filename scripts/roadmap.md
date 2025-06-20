@@ -1,3 +1,0 @@
-- fix carousel to be a random featured project
-- small component that lets you change the mouse cursor
-- add coming soon slot with blur over it for the projects section

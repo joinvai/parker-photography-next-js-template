@@ -9,7 +9,7 @@ const KEYFILEPATH = path.join(
   "lib",
   "siredesign-4227867bd281.json",
 );
-const SPREADSHEET_ID = "1uBawMgtpx7h0AEL1dlnHq221T5wDR5QirHQR7ZnxLeI";
+const SPREADSHEET_ID = "YOUR_SPREADSHEET_ID_HERE";
 const TARGET_RANGE = "Website Leads!A:N";
 
 // Moved function definition up

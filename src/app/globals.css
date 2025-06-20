@@ -9,11 +9,11 @@
   h4,
   h5,
   h6 {
-    font-family: var(--font-beaufort-light), serif;
+    font-family: var(--font-manrope), sans-serif;
   }
 
   body {
-    @apply font-sans bg-eggshell text-black;
+    @apply font-sans bg-white text-black;
   }
 
   /* Add global link styles */
@@ -28,21 +28,21 @@
 
 /* Define custom CSS variables for light and dark background colors */
 :root {
-  --background-light: #faf9f4;
-  --background-dark: #1f2937;
-  --selected-day-bg: #f3f4f6;
-  --selected-day-color: #111827;
-  --today-bg: #111827;
+  --background-light: #ffffff;
+  --background-dark: #000000;
+  --selected-day-bg: #ffffff;
+  --selected-day-color: #000000;
+  --today-bg: #000000;
   --today-color: #ffffff;
 }
 
 /* Apply dark mode background color when dark theme is active */
 [data-theme="dark"] {
-  --background-dark: #1f2937;
-  --selected-day-bg: #4b5563;
-  --selected-day-color: #f3f4f6;
-  --today-bg: #60a5fa;
-  --today-color: #1f2937;
+  --background-dark: #000000;
+  --selected-day-bg: #000000;
+  --selected-day-color: #ffffff;
+  --today-bg: #ffffff;
+  --today-color: #000000;
 }
 
 /* Set default light mode background color */
@@ -59,7 +59,7 @@ body {
 @media (prefers-color-scheme: light) {
   ::selection {
     background-color: black;
-    color: #f9fafb;
+    color: white;
   }
 }
 
@@ -84,24 +84,24 @@ body {
 
 /* Define syntax highlighting colors for light mode */
 :root {
-  --sh-class: #2d5e9d;
-  --sh-identifier: #354150;
-  --sh-sign: #8996a3;
-  --sh-string: #007f7a;
-  --sh-keyword: #e02518;
-  --sh-comment: #a19595;
-  --sh-jsxliterals: #6266d1;
-  --sh-property: #e25a1c;
-  --sh-entity: #e25a1c;
+  --sh-class: #000000;
+  --sh-identifier: #000000;
+  --sh-sign: #000000;
+  --sh-string: #000000;
+  --sh-keyword: #000000;
+  --sh-comment: #000000;
+  --sh-jsxliterals: #000000;
+  --sh-property: #000000;
+  --sh-entity: #000000;
 }
 
 /* Override syntax highlighting colors for dark mode */
 @media (prefers-color-scheme: dark) {
   :root {
-    --sh-class: #4c97f8;
+    --sh-class: #ffffff;
     --sh-identifier: white;
-    --sh-keyword: #f47067;
-    --sh-string: #0fa295;
+    --sh-keyword: #ffffff;
+    --sh-string: #ffffff;
   }
   html {
     color-scheme: dark;
@@ -124,11 +124,11 @@ body {
 
 /* Styles for links in prose content */
 .prose a {
-  @apply decoration-neutral-400 decoration-[0.1em] underline-offset-2 transition-all dark:decoration-neutral-600;
+  @apply decoration-black decoration-[0.1em] underline-offset-2 transition-all dark:decoration-white;
 }
 
 .prose .anchor:after {
-  @apply text-neutral-300 dark:text-neutral-700;
+  @apply text-black dark:text-white;
   content: "#";
 }
 
@@ -138,7 +138,7 @@ body {
 
 /* Styles for code blocks in prose content */
 .prose pre {
-  @apply bg-neutral-50 dark:bg-neutral-900 rounded-lg overflow-x-auto border border-neutral-200 dark:border-neutral-900;
+  @apply bg-white dark:bg-black rounded-lg overflow-x-auto border border-black dark:border-white;
 }
 
 .prose code {
@@ -232,74 +232,74 @@ table {
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 20 14.3% 4.1%;
+    --foreground: 0 0% 0%;
     --card: 0 0% 100%;
-    --card-foreground: 20 14.3% 4.1%;
+    --card-foreground: 0 0% 0%;
     --popover: 0 0% 100%;
-    --popover-foreground: 20 14.3% 4.1%;
-    --primary: 24 9.8% 10%;
-    --primary-foreground: 60 9.1% 97.8%;
-    --secondary: 60 4.8% 95.9%;
-    --secondary-foreground: 24 9.8% 10%;
-    --muted: 60 4.8% 95.9%;
-    --muted-foreground: 25 5.3% 44.7%;
-    --accent: 60 4.8% 95.9%;
-    --accent-foreground: 24 9.8% 10%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 60 9.1% 97.8%;
-    --border: 20 5.9% 90%;
-    --input: 20 5.9% 90%;
-    --ring: 20 14.3% 4.1%;
+    --popover-foreground: 0 0% 0%;
+    --primary: 0 0% 0%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 100%;
+    --secondary-foreground: 0 0% 0%;
+    --muted: 0 0% 100%;
+    --muted-foreground: 0 0% 0%;
+    --accent: 0 0% 100%;
+    --accent-foreground: 0 0% 0%;
+    --destructive: 0 0% 0%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 0%;
+    --input: 0 0% 0%;
+    --ring: 0 0% 0%;
     --radius: 0.5rem;
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 0 0% 0%;
+    --sidebar-primary: 0 0% 0%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 0 0% 100%;
+    --sidebar-accent-foreground: 0 0% 0%;
+    --sidebar-border: 0 0% 0%;
+    --sidebar-ring: 0 0% 0%;
+    --chart-1: 0 0% 0%;
+    --chart-2: 0 0% 0%;
+    --chart-3: 0 0% 0%;
+    --chart-4: 0 0% 0%;
+    --chart-5: 0 0% 0%;
   }
 
   /* Override custom properties for dark mode */
   .dark {
-    --background: 20 14.3% 4.1%;
-    --foreground: 60 9.1% 97.8%;
-    --card: 20 14.3% 4.1%;
-    --card-foreground: 60 9.1% 97.8%;
-    --popover: 20 14.3% 4.1%;
-    --popover-foreground: 60 9.1% 97.8%;
-    --primary: 60 9.1% 97.8%;
-    --primary-foreground: 24 9.8% 10%;
-    --secondary: 12 6.5% 15.1%;
-    --secondary-foreground: 60 9.1% 97.8%;
-    --muted: 12 6.5% 15.1%;
-    --muted-foreground: 24 5.4% 63.9%;
-    --accent: 12 6.5% 15.1%;
-    --accent-foreground: 60 9.1% 97.8%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 60 9.1% 97.8%;
-    --border: 12 6.5% 15.1%;
-    --input: 12 6.5% 15.1%;
-    --ring: 24 5.7% 82.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
+    --card: 0 0% 0%;
+    --card-foreground: 0 0% 100%;
+    --popover: 0 0% 0%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 0 0% 100%;
+    --primary-foreground: 0 0% 0%;
+    --secondary: 0 0% 0%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 0 0% 0%;
+    --muted-foreground: 0 0% 100%;
+    --accent: 0 0% 0%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 0% 100%;
+    --destructive-foreground: 0 0% 0%;
+    --border: 0 0% 100%;
+    --input: 0 0% 100%;
+    --ring: 0 0% 100%;
+    --sidebar-background: 0 0% 0%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 0 0% 100%;
+    --sidebar-primary-foreground: 0 0% 0%;
+    --sidebar-accent: 0 0% 0%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 0 0% 100%;
+    --sidebar-ring: 0 0% 100%;
+    --chart-1: 0 0% 100%;
+    --chart-2: 0 0% 100%;
+    --chart-3: 0 0% 100%;
+    --chart-4: 0 0% 100%;
+    --chart-5: 0 0% 100%;
   }
 }
 
@@ -376,7 +376,7 @@ table {
 .table-cell {
   display: table-cell;
   vertical-align: top;
-  border: 1px solid #e5e7eb;
+  border: 1px solid #000000;
 }
 
 .table-head {
@@ -384,7 +384,7 @@ table {
   vertical-align: middle;
   text-align: center;
   font-weight: bold;
-  border: 1px solid #e5e7eb;
+  border: 1px solid #000000;
 }
 
 /* Styles for dragging events */
@@ -396,19 +396,19 @@ table {
 
 @layer base {
   :root {
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
+    --chart-1: 0 0% 0%;
+    --chart-2: 0 0% 0%;
+    --chart-3: 0 0% 0%;
+    --chart-4: 0 0% 0%;
+    --chart-5: 0 0% 0%;
   }
 
   .dark {
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
+    --chart-1: 0 0% 100%;
+    --chart-2: 0 0% 100%;
+    --chart-3: 0 0% 100%;
+    --chart-4: 0 0% 100%;
+    --chart-5: 0 0% 100%;
   }
 }
 
@@ -460,7 +460,7 @@ table {
     padding: 0;
     float: none;
     clear: none;
-    font-family: "Beaufort W 01";
+    font-family: var(--font-manrope);
     font-size: 18px;
     line-height: 24px;
     font-style: normal;
@@ -570,7 +570,7 @@ table {
     margin-top: 13px;
     padding: 12px 25px;
     border-radius: 0px;
-    background-color: rgb(26, 27, 31);
+    background-color: #000000;
     transition-property: background-color, opacity, color;
     transition-duration: 400ms, 400ms, 400ms;
     transition-timing-function: ease, ease, ease;
@@ -583,12 +583,12 @@ table {
   }
   .button.-wfp-hover,
   .button:hover {
-    background-color: rgb(50, 52, 58);
+    background-color: #000000;
     color: white;
   }
   .button.-wfp-active,
   :where(html:not(.wf-design-mode)) .button:active {
-    background-color: rgb(67, 70, 77);
+    background-color: #000000;
   }
   @media screen and (max-width: 991px) {
     .button {

@@ -1,18 +1,14 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useState } from "react";
 
 export default function FounderQuote() {
-  const [signatureLoaded, setSignatureLoaded] = useState(false);
   const [quoteLoaded, setQuoteLoaded] = useState(false);
 
   // Update loaded state when component mounts
   useEffect(() => {
-    // If the image is already in cache, the onLoad might not trigger
-    // This ensures we show the content in that case
+    // This ensures we show the content after mount
     const timer = setTimeout(() => {
-      setSignatureLoaded(true);
       setQuoteLoaded(true);
     }, 500);
 
@@ -43,37 +39,19 @@ export default function FounderQuote() {
           onLoad={() => setQuoteLoaded(true)}
         >
           <p className="font-header font-light text-base leading-6 not-italic tracking-[-0.25px] text-black sm:text-lg 2xl:text-2xl 2xl:leading-9">
-            "Sire Design’s projects are based on strong design concepts and great attention to detail. With a design approach rooted in modernist principles of design and architecture, <br />
-            Sire Design takes an analytical approach to interiors while having an open-minded view of innovation."
+            "our photography studio’s projects are based on strong compositional concepts and great attention to detail. With an approach rooted in capturing the raw beauty of nature and landscapes, <br />
+            we take an artistic approach to photography while having an open-minded view of innovation."
           </p>
         </blockquote>
       </div>
 
-      <div
-        className="flex justify-center h-24 sm:h-28 md:h-32 relative"
-        aria-live={!signatureLoaded ? "polite" : "off"}
-        aria-busy={!signatureLoaded}
-      >
-        {/* Loading announcement for screen readers */}
-        {!signatureLoaded && (
-          <div className="sr-only">Loading founder's signature</div>
-        )}
-
-        <div
-          className="relative w-48 sm:w-56 md:w-64 h-full transition-opacity duration-300"
-          style={{ opacity: signatureLoaded ? 1 : 0 }}
+      <div className="mt-8">
+        <p 
+          className="font-header font-light text-lg sm:text-xl tracking-wider text-black transition-opacity duration-300"
+          style={{ opacity: quoteLoaded ? 1 : 0 }}
         >
-          <Image
-            src="/projects/founders-signature.png"
-            alt="Eilyn Jiminez signature - Founder of Sire Design"
-            fill
-            sizes="(max-width: 640px) 12rem, (max-width: 768px) 14rem, 16rem"
-            style={{ objectFit: "contain" }}
-            className="transition-opacity duration-500"
-            onLoad={() => setSignatureLoaded(true)}
-            loading="lazy"
-          />
-        </div>
+          — Parker Photography
+        </p>
       </div>
     </section>
   );

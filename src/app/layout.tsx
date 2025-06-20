@@ -1,7 +1,7 @@
 "use client"; // Add this directive
 
 import type { Metadata } from "next"; // Keep Metadata for potential future use
-import { Open_Sans } from "next/font/google"; // Import Open_Sans
+import { Manrope } from "next/font/google"; // Import Manrope
 // import localFont from "next/font/local"; // Remove this, will be imported from fonts.ts
 import { usePathname } from "next/navigation"; // Correctly import usePathname
 import "./globals.css";
@@ -9,7 +9,7 @@ import Footer from "@/components/footer"; // Import the Footer component
 import Header from "@/components/header"; // Import the Header component
 import { useCallback, useEffect, useState } from "react";
 import { Toaster } from "sonner"; // Import Toaster
-import { beaufortLight, editorialNew } from "./fonts"; // Import fonts
+// Removed custom font imports - using Manrope instead
 
 // Define Beaufort font configuration - REMOVED
 // const beaufort = localFont({
@@ -18,19 +18,19 @@ import { beaufortLight, editorialNew } from "./fonts"; // Import fonts
 //   display: "swap",
 // });
 
-// Configure Open Sans font
-const openSans = Open_Sans({
+// Configure Manrope font
+const manrope = Manrope({
   subsets: ["latin"],
-  weight: ["400"],
+  weight: ["300", "400", "500", "600", "700", "800"],
   display: "swap",
-  variable: "--font-open-sans", // Add variable for consistency if needed
+  variable: "--font-manrope",
 });
 
 // Metadata definition should ideally be moved to layout.tsx in the parent directory (app/layout.tsx) if possible
 // or handled differently for Client Components. For now, commenting it out.
 // export const metadata: Metadata = {
-//   title: "Sire Design Studio | High-End Interior Design & Architecture",
-//   description: "Sire Design Studio creates sophisticated, luxurious spaces through high-end interior design and architectural solutions.",
+//   title: "Parker Photography Studio | High-End Nature Photography & Landscapes",
+//   description: "Parker Photography Studio creates stunning, evocative nature photography through high-end landscape and wildlife photography.",
 // };
 
 export default function RootLayout({
@@ -139,10 +139,10 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${openSans.variable} ${beaufortLight.variable} ${editorialNew.variable} antialiased`}
+      className={`${manrope.variable} antialiased`}
     >
       <body
-        className={`${openSans.className} bg-eggshell text-black transition-colors duration-300`}
+        className={`${manrope.className} bg-white text-black transition-colors duration-300`}
       >
         {/* Skip to content link for keyboard users */}
         <a

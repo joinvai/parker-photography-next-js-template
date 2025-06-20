@@ -56,8 +56,8 @@ export default function TeamPageClient({ teamData }: TeamPageClientProps) {
     },
   };
 
-  // Filter out Eilyn Jimenez as she's already displayed above
-  const filteredTeamData = teamData.filter(member => member.fullName !== "Eilyn Jimenez");
+  // Filter out John Doe as he's already displayed above
+  const filteredTeamData = teamData.filter(member => member.fullName !== "John Doe");
 
   return (
     <motion.div
